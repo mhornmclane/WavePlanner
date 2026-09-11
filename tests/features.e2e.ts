@@ -246,7 +246,7 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
   await expect(popup).toContainText(clock(result.exchanges[35].latestActivity));
   await expect(popup.locator("tr")).toHaveCount(3);
   await expect(popup).not.toContainText("Wave (");
-  await expect(popup).not.toContainText(profiles[0].team);
+  await expect(popup.locator(".popup-team-name")).toHaveText(`${profiles[0].team} · ${profiles[0].year}`);
   await page.mouse.click(points.x, points.y);
   await expect(popup).toHaveAttribute("role", "dialog");
   await page.keyboard.press("Escape");
@@ -276,6 +276,7 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
     .check();
   await point.hover();
   await expect(popup).toContainText("EX 14");
+  await expect(popup.locator(".popup-team-name")).toHaveCount(0);
   await expect(popup.locator("tr")).toHaveCount(3);
   await expect(popup).not.toContainText("pace");
   await page.getByRole("heading", { name: "The field, over time" }).click();

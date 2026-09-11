@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { profileById } from "./data";
 import { clock, duration } from "./format";
 import type { Simulation } from "./model";
 
@@ -35,6 +36,7 @@ export function ExchangePopup({
     top: target.y + 14,
   });
   const field = result.exchanges[target.index];
+  const profile = target.teamId ? profileById.get(target.teamId) : undefined;
   useLayoutEffect(() => {
     const rect = element.current?.getBoundingClientRect();
     if (!rect) return;
@@ -114,6 +116,7 @@ export function ExchangePopup({
         </div>
       </div>
       <h3>{field.name}</h3>
+      {profile && <p className="popup-team-name">{profile.team} · {profile.year}</p>}
       <table>
         <tbody>
           {rows.map(([label, value]) => (
