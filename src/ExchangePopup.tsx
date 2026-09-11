@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { profileById } from "./data";
+import { resolveProfile } from "./data";
 import { clock, duration } from "./format";
-import type { Simulation } from "./model";
+import type { Scenario, Simulation } from "./model";
 
 export interface PopupTarget {
   teamId?: string;
@@ -17,6 +17,7 @@ const spread = (first: number | null, last: number | null) =>
   first === null || last === null ? "—" : duration(last - first);
 export function ExchangePopup({
   target,
+  scenario,
   result,
   close,
   pin,
@@ -24,6 +25,7 @@ export function ExchangePopup({
   leave,
 }: {
   target: PopupTarget;
+  scenario: Scenario;
   result: Simulation;
   close: () => void;
   pin: () => void;
@@ -36,7 +38,7 @@ export function ExchangePopup({
     top: target.y + 14,
   });
   const field = result.exchanges[target.index];
-  const profile = target.teamId ? profileById.get(target.teamId) : undefined;
+  const profile = target.teamId ? resolveProfile(scenario, target.teamId) : undefined;
   useLayoutEffect(() => {
     const rect = element.current?.getBoundingClientRect();
     if (!rect) return;

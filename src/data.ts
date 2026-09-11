@@ -1,6 +1,6 @@
 import courseJson from "./data/course.json" with { type: "json" };
 import historicalJson from "./data/historical.json" with { type: "json" };
-import type { Course, PaceBin, Profile, Scenario } from "./model";
+import type { Course, PaceBin, Profile, Scenario, WorstCaseTeam } from "./model";
 
 export const course: Course = courseJson;
 export const profiles: Profile[] = historicalJson.records;
@@ -22,7 +22,8 @@ export const colors = [
 ];
 export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
+    worstCaseTeams: defaultWorstCaseTeams(),
     sources: { ...sources },
     name: "2026 baseline",
     selectedTeamIds: [...selectedTeamIds],
@@ -49,4 +50,51 @@ export function initialScenario(): Scenario {
     name: "My race configuration",
     waveRules: { mode: "pace", boundaries: [] },
   };
+}
+
+export const worstCaseIds = { fastest: "synthetic::fastest", slowest: "synthetic::slowest" } as const;
+export const worstCaseNames = { fastest: "Worst-case fastest", slowest: "Worst-case slowest" } as const;
+export type WorstCaseKind = keyof typeof worstCaseIds;
+export const binDistances = Object.fromEntries(bins.map(b => [b.bin_id,
+  course.legs.filter(l => l.leg_number >= b.first_leg && l.leg_number <= b.last_leg)
+    .reduce((sum, l) => sum + l.distance_miles, 0)]));
+export function weightedPace(paces: Record<string, number>): number {
+  return bins.reduce((sum, b) => sum + paces[b.bin_id] * binDistances[b.bin_id], 0)
+    / Object.values(binDistances).reduce((sum, d) => sum + d, 0);
+}
+export function worstCaseSource(kind: WorstCaseKind): Profile {
+  return profiles.reduce((best, p) => (kind === "fastest"
+    ? p.overall_mean_pace_seconds_per_mile < best.overall_mean_pace_seconds_per_mile
+    : p.overall_mean_pace_seconds_per_mile > best.overall_mean_pace_seconds_per_mile) ? p : best);
+}
+export function validTeamPace(p: number): boolean {
+  return Number.isFinite(p) && p >= 1 && p <= 5999;
+}
+export function shiftBinPaces(paces: Record<string, number>, target: number): Record<string, number> {
+  const delta = target - weightedPace(paces);
+  const next = Object.fromEntries(bins.map(b => [b.bin_id, paces[b.bin_id] + delta]));
+  if (!validTeamPace(target) || Object.values(next).some(p => !validTeamPace(p)))
+    throw new Error("Every resulting bin pace must be between 0:01 and 99:59 per mile.");
+  return next;
+}
+export function defaultWorstCaseTeam(kind: WorstCaseKind): WorstCaseTeam {
+  const source = worstCaseSource(kind);
+  const target = source.overall_mean_pace_seconds_per_mile + (kind === "fastest" ? -30 : 30);
+  return { mode: "bins", flatPace: target, binPaces: shiftBinPaces(source.bin_mean_pace_seconds_per_mile, target) };
+}
+export function defaultWorstCaseTeams(): Scenario["worstCaseTeams"] {
+  return { fastest: defaultWorstCaseTeam("fastest"), slowest: defaultWorstCaseTeam("slowest") };
+}
+export function resolveProfile(s: Scenario, id: string): Profile {
+  const kind = (Object.keys(worstCaseIds) as WorstCaseKind[]).find(k => worstCaseIds[k] === id);
+  if (!kind) {
+    const historical = profileById.get(id);
+    if (!historical) throw new Error(`Unknown team: ${id}`);
+    return historical;
+  }
+  const definition = s.worstCaseTeams[kind];
+  return { team: worstCaseNames[kind], year: "Hypothetical",
+    overall_mean_pace_seconds_per_mile: definition.mode === "flat" ? definition.flatPace : weightedPace(definition.binPaces),
+    bin_mean_pace_seconds_per_mile: definition.mode === "flat"
+      ? Object.fromEntries(bins.map(b => [b.bin_id, definition.flatPace])) : definition.binPaces };
 }

@@ -1,6 +1,6 @@
 import { orderedWaveEntries } from "./waves";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { bins, course, ORIGIN, profileById } from "./data";
+import { bins, course, ORIGIN, resolveProfile } from "./data";
 import { clock, duration, elapsed, pace } from "./format";
 import { ExchangePopup, type PopupTarget } from "./ExchangePopup";
 import { releasePace } from "./engine";
@@ -176,8 +176,8 @@ export function Chart({
             <option value="">All selected teams</option>
             {result.teams.map((t) => (
               <option key={t.teamId} value={t.teamId}>
-                {profileById.get(t.teamId)!.team} ·{" "}
-                {profileById.get(t.teamId)!.year}
+                {resolveProfile(scenario, t.teamId).team} ·{" "}
+                {resolveProfile(scenario, t.teamId).year}
               </option>
             ))}
           </select>
@@ -516,7 +516,7 @@ export function Chart({
         )}
       </div>
       <p className="chart-explanation">
-        Historical pace is constant within each of five leg bins: distance/time
+        Team pace is constant within each of five leg bins (or flat across the course): distance/time
         sections are straight until pace, a release, or a wait changes the
         trajectory. Exchange view gives unequal-distance legs equal height,
         making slopes more varied. Each segment remains one runner’s travel.
@@ -561,6 +561,7 @@ export function Chart({
       </div>
       {popup && (
         <ExchangePopup
+          scenario={scenario}
           target={popup}
           result={result}
           close={() => {
@@ -593,8 +594,8 @@ export function Chart({
         {detail ? (
           <div className="timing-detail">
             <strong>
-              {profileById.get(detail.teamId)!.team} ·{" "}
-              {profileById.get(detail.teamId)!.year} / Leg {detail.leg}
+              {resolveProfile(scenario, detail.teamId).team} ·{" "}
+              {resolveProfile(scenario, detail.teamId).year} / Leg {detail.leg}
             </strong>
             <span>
               Depart {clock(detail.departure)} ({elapsed(detail.departure)}) →

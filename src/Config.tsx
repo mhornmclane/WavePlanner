@@ -1,3 +1,4 @@
+import { WorstCaseTeams } from "./WorstCaseTeams";
 import { useState } from "react";
 import { bins, course, profiles, teamId } from "./data";
 import { Waves } from "./WaveControls";
@@ -136,7 +137,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
         (a.overall_mean_pace_seconds_per_mile -
           b.overall_mean_pace_seconds_per_mile) ||
       a.team.localeCompare(b.team) ||
-      a.year - b.year,
+      Number(a.year) - Number(b.year),
   );
   const selected = new Set(s.selectedTeamIds);
   const activeBulk = s.waves.some((w) => w.id === bulkWave)
@@ -208,6 +209,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
         {tab === "waves" && <Waves scenario={s} update={update} />}
         {tab === "teams" && (
           <>
+            <WorstCaseTeams scenario={s} update={update} select={select} />
             <div className="team-tools">
               <label className="search-field">
                 <span className="sr-only">Search teams</span>
@@ -239,7 +241,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
                 Clear all
               </button>
               <span className="muted">
-                {s.selectedTeamIds.length} selected / {filtered.length} shown
+                {profiles.filter(p => selected.has(teamId(p))).length} historical selected / {filtered.length} shown
               </span>
             </div>
             <div className="bulk-tools">
@@ -724,7 +726,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
             <div>
               <h3>What this model assumes</h3>
               <ul className="assumptions">
-                <li>Team pace follows the five historical course segments.</li>
+                <li>Team pace follows historical or configured hypothetical course segments.</li>
                 <li>
                   Outgoing runners are ready; legs can overlap after releases.
                 </li>

@@ -21,7 +21,7 @@ export interface Course {
   legs: CourseLeg[];
 }
 export interface Profile {
-  year: number;
+  year: number | "Hypothetical";
   team: string;
   overall_mean_pace_seconds_per_mile: number;
   bin_mean_pace_seconds_per_mile: Record<string, number>;
@@ -42,7 +42,8 @@ export interface PaceSegment {
   pace: number;
 }
 export interface Scenario {
-  schemaVersion: 2;
+  schemaVersion: 3;
+  worstCaseTeams: Record<"fastest" | "slowest", WorstCaseTeam>;
   sources: { course: string; historical: string };
   name: string;
   selectedTeamIds: string[];
@@ -57,6 +58,11 @@ export interface Scenario {
   };
   challenges: { monument: number; lighthouse: number };
   buffers: { before: number; after: number };
+}
+export interface WorstCaseTeam {
+  mode: "flat" | "bins";
+  flatPace: number;
+  binPaces: Record<string, number>;
 }
 export interface LegTiming {
   teamId: string;

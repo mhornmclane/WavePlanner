@@ -1,4 +1,4 @@
-import { bins, course, ORIGIN, profileById } from "./data";
+import { bins, course, ORIGIN, resolveProfile } from "./data";
 import { resolveAssignments } from "./waves";
 import type {
   ClockTime,
@@ -122,7 +122,7 @@ export function simulate(s: Scenario): Simulation {
   const releases = releaseSchedule(s);
   const assignments = resolveAssignments(s);
   const teams: TeamResult[] = s.selectedTeamIds.map((id) => {
-    const profile = profileById.get(id)!;
+    const profile = resolveProfile(s, id);
     const wave = s.waves.find((w) => w.id === assignments[id])!;
     const lateStart = wave.start > ORIGIN;
     const legs: LegTiming[] = [];

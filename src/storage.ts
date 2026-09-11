@@ -1,23 +1,21 @@
-import { profileById, sources } from "./data";
+import { profileById, sources, bins, worstCaseIds, defaultWorstCaseTeams } from "./data";
 import type { Scenario, Simulation } from "./model";
 import { clock } from "./format";
 import { syncAssignments } from "./waves";
-
 const object = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === "object" && !Array.isArray(v);
 const finite = (v: unknown, min = 0, max = 30 * 86400 - 1): v is number =>
   typeof v === "number" && Number.isFinite(v) && v >= min && v <= max;
 const label = (v: unknown): v is string =>
   typeof v === "string" && !!v.trim() && v.length <= 120;
-
 export function validateScenario(value: unknown): Scenario {
   if (
     !object(value) ||
-    ![1, 2].includes(Number(value.schemaVersion)) ||
+    ![1, 2, 3].includes(Number(value.schemaVersion)) ||
     typeof value.schemaVersion !== "number"
   )
     throw new Error(
-      "Unsupported configuration version. Expected version 1 or 2.",
+      "Unsupported configuration version. Expected version 1, 2, or 3.",
     );
   if (value.schemaVersion === 1) {
     value = {
@@ -30,6 +28,20 @@ export function validateScenario(value: unknown): Scenario {
     };
   }
   if (!object(value)) throw new Error("Invalid configuration.");
+  if (value.schemaVersion === 2) {
+    value = { ...value, schemaVersion: 3, worstCaseTeams: defaultWorstCaseTeams() };
+  }
+  if (!object(value)) throw new Error("Invalid configuration.");
+  const custom = value.worstCaseTeams;
+  if (!object(custom) || Object.keys(custom).length !== 2 ||
+      (["fastest", "slowest"] as const).some(kind => {
+        const t = custom[kind];
+        return !object(t) || !["flat", "bins"].includes(String(t.mode)) ||
+          !finite(t.flatPace, 1, 5999) || !object(t.binPaces) ||
+          Object.keys(t.binPaces).length !== bins.length ||
+          bins.some(b => !finite((t.binPaces as Record<string, unknown>)[b.bin_id], 1, 5999));
+      })) throw new Error("Worst-case teams need a valid mode, flat pace, and five bin paces between 0:01 and 99:59.");
+
   if (
     !object(value.sources) ||
     value.sources.course !== sources.course ||
@@ -43,11 +55,11 @@ export function validateScenario(value: unknown): Scenario {
   const ids = value.selectedTeamIds;
   if (
     !Array.isArray(ids) ||
-    ids.some((id) => typeof id !== "string" || !profileById.has(id)) ||
+    ids.some((id) => typeof id !== "string" || (!profileById.has(id) && !Object.values(worstCaseIds).some(v => v === id))) ||
     new Set(ids).size !== ids.length
   )
     throw new Error(
-      "Selected teams must be unique records from the supplied historical field.",
+      "Selected teams must be unique historical or configured worst-case teams.",
     );
   const waves = value.waves;
   if (

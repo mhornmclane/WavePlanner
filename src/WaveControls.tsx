@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { colors, ORIGIN, profileById } from "./data";
+import { colors, ORIGIN, resolveProfile } from "./data";
 import { clock, pace, parsePace } from "./format";
 import {
   conversionPreview,
@@ -154,13 +154,13 @@ export function Waves({
   const roster = (scenario: Scenario, waveId: string) =>
     scenario.selectedTeamIds
       .filter((id) => scenario.assignments[id] === waveId)
-      .map((id) => profileById.get(id)!)
+      .map((id) => resolveProfile(scenario, id))
       .sort(
         (a, b) =>
           a.overall_mean_pace_seconds_per_mile -
             b.overall_mean_pace_seconds_per_mile ||
           a.team.localeCompare(b.team) ||
-          a.year - b.year,
+          Number(a.year) - Number(b.year),
       );
   return (
     <>

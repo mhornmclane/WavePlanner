@@ -60,6 +60,7 @@ export default function App() {
   // Same staffing buffers on both results; baseline race rules remain immutable.
   const comparison = useMemo(() => {
     const b = baseline(scenario.selectedTeamIds);
+    b.worstCaseTeams = structuredClone(scenario.worstCaseTeams);
     b.buffers = { ...scenario.buffers };
     return checked.scenario ? simulate(b) : null;
   }, [scenario.selectedTeamIds, scenario.buffers, checked.scenario]);
@@ -112,7 +113,7 @@ export default function App() {
       setPresetId("custom");
       return;
     }
-    const next = createPreset(id, scenario.selectedTeamIds);
+    const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams);
     replace(next);
     setPresetId(id);
     setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams retained; release, challenge, and staffing settings reset to baseline.`);
@@ -405,7 +406,7 @@ export default function App() {
         )}
         <footer>
           <strong>Planning estimates, not an exact replay.</strong> Travel uses
-          fixed historical segment-average paces. Baseline: all selected teams
+          historical or configured hypothetical paces. Baseline: all selected teams
           start Day 1 at 01:00, with the published 2026 releases, assumed
           16/21-minute challenges, and the fixed JBCC gate. Moving time excludes
           challenge and gate waits. Times use event Day/time, independent of

@@ -493,3 +493,11 @@ footer {
 .preset-summary { flex: 1 1 280px; }
 .preset-summary p { margin: 0 0 6px; }
 .preset-summary small { color: #626d68; }
+
+.worst-case-teams { margin-bottom: 1.5rem; }
+.worst-case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1rem; }
+.worst-case-grid fieldset { min-width: 0; border: 1px solid #cbd5d1; border-radius: 10px; padding: 1rem; }
+.worst-case-grid legend { font-weight: 700; padding: 0 .4rem; }
+.worst-case-bins { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
+.worst-case-grid .field { margin: .6rem 0; }
+.worst-case-grid [role="alert"] { color: #a02b21; font-size: .85rem; max-width: 24rem; }

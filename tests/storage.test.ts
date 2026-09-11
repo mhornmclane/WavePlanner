@@ -70,7 +70,7 @@ describe("configuration serialization and browser storage", () => {
   it("rejects wrong versions, source data, malformed JSON and oversized input", () => {
     expect(() => parseScenario("{bad")).toThrow("JSON");
     expect(() => parseScenario(" ".repeat(1_000_001))).toThrow("large");
-    expect(() => validateScenario({ ...baseline(), schemaVersion: 3 })).toThrow(
+    expect(() => validateScenario({ ...baseline(), schemaVersion: 4 })).toThrow(
       "version",
     );
     expect(() => validateScenario({ ...baseline(), sources: {} })).toThrow(

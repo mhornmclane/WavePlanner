@@ -1,6 +1,6 @@
 import { orderedWaveEntries } from "./waves";
 import { useEffect, useMemo, useState } from "react";
-import { profileById } from "./data";
+import { resolveProfile } from "./data";
 import { clock, duration } from "./format";
 import type { Scenario, Simulation } from "./model";
 import { buildReplay } from "./replay";
@@ -51,9 +51,9 @@ export function SpreadReplay({
   const detail = frame.markers.find(
     (m) => m.teamId === (inspected || pinned || selected),
   );
-  const profile = detail ? profileById.get(detail.teamId) : undefined;
+  const profile = detail ? resolveProfile(scenario, detail.teamId) : undefined;
   const options = result.teams.filter((t) => {
-    const p = profileById.get(t.teamId)!;
+    const p = resolveProfile(scenario, t.teamId);
     return (
       t.teamId === selected ||
       `${p.team} ${p.year}`.toLowerCase().includes(query.toLowerCase())
@@ -208,7 +208,7 @@ export function SpreadReplay({
               All teams{query ? ` · ${options.length} matches` : ""}
             </option>
             {options.map((t) => {
-              const p = profileById.get(t.teamId)!;
+              const p = resolveProfile(scenario, t.teamId);
               return (
                 <option key={t.teamId} value={t.teamId}>
                   {p.team} · {p.year}
@@ -278,7 +278,7 @@ export function SpreadReplay({
               />
             ))}
             {frame.markers.map((marker) => {
-              const p = profileById.get(marker.teamId)!;
+              const p = resolveProfile(scenario, marker.teamId);
               const wave = waves.get(marker.waveId)!;
               return (
                 <button

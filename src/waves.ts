@@ -1,11 +1,11 @@
-import { profileById } from "./data";
+import { resolveProfile } from "./data";
 import type { Scenario } from "./model";
 
 export function resolveAssignments(s: Scenario): Record<string, string> {
   if (s.waveRules.mode === "manual") return { ...s.assignments };
   return Object.fromEntries(
     s.selectedTeamIds.map((id) => {
-      const pace = profileById.get(id)!.overall_mean_pace_seconds_per_mile;
+      const pace = resolveProfile(s, id).overall_mean_pace_seconds_per_mile;
       const index = s.waveRules.boundaries.filter(
         (boundary) => pace >= boundary,
       ).length;
@@ -50,7 +50,7 @@ export function splitSuggestion(s: Scenario, index: number): number {
   const paces = [
     ...new Set(
       s.selectedTeamIds.map(
-        (id) => profileById.get(id)!.overall_mean_pace_seconds_per_mile,
+        (id) => resolveProfile(s, id).overall_mean_pace_seconds_per_mile,
       ),
     ),
   ]
@@ -92,7 +92,7 @@ export function conversionPreview(s: Scenario): Scenario {
   const paces = [
     ...new Set(
       s.selectedTeamIds.map(
-        (id) => profileById.get(id)!.overall_mean_pace_seconds_per_mile,
+        (id) => resolveProfile(s, id).overall_mean_pace_seconds_per_mile,
       ),
     ),
   ].sort((a, b) => a - b);
