@@ -62,6 +62,16 @@ Outgoing runners are assumed ready and available. The model excludes individual 
 
 ## Data and configuration format
 
+### Spread replay
+
+Switch from **Time / course chart** to **Spread replay** to compare arrival times exchange by exchange. The opening frame compares wave starts; frames 1–71 compare incoming arrivals through the finish. Each team's horizontal position is the latest field arrival minus its own arrival, in hours. The last team stays at zero and the leader's position is the total spread. Staffing buffers do not affect this view, and releases never hide late incoming arrivals.
+
+The scale is fixed to the greatest spread across all frames (one hour if every spread is zero). Wave-colored dots share one horizontal line and overlap naturally at close or identical times. Hover, focus, or tap a marker for details; tap pins it, and Escape or the clear button dismisses inspection. Search and highlight a team without changing field spread. Use team search or keyboard focus to inspect teams hidden beneath overlapping dots.
+
+Use Previous/Next or the exchange slider for manual inspection. Play advances exchange snapshots at 0.25–5 seconds per exchange, defaulting to one second. Loop is off initially. Manual navigation pauses playback; simulation changes reset it, and leaving the view stops the timer. Frames stay in course order even if independent released legs have out-of-order arrival times: this is a comparison of arrival spread, not physical positions at a shared clock time. Reduced-motion preferences disable marker transitions. Replay controls are temporary view state and do not change saved configurations or the simulation model.
+
+`src/replay.ts` contains pure replay-frame generation helpers, independent of React. Replay tests cover summary agreement, precision, ties, staggered starts, releases, empty fields, playback, inspection, and mobile layout.
+
 - `src/data/course.json`: supplied Course Matrix version 2026-01-29, including distances, releases, challenges, and the JBCC gate.
 - `src/data/historical.json`: supplied historical records for 2024–2026. Pace values and names are preserved. Overall means are displayed as supplied; simulation uses each leg's applicable bin.
 - `src/model.ts`: course/profile, scenario, per-leg result, and exchange-summary types.

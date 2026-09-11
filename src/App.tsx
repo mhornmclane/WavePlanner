@@ -3,6 +3,7 @@ import { baseline, initialScenario } from "./data";
 import { simulate } from "./engine";
 import { clock, delta, duration } from "./format";
 import { Chart } from "./Chart";
+import { SpreadReplay } from "./SpreadReplay";
 import { Config } from "./Config";
 import { Staffing } from "./Staffing";
 import {
@@ -19,6 +20,7 @@ import type { Scenario } from "./model";
 export default function App() {
   const [scenario, setScenario] = useState(initialScenario);
   const [overlay, setOverlay] = useState(false);
+  const [visualizer, setVisualizer] = useState<"chart" | "replay">("chart");
   const [saves, setSaves] = useState<SavedScenario[]>([]);
   const [loadedId, setLoadedId] = useState("");
   const [savedText, setSavedText] = useState("");
@@ -349,13 +351,35 @@ export default function App() {
                 </small>
               </article>
             </div>
-            <Chart
-              result={result}
-              comparison={comparison}
-              scenario={scenario}
-              overlay={overlay}
-              setOverlay={setOverlay}
-            />
+            <div
+              className="visualizer-switch"
+              role="group"
+              aria-label="Visualizer view"
+            >
+              <button
+                aria-pressed={visualizer === "chart"}
+                onClick={() => setVisualizer("chart")}
+              >
+                Time / course chart
+              </button>
+              <button
+                aria-pressed={visualizer === "replay"}
+                onClick={() => setVisualizer("replay")}
+              >
+                Spread replay
+              </button>
+            </div>
+            {visualizer === "chart" ? (
+              <Chart
+                result={result}
+                comparison={comparison}
+                scenario={scenario}
+                overlay={overlay}
+                setOverlay={setOverlay}
+              />
+            ) : (
+              <SpreadReplay result={result} scenario={scenario} />
+            )}
             <Staffing
               result={result}
               comparison={comparison}
