@@ -65,6 +65,7 @@ export interface LegTiming {
   arrival: number;
   duration: number;
   releaseTime: number;
+  releaseSuppressed: boolean;
   releaseUsed: boolean;
   challengeWait: number;
   gateWait: number;

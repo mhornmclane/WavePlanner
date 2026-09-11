@@ -1,7 +1,77 @@
 import { test, expect } from "@playwright/test";
 import { baseline, profiles, teamId } from "../src/data";
-import { exchangeSummaries, simulate } from "../src/engine";
-import { clock, pace } from "../src/format";
+import { simulate } from "../src/engine";
+import { clock, duration, pace } from "../src/format";
+
+test("late-wave chart runs sequentially to the monument and explains suppressed releases", async ({
+  page,
+}) => {
+  const ids = profiles.slice(0, 2).map(teamId);
+  const s = baseline(ids);
+  s.waves.push({
+    id: "late",
+    name: "Late wave",
+    start: 4 * 3600,
+    color: "#993355",
+  });
+  s.assignments[ids[0]] = "late";
+  const result = simulate(s);
+  const late = result.teams[0];
+  await page.goto("./");
+  await page
+    .getByLabel("Import configuration JSON")
+    .setInputFiles({
+      name: "late.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(s)),
+    });
+  await expect(
+    page.getByText("Waves starting after 01:00 run sequentially", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await page
+    .getByRole("checkbox", { name: "2026 baseline", exact: true })
+    .check();
+  await page.getByLabel("Highlight team", { exact: true }).selectOption(ids[0]);
+  await page.getByLabel("Inspect leg", { exact: true }).selectOption("35");
+  await expect(page.locator(".timing-detail")).toContainText(
+    "suppressed until monument arrival",
+  );
+  await expect(page.locator(".timing-detail")).toContainText(
+    clock(late.legs[34].arrival),
+  );
+  const points = await page.locator(".hit-line").evaluateAll((elements) =>
+    elements.slice(0, 35).map((el) => {
+      const line = el as SVGLineElement;
+      return { start: line.x1.baseVal.value, end: line.x2.baseVal.value };
+    }),
+  );
+  expect(points).toHaveLength(35);
+  points
+    .slice(1)
+    .forEach((p, i) => expect(p.start).toBeCloseTo(points[i].end, 5));
+  await page.getByLabel("Inspect leg", { exact: true }).selectOption("36");
+  await expect(page.locator(".timing-detail")).not.toContainText("suppressed");
+  await expect(page.locator(".timing-detail")).toContainText(
+    clock(late.legs[35].departure),
+  );
+  const monument = page.locator(".staffing-table tbody tr").nth(35);
+  await expect(monument).toContainText(
+    clock(result.exchanges[35].latestActivity),
+  );
+  await page.getByLabel("Inspect exchange", { exact: true }).selectOption("35");
+  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await expect(page.locator(".exchange-popup tr")).toHaveCount(3);
+  await page.keyboard.press("Escape");
+  await page.getByLabel("Highlight team", { exact: true }).selectOption(ids[1]);
+  await page.getByLabel("Inspect leg", { exact: true }).selectOption("35");
+  await expect(page.locator(".timing-detail")).not.toContainText("suppressed");
+  await page.screenshot({
+    path: test.info().outputPath("late-wave-chart.png"),
+    fullPage: true,
+  });
+});
 
 test("wave start accepts signed and fractional hour offsets and retains them in saves", async ({
   page,
@@ -173,11 +243,10 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
   const popup = page.locator(".exchange-popup");
   await expect(popup).toContainText("EX 35");
   const result = simulate(baseline());
-  await expect(popup).toContainText(
-    clock(result.exchanges[35].latestDeparture),
-  );
-  await expect(popup).toContainText("Field (51)");
-  await expect(popup).toContainText("Wave (51)");
+  await expect(popup).toContainText(clock(result.exchanges[35].latestActivity));
+  await expect(popup.locator("tr")).toHaveCount(3);
+  await expect(popup).not.toContainText("Wave (");
+  await expect(popup).not.toContainText(profiles[0].team);
   await page.mouse.click(points.x, points.y);
   await expect(popup).toHaveAttribute("role", "dialog");
   await page.keyboard.press("Escape");
@@ -186,7 +255,9 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
   await page.getByRole("button", { name: "Show exchange details" }).focus();
   await page.keyboard.press("Enter");
   await expect(popup).toContainText("FINISH");
-  await expect(popup).toContainText("no outgoing runner");
+  await expect(
+    popup.getByRole("row", { name: /^Last activity/ }).locator("td"),
+  ).toHaveText(clock(result.exchanges[71].latestArrival));
   await page.keyboard.press("Escape");
   await page
     .getByRole("checkbox", { name: "2026 baseline", exact: true })
@@ -194,15 +265,19 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
   await page.getByLabel("Inspect exchange", { exact: true }).selectOption("0");
   await page.getByRole("button", { name: "Show exchange details" }).click();
   await expect(popup).toContainText("START");
-  await expect(popup).toContainText("Change from 2026 baseline");
+  await expect(popup).not.toContainText("baseline");
+  await expect(
+    popup.getByRole("row", { name: /^First departure/ }).locator("td"),
+  ).toHaveText("D1 01:00");
   await page.keyboard.press("Escape");
   const point = page.locator('[data-release-leg="15"]');
   await page
     .getByRole("checkbox", { name: "Release schedule", exact: true })
     .check();
   await point.hover();
-  await expect(popup).toContainText("Release point · outbound leg 15");
-  await expect(popup).toContainText("Nominal pace 10:25");
+  await expect(popup).toContainText("EX 14");
+  await expect(popup.locator("tr")).toHaveCount(3);
+  await expect(popup).not.toContainText("pace");
   await page.getByRole("heading", { name: "The field, over time" }).click();
   await expect(popup).toHaveCount(0);
 });
@@ -268,7 +343,7 @@ test("mobile visual editor and pinned popup remain within viewport", async ({
   await page.screenshot({ path: test.info().outputPath("mobile-popup.png") });
 });
 
-test("popup wave windows and baseline differences match a multi-wave simulation", async ({
+test("compact popup uses field activity including late runners and ignores buffers and highlighting", async ({
   page,
 }) => {
   const s = baseline();
@@ -280,9 +355,14 @@ test("popup wave windows and baseline differences match a multi-wave simulation"
   });
   s.waveRules = { mode: "pace", boundaries: [660] };
   s.buffers = { before: 600, after: 900 };
+  s.release.mode = "visual";
+  s.release.visualPaces = [400, 400, 400, 400, 400];
   const result = simulate(s);
+  const field = result.exchanges.find(
+    (e) => e.earliestArrival !== null && e.latestArrival! > e.latestDeparture!,
+  )!;
+  expect(field).toBeDefined();
   const slower = result.teams.filter((t) => t.waveId === "slower");
-  const wave = exchangeSummaries(slower, s.buffers)[35];
   await page.goto("./");
   await page.getByLabel("Import configuration JSON").setInputFiles({
     name: "ranges.json",
@@ -290,33 +370,84 @@ test("popup wave windows and baseline differences match a multi-wave simulation"
     buffer: Buffer.from(JSON.stringify(s)),
   });
   await page
-    .getByLabel("Highlight team", { exact: true })
-    .selectOption(slower[0].teamId);
-  await page
     .getByRole("checkbox", { name: "2026 baseline", exact: true })
     .check();
-  await page.getByLabel("Inspect exchange", { exact: true }).selectOption("35");
+  await page
+    .getByLabel("Inspect exchange", { exact: true })
+    .selectOption(String(field.index));
   await page.getByRole("button", { name: "Show exchange details" }).click();
   const popup = page.locator(".exchange-popup");
-  await expect(popup).toContainText(`Wave (${slower.length})`);
-  const firstArrival = popup
-    .locator("table")
-    .first()
-    .getByRole("row", { name: /^First arrival/ });
-  await expect(firstArrival.locator("td").nth(0)).toHaveText(
-    clock(result.exchanges[35].earliestArrival),
-  );
-  await expect(firstArrival.locator("td").nth(1)).toHaveText(
-    clock(wave.earliestArrival),
-  );
-  const departure = popup
-    .locator("table")
-    .first()
-    .getByRole("row", { name: /^Last departure/ });
-  await expect(departure.locator("td").nth(1)).toHaveText(
-    clock(wave.latestDeparture),
-  );
-  await page.screenshot({ path: test.info().outputPath("wave-popup.png") });
+  const checkValues = async () => {
+    await expect(popup.locator("tr")).toHaveCount(3);
+    await expect(
+      popup.getByRole("row", { name: /^First arrival/ }).locator("td"),
+    ).toHaveText(clock(field.earliestArrival));
+    await expect(
+      popup.getByRole("row", { name: /^Last activity/ }).locator("td"),
+    ).toHaveText(clock(field.latestArrival));
+    await expect(
+      popup.getByRole("row", { name: /^Coverage spread/ }).locator("td"),
+    ).toHaveText(duration(field.latestActivity! - field.earliestArrival!));
+    await expect(popup).not.toContainText("baseline");
+    await expect(popup).not.toContainText("Slower start");
+  };
+  await checkValues();
+  await page
+    .getByLabel("Highlight team", { exact: true })
+    .selectOption(slower[0].teamId);
+  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await checkValues();
+  await page.screenshot({ path: test.info().outputPath("compact-popup.png") });
+  await page.keyboard.press("Escape");
+  await page
+    .getByRole("tab", { name: "Staffing & assumptions", exact: true })
+    .click();
+  await page.getByLabel("Before first activity", { exact: true }).fill("60");
+  await page.getByLabel("After last activity", { exact: true }).fill("120");
+  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await checkValues();
   await page.getByLabel("Chart zoom").fill("2");
+  await expect(popup).toHaveCount(0);
+});
+
+test("compact popup handles cross-midnight times and disappears with an empty field", async ({
+  page,
+}) => {
+  const s = baseline();
+  s.waves[0].start = -7200;
+  const result = simulate(s);
+  const exchange = result.exchanges.find(
+    (e) =>
+      e.earliestArrival !== null &&
+      e.earliestArrival < 0 &&
+      e.latestActivity! >= 0,
+  )!;
+  expect(exchange).toBeDefined();
+  await page.goto("./");
+  await page.getByLabel("Import configuration JSON").setInputFiles({
+    name: "early.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(s)),
+  });
+  await page
+    .getByLabel("Inspect exchange", { exact: true })
+    .selectOption(String(exchange.index));
+  await page.getByRole("button", { name: "Show exchange details" }).click();
+  const popup = page.locator(".exchange-popup");
+  await expect(
+    popup.getByRole("row", { name: /^First arrival/ }).locator("td"),
+  ).toHaveText(clock(exchange.earliestArrival));
+  await expect(
+    popup.getByRole("row", { name: /^Last activity/ }).locator("td"),
+  ).toHaveText(clock(exchange.latestActivity));
+  await expect(
+    popup.getByRole("row", { name: /^Coverage spread/ }).locator("td"),
+  ).toHaveText(duration(exchange.latestActivity! - exchange.earliestArrival!));
+  await page.keyboard.press("Escape");
+  await page.getByRole("tab", { name: /Historical field/ }).click();
+  await page.getByRole("button", { name: "Clear all", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Show exchange details" }),
+  ).toBeDisabled();
   await expect(popup).toHaveCount(0);
 });

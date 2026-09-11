@@ -403,6 +403,11 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
             <div className="release-grid">
               <div>
                 <h3>One release clock for the course</h3>
+                <p className="muted">
+                  Waves starting after Day 1, 01:00 ignore releases through leg
+                  35. From each team’s monument arrival, the shared timetable
+                  resumes, including expired releases.
+                </p>
                 <div className="radio-stack">
                   <label>
                     <input

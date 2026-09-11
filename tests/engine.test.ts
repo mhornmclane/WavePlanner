@@ -10,6 +10,7 @@ import {
 import {
   clockSeconds,
   legDuration,
+  peakConcurrency,
   releaseSchedule,
   simulate,
 } from "../src/engine";
@@ -65,6 +66,121 @@ describe("source integrity and pace calculation", () => {
         profiles[0].bin_mean_pace_seconds_per_mile[bin],
       9,
     );
+  });
+});
+describe("late-wave release activation at the monument", () => {
+  it.each([-1, 0, 0.1])(
+    "applies only to a strictly positive start offset (%s seconds)",
+    (offset) =>
+      synthetic(900, (s) => {
+        s.waves[0].start = 3600 + offset;
+        s.release.mode = "generated";
+        s.release.segments = [{ startLeg: 1, pace: 400 }];
+        const t = simulate(s).teams[0];
+        expect(t.legs[1].releaseSuppressed).toBe(offset > 0);
+        expect(t.legs[1].releaseUsed).toBe(offset <= 0);
+        expect(t.legs[1].departure).toBe(
+          offset > 0 ? t.legs[0].arrival : 3600 + 2.72 * 400,
+        );
+      }),
+  );
+
+  it.each(["published", "generated", "visual"] as const)(
+    "runs all 35 legs before resuming expired %s releases",
+    (mode) =>
+      synthetic(900, (s) => {
+        const original = simulate(s).teams[0];
+        s.waves[0].start = 7200;
+        s.release.mode = mode;
+        s.release.segments = [{ startLeg: 1, pace: 400 }];
+        s.release.visualPaces.fill(400);
+        const schedule = releaseSchedule(s);
+        const result = simulate(s),
+          t = result.teams[0];
+        expect(result.releases).toEqual(schedule);
+        const before = t.legs.slice(0, 35),
+          after = t.legs.slice(35);
+        before.forEach((leg, i) => {
+          expect(leg.departure).toBe(
+            i ? before[i - 1].arrival : s.waves[0].start,
+          );
+          expect(leg.releaseSuppressed).toBe(true);
+          expect(leg.releaseUsed).toBe(false);
+        });
+        expect(peakConcurrency(before)).toBe(1);
+        const monument = t.legs[34].arrival;
+        expect(monument).toBeCloseTo(7200 + 100.08 * 900, 8);
+        expect(monument).toBeGreaterThan(86400);
+        expect(schedule[35]).toBeLessThan(monument);
+        expect(t.legs[35].departure).toBe(monument);
+        expect(t.legs[35].challengeWait).toBe(0);
+        expect(t.legs[35].releaseUsed).toBe(true);
+        after.forEach((leg, i) => {
+          expect(leg.releaseSuppressed).toBe(false);
+          expect(leg.departure).toBeGreaterThanOrEqual(monument);
+          expect(leg.departure).toBeGreaterThanOrEqual(
+            t.legs[i + 34].departure,
+          );
+        });
+        expect(t.legs[69].departure).toBeGreaterThanOrEqual(86400 + 6 * 3600);
+        expect(t.movingTime).toBe(original.movingTime);
+        expect(result.releaseCount).toBe(
+          after.filter((l) => l.releaseUsed).length,
+        );
+        expect(t.allComplete).toBe(Math.max(...t.legs.map((l) => l.arrival)));
+        t.legs.forEach((l) => {
+          const start = result.exchanges[l.leg - 1],
+            end = result.exchanges[l.leg];
+          expect(start.coverageStart!).toBeLessThanOrEqual(l.departure);
+          expect(start.coverageEnd!).toBeGreaterThanOrEqual(l.departure);
+          expect(end.coverageStart!).toBeLessThanOrEqual(l.arrival);
+          expect(end.coverageEnd!).toBeGreaterThanOrEqual(l.arrival);
+        });
+      }),
+  );
+
+  it("allows normal challenge completion and JBCC waiting when releases are still in the future", () =>
+    synthetic(300, (s) => {
+      s.waves[0].start = 7200;
+      const { legs } = simulate(s).teams[0];
+      expect(legs[35].departure).toBe(legs[34].arrival + 960);
+      expect(legs[35].challengeWait).toBe(960);
+      expect(legs[35].releaseUsed).toBe(false);
+      expect(legs[69].departure).toBe(86400 + 6 * 3600);
+      expect(legs[69].gateWait).toBeGreaterThan(0);
+    }));
+
+  it("activates independently for mixed waves and preserves the nominal baseline", () => {
+    const b = baseline(),
+      original = simulate(b);
+    expect(original.releaseCount).toBe(1024);
+    expect(original.exchangeHours.toFixed(1)).toBe("274.6");
+    expect(clock(original.lastOffCourse)).toBe("D2 13:28");
+    const s = baseline();
+    s.waves.push({ id: "late", name: "Late", color: "#445566", start: 7200 });
+    s.selectedTeamIds.slice(0, 25).forEach((id) => {
+      s.assignments[id] = "late";
+    });
+    const result = simulate(s);
+    result.teams.forEach((t, i) => {
+      if (t.waveId === "wave-1") expect(t).toEqual(original.teams[i]);
+      else {
+        expect(t.legs[34].arrival).toBeCloseTo(
+          7200 + t.legs.slice(0, 35).reduce((sum, l) => sum + l.duration, 0),
+          8,
+        );
+        expect(t.legs[35].departure).toBeGreaterThanOrEqual(t.legs[34].arrival);
+        expect(t.movingTime).toBe(original.teams[i].movingTime);
+      }
+    });
+    expect(
+      new Set(
+        result.teams
+          .filter((t) => t.waveId === "late")
+          .map((t) => t.legs[34].arrival),
+      ).size,
+    ).toBeGreaterThan(1);
+    expect(result.releases).toEqual(original.releases);
   });
 });
 describe("release schedules", () => {

@@ -555,16 +555,13 @@ export function Chart({
           Show exchange details
         </button>
         <small className="muted">
-          Uses the highlighted team, or the first selected team.
+          Shows the spread across all selected teams.
         </small>
       </div>
       {popup && (
         <ExchangePopup
           target={popup}
-          scenario={scenario}
           result={result}
-          comparison={comparison}
-          overlay={overlay}
           close={() => {
             cancelClose();
             setPopup(null);
@@ -605,8 +602,12 @@ export function Chart({
             <span>
               Moving {duration(detail.duration)} · release{" "}
               {clock(detail.releaseTime)}
-              {detail.releaseUsed ? " (used)" : ""} · challenge{" "}
-              {duration(detail.challengeWait)} · gate{" "}
+              {detail.releaseSuppressed
+                ? " (suppressed until monument arrival)"
+                : detail.releaseUsed
+                  ? " (used)"
+                  : ""}{" "}
+              · challenge {duration(detail.challengeWait)} · gate{" "}
               {duration(detail.gateWait)}
             </span>
             {selectedTeam && (

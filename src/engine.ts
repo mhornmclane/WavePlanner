@@ -1,4 +1,4 @@
-import { bins, course, profileById } from "./data";
+import { bins, course, ORIGIN, profileById } from "./data";
 import { resolveAssignments } from "./waves";
 import type {
   ClockTime,
@@ -124,13 +124,23 @@ export function simulate(s: Scenario): Simulation {
   const teams: TeamResult[] = s.selectedTeamIds.map((id) => {
     const profile = profileById.get(id)!;
     const wave = s.waves.find((w) => w.id === assignments[id])!;
+    const lateStart = wave.start > ORIGIN;
     const legs: LegTiming[] = [];
     for (const [index, courseLeg] of course.legs.entries()) {
       const prev = legs[index - 1];
       const challenge = challengeBefore(index + 1, s);
       const ready = prev ? prev.arrival + challenge : wave.start;
+      const releaseSuppressed = lateStart && index < 35;
+      // Late waves must physically reach the monument before any later leg can start.
+      const monumentArrival =
+        lateStart && index >= 35 ? legs[34].arrival : -Infinity;
       const eligible = prev
-        ? Math.max(prev.departure, wave.start, Math.min(ready, releases[index]))
+        ? Math.max(
+            prev.departure,
+            wave.start,
+            monumentArrival,
+            releaseSuppressed ? ready : Math.min(ready, releases[index]),
+          )
         : wave.start;
       const gate = courseLeg.controlled_start_time
         ? clockSeconds(courseLeg.controlled_start_time)
@@ -144,6 +154,7 @@ export function simulate(s: Scenario): Simulation {
         arrival: departure + duration,
         duration,
         releaseTime: releases[index],
+        releaseSuppressed,
         releaseUsed: !!prev && departure < ready - 1e-7,
         challengeWait: prev
           ? Math.min(challenge, Math.max(0, eligible - prev.arrival))

@@ -186,7 +186,9 @@ export function Waves({
       <p className="table-note">
         Start offsets are relative to Day 1, 01:00. Use negative hours for
         earlier starts or positive hours for later starts; decimals are allowed.
-        −3 = Day 0, 22:00; +3 = Day 1, 04:00.
+        −3 = Day 0, 22:00; +3 = Day 1, 04:00. Waves starting after 01:00 run
+        sequentially to the monument (after leg 35). Releases resume when each
+        team arrives there.
       </p>
       {proposed && (
         <div className="range-preview">

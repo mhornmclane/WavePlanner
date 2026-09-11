@@ -161,7 +161,7 @@
 .exchange-popup {
   position: fixed;
   z-index: 100;
-  width: 450px;
+  width: 310px;
   max-width: calc(100vw - 16px);
   max-height: calc(100dvh - 16px);
   overflow: auto;
@@ -187,19 +187,11 @@
   margin: 8px 0 0;
   font-size: 16px;
 }
-.exchange-popup p {
-  margin: 7px 0;
-  line-height: 1.6;
-}
-.popup-team {
-  padding: 10px;
-  background: #f1f5ef;
-  border-radius: 6px;
-}
 .exchange-popup table {
+  margin-top: 12px;
   width: 100%;
   border-collapse: collapse;
-  font-size: 11px;
+  font-size: 12px;
 }
 .exchange-popup th,
 .exchange-popup td {
@@ -211,12 +203,6 @@
 .exchange-popup th:first-child {
   text-align: left;
   font-weight: 500;
-}
-.exchange-popup thead th {
-  font-weight: 700;
-}
-.popup-baseline {
-  margin: 10px 0;
 }
 @media (max-width: 600px) {
   .exchange-inspector {
