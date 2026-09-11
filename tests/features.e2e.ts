@@ -163,7 +163,7 @@ test("linked wave boundaries update rosters, prevent overlap and sort the field"
   await expect(page.locator(".overall-pace").first()).toHaveText(pace(slowest));
   await page.getByLabel("Search teams", { exact: true }).fill("BCSO");
   await expect(page.locator(".results-label")).toContainText(
-    "51 HISTORICAL TEAMS",
+    "51 SELECTED TEAMS",
   );
 });
 

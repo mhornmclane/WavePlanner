@@ -1,4 +1,4 @@
-import { profileById, sources, bins, worstCaseIds, defaultWorstCaseTeams } from "./data";
+import { profileById, sources, bins, worstCaseIds, defaultWorstCaseTeams, defaultTimingRules, course } from "./data";
 import type { Scenario, Simulation } from "./model";
 import { clock } from "./format";
 import { syncAssignments } from "./waves";
@@ -11,11 +11,11 @@ const label = (v: unknown): v is string =>
 export function validateScenario(value: unknown): Scenario {
   if (
     !object(value) ||
-    ![1, 2, 3].includes(Number(value.schemaVersion)) ||
+    ![1, 2, 3, 4].includes(Number(value.schemaVersion)) ||
     typeof value.schemaVersion !== "number"
   )
     throw new Error(
-      "Unsupported configuration version. Expected version 1, 2, or 3.",
+      "Unsupported configuration version. Expected version 1, 2, 3, or 4.",
     );
   if (value.schemaVersion === 1) {
     value = {
@@ -32,6 +32,19 @@ export function validateScenario(value: unknown): Scenario {
     value = { ...value, schemaVersion: 3, worstCaseTeams: defaultWorstCaseTeams() };
   }
   if (!object(value)) throw new Error("Invalid configuration.");
+  if (value.schemaVersion === 3) {
+    value = { ...value, schemaVersion: 4, timingRules: defaultTimingRules() };
+  }
+  if (!object(value)) throw new Error("Invalid configuration.");
+  const timing = value.timingRules;
+  if (!Array.isArray(timing) || timing.some(r => !object(r) || !label(r.id) ||
+      typeof r.enabled !== "boolean" || !Number.isInteger(r.exchange) ||
+      !finite(r.exchange, 0, course.legs.length) ||
+      !["arrive-by", "clear-by", "depart-after"].includes(String(r.type)) ||
+      (r.exchange === 0 && r.type !== "depart-after") ||
+      (r.exchange === course.legs.length && r.type === "depart-after") ||
+      !finite(r.time)) || new Set(timing.map(r => r.id)).size !== timing.length)
+    throw new Error("Timing rules need unique IDs, a valid exchange and rule type, and a day/time within Days 1–30.");
   const custom = value.worstCaseTeams;
   if (!object(custom) || Object.keys(custom).length !== 2 ||
       (["fastest", "slowest"] as const).some(kind => {

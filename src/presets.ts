@@ -35,11 +35,12 @@ export const presets = [
 
 export type PresetId = (typeof presets)[number]["id"];
 
-export function createPreset(id: PresetId, selectedTeamIds: string[], worstCaseTeams?: Scenario["worstCaseTeams"]): Scenario {
+export function createPreset(id: PresetId, selectedTeamIds: string[], worstCaseTeams?: Scenario["worstCaseTeams"], timingRules?: Scenario["timingRules"]): Scenario {
   const preset = presets.find((p) => p.id === id)!;
   return syncAssignments({
     ...baseline(selectedTeamIds),
     ...(worstCaseTeams ? { worstCaseTeams: structuredClone(worstCaseTeams) } : {}),
+    ...(timingRules ? { timingRules: structuredClone(timingRules) } : {}),
     name: preset.name,
     // Pace ranges are stored fastest first, displayed slowest first.
     waves: preset.starts.map((start, index) => {

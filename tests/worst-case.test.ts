@@ -50,7 +50,7 @@ describe("worst-case team profiles", () => {
     delete old.worstCaseTeams;
     if (version === 1) delete old.waveRules;
     const migrated = validateScenario(old);
-    expect(migrated.schemaVersion).toBe(3);
+    expect(migrated.schemaVersion).toBe(4);
     expect(migrated.selectedTeamIds).toEqual(original.selectedTeamIds);
     expect(simulate(migrated)).toEqual(simulate(original));
   });

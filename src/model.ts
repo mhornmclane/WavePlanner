@@ -42,7 +42,8 @@ export interface PaceSegment {
   pace: number;
 }
 export interface Scenario {
-  schemaVersion: 3;
+  schemaVersion: 4;
+  timingRules: TimingRule[];
   worstCaseTeams: Record<"fastest" | "slowest", WorstCaseTeam>;
   sources: { course: string; historical: string };
   name: string;
@@ -99,7 +100,28 @@ export interface ExchangeSummary {
   coverageEnd: number | null;
   coverage: number;
 }
+export type TimingRuleType = "arrive-by" | "clear-by" | "depart-after";
+export interface TimingRule {
+  id: string;
+  enabled: boolean;
+  exchange: number;
+  type: TimingRuleType;
+  time: number;
+}
+export interface TeamRuleTiming {
+  teamId: string;
+  waveId: string;
+  actual: number;
+  lateness: number;
+  wait: number;
+}
+export interface TimingRuleResult {
+  ruleId: string;
+  status: "not-evaluated" | "passed" | "failed";
+  teams: TeamRuleTiming[];
+}
 export interface Simulation {
+  timingRules: TimingRuleResult[];
   teams: TeamResult[];
   exchanges: ExchangeSummary[];
   releases: number[];

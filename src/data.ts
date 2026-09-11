@@ -22,7 +22,8 @@ export const colors = [
 ];
 export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
+    timingRules: defaultTimingRules(),
     worstCaseTeams: defaultWorstCaseTeams(),
     sources: { ...sources },
     name: "2026 baseline",
@@ -97,4 +98,11 @@ export function resolveProfile(s: Scenario, id: string): Profile {
     overall_mean_pace_seconds_per_mile: definition.mode === "flat" ? definition.flatPace : weightedPace(definition.binPaces),
     bin_mean_pace_seconds_per_mile: definition.mode === "flat"
       ? Object.fromEntries(bins.map(b => [b.bin_id, definition.flatPace])) : definition.binPaces };
+}
+
+export function defaultTimingRules(): Scenario["timingRules"] {
+  return [
+    { id: "monument-deadline", enabled: true, exchange: 35, type: "clear-by", time: 19 * 3600 },
+    { id: "jbcc-opening", enabled: true, exchange: 69, type: "depart-after", time: 86400 + 6 * 3600 },
+  ];
 }

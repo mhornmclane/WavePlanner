@@ -1,3 +1,4 @@
+import { openingTime, evaluateTimingRules } from "./timingRules";
 import { bins, course, ORIGIN, resolveProfile } from "./data";
 import { resolveAssignments } from "./waves";
 import type {
@@ -142,9 +143,7 @@ export function simulate(s: Scenario): Simulation {
             releaseSuppressed ? ready : Math.min(ready, releases[index]),
           )
         : wave.start;
-      const gate = courseLeg.controlled_start_time
-        ? clockSeconds(courseLeg.controlled_start_time)
-        : -Infinity;
+      const gate = openingTime(s.timingRules, index);
       const departure = Math.max(eligible, gate);
       const duration = legDuration(profile, index + 1);
       legs.push({
@@ -176,6 +175,7 @@ export function simulate(s: Scenario): Simulation {
   const exchanges = exchangeSummaries(teams, s.buffers);
   return {
     teams,
+    timingRules: evaluateTimingRules(s.timingRules, teams),
     exchanges,
     releases,
     finishSpread: teams.length

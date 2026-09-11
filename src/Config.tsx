@@ -1,3 +1,4 @@
+import { TimingRulesEditor } from "./TimingRuleControls";
 import { WorstCaseTeams } from "./WorstCaseTeams";
 import { useState } from "react";
 import { bins, course, profiles, teamId } from "./data";
@@ -163,6 +164,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
     { id: "waves", label: "Starting waves", meta: s.waves.length },
     { id: "teams", label: "Historical field", meta: s.selectedTeamIds.length },
     { id: "release", label: "Release schedule" },
+    { id: "timing", label: "Timing rules", meta: s.timingRules.filter(r => r.enabled).length },
     { id: "staffing", label: "Staffing & assumptions" },
   ];
   return (
@@ -186,8 +188,8 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
                 const next =
                   tabs[
                     (tabs.findIndex((v) => v.id === tab) +
-                      (e.key === "ArrowRight" ? 1 : 3)) %
-                      4
+                      (e.key === "ArrowRight" ? 1 : tabs.length - 1)) %
+                      tabs.length
                   ].id;
                 setTab(next);
                 document.getElementById(`tab-${next}`)?.focus();
@@ -206,6 +208,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
         id={`panel-${tab}`}
         aria-labelledby={`tab-${tab}`}
       >
+        {tab === "timing" && <TimingRulesEditor scenario={s} result={result} update={update} />}
         {tab === "waves" && <Waves scenario={s} update={update} />}
         {tab === "teams" && (
           <>
@@ -646,10 +649,10 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
                   />
                 </div>
                 <div className="gate-note">
-                  <strong>JBCC opening · Day 2, 06:00</strong>
+                  <strong>Opening times</strong>
                   <p>
-                    The start of leg 70 stays closed until 6 a.m. Early teams
-                    wait; moving time is unchanged.
+                    Configure gate openings in Timing rules. Early outgoing runners
+                    wait until opening; moving time is unchanged.
                   </p>
                 </div>
                 <p className="table-note">

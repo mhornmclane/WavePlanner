@@ -481,3 +481,22 @@ footer {
 .worst-case-bins { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
 .worst-case-grid .field { margin: .6rem 0; }
 .worst-case-grid [role="alert"] { color: #a02b21; font-size: .85rem; max-width: 24rem; }
+
+.timing-rule-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin: 18px 0; }
+.timing-rule-editor { min-width: 0; border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.timing-rule-editor legend { font-weight: 700; }
+.timing-rule-editor .field { margin-top: 12px; }
+.timing-rule-editor select { max-width: 100%; width: 100%; }
+.timing-rule-clock { display: flex; gap: 12px; }
+.timing-rule-clock input[type="number"] { width: 70px; }
+.rule-failed { color: #b42318; font-weight: 700; }
+.rule-status { color: #285d64; }
+.timing-rule-summary { padding: 14px 18px; margin: 12px 0 20px; background: white; border: 1px solid var(--border); border-radius: 8px; }
+.timing-rule-summary.has-violations { border-color: #b42318; }
+.timing-rule-summary summary { cursor: pointer; font-weight: 700; }
+.has-violations > summary { color: #b42318; }
+.timing-rule-summary h3 { font-size: 14px; margin-top: 20px; }
+.rule-table-scroll { overflow-x: auto; }
+.rule-results { width: 100%; border-collapse: collapse; font-size: 12px; }
+.rule-results th, .rule-results td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+.timing-chart-legend { list-style: none; padding: 0 25px; font-size: 12px; line-height: 1.7; }

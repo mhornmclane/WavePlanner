@@ -1,3 +1,4 @@
+import { TimingRuleSummary } from "./TimingRuleControls";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { baseline, initialScenario } from "./data";
 import { simulate } from "./engine";
@@ -113,10 +114,10 @@ export default function App() {
       setPresetId("custom");
       return;
     }
-    const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams);
+    const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams, scenario.timingRules);
     replace(next);
     setPresetId(id);
-    setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams retained; release, challenge, and staffing settings reset to baseline.`);
+    setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams and timing rules retained; release, challenge, and staffing settings reset to baseline.`);
   }
   async function importFile(file: File | undefined) {
     if (!file) return;
@@ -308,7 +309,7 @@ export default function App() {
           <>
             <div className="results-label">
               <span>
-                {result.teams.length} HISTORICAL TEAMS · {scenario.waves.length}{" "}
+                {result.teams.length} SELECTED TEAMS · {scenario.waves.length}{" "}
                 STARTING {scenario.waves.length === 1 ? "WAVE" : "WAVES"}
               </span>
               <span>Updates as you configure</span>
@@ -368,6 +369,7 @@ export default function App() {
                 </small>
               </article>
             </div>
+            <TimingRuleSummary scenario={scenario} result={result} />
             <div
               className="visualizer-switch"
               role="group"

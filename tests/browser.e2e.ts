@@ -17,7 +17,7 @@ test("full historical field renders under repository subpath and agrees with eng
     page.getByRole("heading", { name: "Race configuration" }),
   ).toBeVisible();
   await expect(page.locator(".results-label")).toContainText(
-    "51 HISTORICAL TEAMS",
+    "51 SELECTED TEAMS",
   );
   const r = simulate(baseline());
   await expect(
@@ -66,7 +66,7 @@ test("team selection, year filtering, wave assignment and removal work", async (
   await expect(page.locator(".team-table tbody tr")).toHaveCount(51);
   await page.getByRole("button", { name: "Clear all", exact: true }).click();
   await expect(page.locator(".results-label")).toContainText(
-    "0 HISTORICAL TEAMS",
+    "0 SELECTED TEAMS",
   );
   await expect(
     page.getByText("Select at least one team to see its course timeline."),
@@ -75,7 +75,7 @@ test("team selection, year filtering, wave assignment and removal work", async (
   await expect(page.locator(".team-table tbody tr")).toHaveCount(11);
   await page.getByRole("button", { name: "Select shown", exact: true }).click();
   await expect(page.locator(".results-label")).toContainText(
-    "11 HISTORICAL TEAMS",
+    "11 SELECTED TEAMS",
   );
   await page.getByRole("tab", { name: /Starting waves/ }).click();
   await expect(page.locator(".wave-row").nth(0)).toContainText("11 teams");

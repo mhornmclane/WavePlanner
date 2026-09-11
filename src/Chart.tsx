@@ -1,3 +1,4 @@
+import { exchangeName, ruleTypes, ruleStatus } from "./timingRules";
 import { orderedWaveEntries } from "./waves";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { bins, course, ORIGIN, resolveProfile } from "./data";
@@ -73,12 +74,14 @@ export function Chart({
   const selected = result.teams.some((t) => t.teamId === selectedId)
     ? selectedId
     : "";
+  const activeRules = scenario.timingRules.filter(r => r.enabled);
+  const ruleLabelSpace = activeRules.length * 16;
   const width = 1160 * zoom,
-    height = 550,
+    height = 550 + ruleLabelSpace,
     left = 68,
     right = width - 28,
-    top = 32,
-    bottom = 484;
+    top = 32 + ruleLabelSpace,
+    bottom = 484 + ruleLabelSpace;
   const extent = useMemo(() => {
     const all = [...result.teams, ...(overlay ? comparison.teams : [])];
     const times = all.flatMap((t) =>
@@ -86,12 +89,14 @@ export function Chart({
     );
     if (showRelease)
       times.push(...result.releases, ...(overlay ? comparison.releases : []));
-    const earliest = Math.min(ORIGIN, ...scenario.waves.map((w) => w.start));
+    const ruleTimes = scenario.timingRules.filter(r => r.enabled).map(r => r.time);
+    times.push(...ruleTimes);
+    const earliest = Math.min(ORIGIN, ...scenario.waves.map((w) => w.start), ...ruleTimes);
     return {
       min: Math.floor((earliest - ORIGIN) / 3600),
       max: Math.max(4, Math.ceil((Math.max(ORIGIN, ...times) - ORIGIN) / 3600)),
     };
-  }, [result, comparison, scenario.waves, overlay, showRelease]);
+  }, [result, comparison, scenario.waves, scenario.timingRules, overlay, showRelease]);
   const x = (seconds: number) =>
     left +
     (((seconds - ORIGIN) / 3600 - extent.min) / (extent.max - extent.min)) *
@@ -475,9 +480,32 @@ export function Chart({
                   {pace(releasePace(scenario, b.first_leg))}/mi
                 </text>
               ))}
+            {activeRules.map((rule, index) => {
+              const evaluation = result.timingRules.find(r => r.ruleId === rule.id);
+              const color = evaluation?.status === "failed" ? "#b42318" : rule.type === "depart-after" ? "#285d98" : "#a66b16";
+              const label = `${index + 1}. EX ${rule.exchange} · ${exchangeName(rule.exchange)} · ${ruleTypes[rule.type]} ${clock(rule.time)} · ${ruleStatus(rule, evaluation)}`;
+              return <g key={rule.id} className="chart-timing-rule" data-rule-id={rule.id}>
+                <line x1={x(rule.time)} x2={x(rule.time)} y1={top} y2={bottom} stroke={color}
+                  strokeWidth="1.5" strokeDasharray={rule.type === "depart-after" ? "3 5" : "8 4"} pointerEvents="none" />
+                <text x={Math.min(x(rule.time), right - 100)} y={32 + index * 16} fill={color} fontSize="11">
+                  {index + 1}. {clock(rule.time)}
+                </text>
+                <circle cx={x(rule.time)} cy={y(rule.exchange)} r="5" fill="white" stroke={color} strokeWidth="2"
+                  tabIndex={0} aria-label={label}><title>{label}</title></circle>
+                {evaluation?.teams.filter(t => t.lateness > 0).map(t => <circle key={t.teamId}
+                  className="deadline-violation" cx={x(t.actual)} cy={y(rule.exchange)} r="4" fill="#b42318"
+                  stroke="white" strokeWidth="1" tabIndex={0}
+                  aria-label={`${resolveProfile(scenario, t.teamId).team} late at EX ${rule.exchange}, ${clock(t.actual)}`}>
+                  <title>{resolveProfile(scenario, t.teamId).team} · {clock(t.actual)} · late at EX {rule.exchange}</title>
+                </circle>)}
+              </g>;
+            })}
           </svg>
         </div>
       )}
+      {!!activeRules.length && <ul className="timing-chart-legend">{activeRules.map((r, i) => <li key={r.id}>
+        {i + 1}. EX {r.exchange} · {exchangeName(r.exchange)} — {ruleTypes[r.type]} {clock(r.time)}
+      </li>)}</ul>}
       <div className="legend">
         {orderedWaveEntries(scenario).map(({ w }) => (
           <span key={w.id}>
@@ -495,7 +523,7 @@ export function Chart({
         </span>
         <span>
           <i style={{ background: "#a04e7d" }} />
-          JBCC wait
+          Opening wait
         </span>
         {overlay && (
           <span>
