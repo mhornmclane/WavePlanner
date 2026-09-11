@@ -81,11 +81,13 @@ Open `http://127.0.0.1:4173/PacePlanner/`. Development/browser-test screenshots 
 
 ## Deploy to GitHub Pages
 
+Live site: [Ruck4HIT Pace Planner](https://mhornmclane.github.io/WavePlanner/).
+
 The `dist/` directory is the complete static production site. Vite uses relative asset URLs, so it works at a repository subpath or domain root. It requires HTTP(S) hosting; opening `index.html` directly as a `file://` URL is not supported.
 
 1. Push this project to your GitHub repository.
 2. In repository **Settings → Pages**, choose **GitHub Actions** as the source.
-3. In **Actions**, run the included **Deploy Pace Planner** workflow manually. It installs locked dependencies, runs the unit tests, builds the app, and publishes `dist/` through GitHub Pages.
+3. Push changes to `main`. The **Deploy Pace Planner** workflow automatically installs locked dependencies, runs the unit tests, builds the app, and publishes `dist/` through GitHub Pages. It can also be run manually from **Actions**.
 4. Use the deployment URL shown by the workflow. Running the workflow again updates the site.
 
-The workflow is manual; merely editing or pushing source does not publish it. Alternatively upload the contents of `dist/` to any static host. No server environment variables, API keys, or database are needed.
+For future updates, ask to commit and push: once those changes reach `main`, deployment runs automatically. Local edits and commits that have not been pushed do not change the live site. Failed tests or builds prevent a new deployment and leave the previous site in place. Alternatively upload the contents of `dist/` to any static host. No server environment variables, API keys, or database are needed.
