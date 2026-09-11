@@ -131,22 +131,9 @@
 .visual-pace-inputs .pace-input {
   width: 100%;
 }
-.chart-explanation {
-  padding: 0 25px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-.exchange-inspector {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 12px 25px;
-}
-.exchange-inspector select {
-  max-width: 310px;
-}
+
+
+
 .release-point {
   cursor: pointer;
 }
@@ -210,18 +197,9 @@
   font-weight: 500;
 }
 @media (max-width: 600px) {
-  .exchange-inspector {
-    padding: 12px 16px;
-  }
-  .exchange-inspector .inline-label {
-    min-width: 0;
-    width: 100%;
-    flex-wrap: wrap;
-  }
-  .exchange-inspector select {
-    max-width: 100%;
-    width: 100%;
-  }
+
+
+
   .wave-range {
     gap: 12px;
   }

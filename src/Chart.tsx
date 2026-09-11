@@ -1,7 +1,7 @@
 import { orderedWaveEntries } from "./waves";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { bins, course, ORIGIN, resolveProfile } from "./data";
-import { clock, duration, elapsed, pace } from "./format";
+import { clock, pace } from "./format";
 import { ExchangePopup, type PopupTarget } from "./ExchangePopup";
 import { releasePace } from "./engine";
 import type { LegTiming, Scenario, Simulation } from "./model";
@@ -24,10 +24,7 @@ export function Chart({
   const [zoom, setZoom] = useState(1);
   const [showRelease, setShowRelease] = useState(true);
   const [selectedId, setSelected] = useState("");
-  const [inspectLeg, setInspectLeg] = useState(1);
-  const [hover, setHover] = useState<LegTiming | null>(null);
   const [popup, setPopup] = useState<PopupTarget | null>(null);
-  const [inspectExchange, setInspectExchange] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   function cancelClose() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -63,7 +60,6 @@ export function Chart({
       point.y - y(l.leg - 1),
     );
     const endDistance = Math.hypot(point.x - x(l.arrival), point.y - y(l.leg));
-    setHover(l);
     setPopup({
       teamId: l.teamId,
       leg: l.leg,
@@ -77,11 +73,6 @@ export function Chart({
   const selected = result.teams.some((t) => t.teamId === selectedId)
     ? selectedId
     : "";
-  const selectedTeam = result.teams.find((t) => t.teamId === selected);
-  const hoveredLeg = hover
-    ? result.teams.find((t) => t.teamId === hover.teamId)?.legs[hover.leg - 1]
-    : undefined;
-  const detail = hoveredLeg ?? selectedTeam?.legs[inspectLeg - 1];
   const width = 1160 * zoom,
     height = 550,
     left = 68,
@@ -170,7 +161,6 @@ export function Chart({
             value={selected}
             onChange={(e) => {
               setSelected(e.target.value);
-              setHover(null);
             }}
           >
             <option value="">All selected teams</option>
@@ -200,7 +190,6 @@ export function Chart({
           onClick={() => {
             setZoom(1);
             setSelected("");
-            setHover(null);
           }}
         >
           Reset view
@@ -214,7 +203,7 @@ export function Chart({
         <div
           className="chart-scroll"
           tabIndex={0}
-          aria-label="Course timeline. Scroll horizontally when zoomed. Use Highlight team and Inspect leg for keyboard timing details."
+          aria-label="Course timeline. Scroll horizontally when zoomed."
         >
           <svg
             viewBox={`0 0 ${width} ${height}`}
@@ -515,50 +504,6 @@ export function Chart({
           </span>
         )}
       </div>
-      <p className="chart-explanation">
-        Team pace is constant within each of five leg bins (or flat across the course): distance/time
-        sections are straight until pace, a release, or a wait changes the
-        trajectory. Exchange view gives unequal-distance legs equal height,
-        making slopes more varied. Each segment remains one runner’s travel.
-      </p>
-      <div className="exchange-inspector">
-        <label className="inline-label">
-          Inspect exchange
-          <select
-            aria-label="Inspect exchange"
-            value={inspectExchange}
-            onChange={(e) => {
-              setInspectExchange(+e.target.value);
-              setPopup(null);
-            }}
-          >
-            {result.exchanges.map((e) => (
-              <option key={e.index} value={e.index}>
-                {e.index} · {e.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button
-          disabled={!result.teams.length}
-          onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            setPopup({
-              index: inspectExchange,
-              leg: inspectExchange === 71 ? 71 : inspectExchange + 1,
-              teamId: selected || result.teams[0]?.teamId,
-              x: rect.left,
-              y: rect.top,
-              pinned: true,
-            });
-          }}
-        >
-          Show exchange details
-        </button>
-        <small className="muted">
-          Shows the spread across all selected teams.
-        </small>
-      </div>
       {popup && (
         <ExchangePopup
           scenario={scenario}
@@ -573,60 +518,6 @@ export function Chart({
           leave={leavePopup}
         />
       )}
-      <div className="inspection">
-        <label className="inline-label">
-          Inspect leg
-          <select
-            aria-label="Inspect leg"
-            value={inspectLeg}
-            onChange={(e) => {
-              setInspectLeg(+e.target.value);
-              setHover(null);
-            }}
-          >
-            {course.legs.map((l) => (
-              <option key={l.leg_number} value={l.leg_number}>
-                {l.leg_number} · {l.start_location}
-              </option>
-            ))}
-          </select>
-        </label>
-        {detail ? (
-          <div className="timing-detail">
-            <strong>
-              {resolveProfile(scenario, detail.teamId).team} ·{" "}
-              {resolveProfile(scenario, detail.teamId).year} / Leg {detail.leg}
-            </strong>
-            <span>
-              Depart {clock(detail.departure)} ({elapsed(detail.departure)}) →
-              arrive {clock(detail.arrival)} ({elapsed(detail.arrival)})
-            </span>
-            <span>
-              Moving {duration(detail.duration)} · release{" "}
-              {clock(detail.releaseTime)}
-              {detail.releaseSuppressed
-                ? " (suppressed until monument arrival)"
-                : detail.releaseUsed
-                  ? " (used)"
-                  : ""}{" "}
-              · challenge {duration(detail.challengeWait)} · gate{" "}
-              {duration(detail.gateWait)}
-            </span>
-            {selectedTeam && (
-              <span>
-                Team moving {duration(selectedTeam.movingTime)} · final leg{" "}
-                {clock(selectedTeam.finish)} · all legs complete{" "}
-                {clock(selectedTeam.allComplete)}
-              </span>
-            )}
-          </div>
-        ) : (
-          <p className="muted">
-            Hover a leg for timings, or highlight a team and choose a leg. Each
-            line is one runner’s travel; overlapping legs remain visible.
-          </p>
-        )}
-      </div>
     </section>
   );
 }

@@ -36,7 +36,7 @@ test("custom teams can be edited, included, visualized and retained by presets",
   await expect(fast).toBeChecked();
   await expect(slow).toBeChecked();
   await page.getByLabel("Highlight team", { exact: true }).selectOption(worstCaseIds.fastest);
-  await expect(page.locator(".timing-detail")).toContainText("Worst-case fastest");
+  await expect(page.getByLabel("Highlight team", { exact: true })).toHaveValue(worstCaseIds.fastest);
   await page.getByRole("checkbox", { name: "2026 baseline", exact: true }).check();
   await page.getByLabel("Configuration preset").selectOption("three-waves");
   await page.getByRole("tab", { name: /Historical field/ }).click();

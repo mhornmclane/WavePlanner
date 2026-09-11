@@ -130,11 +130,6 @@ test("release editing validates input, buffers affect coverage, chart is inspect
   await page
     .getByLabel("Highlight team", { exact: true })
     .selectOption(teamId(profiles[0]));
-  await page.getByLabel("Inspect leg", { exact: true }).selectOption("70");
-  await expect(page.locator(".timing-detail")).toContainText("Leg 70");
-  await expect(page.locator(".timing-detail")).toContainText(
-    "all legs complete",
-  );
   await page.getByRole("button", { name: "Exchanges", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Exchanges", exact: true }),

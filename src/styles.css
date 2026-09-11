@@ -360,25 +360,9 @@ main {
     transparent 5px 8px
   );
 }
-.inspection {
-  background: #f7f9f4;
-  border-top: 1px solid var(--border);
-  padding: 16px 25px;
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  min-height: 106px;
-}
-.inspection select {
-  max-width: 235px;
-}
-.timing-detail {
-  font-size: 11px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-variant-numeric: tabular-nums;
-}
+
+
+
 .muted {
   color: var(--muted);
   font-size: 12px;
@@ -422,9 +406,7 @@ footer {
   .zoom {
     margin-left: 0;
   }
-  .inspection {
-    flex-direction: column;
-  }
+
   .section-head {
     flex-wrap: wrap;
   }
@@ -477,9 +459,7 @@ footer {
   .chart-toolbar select {
     max-width: 195px;
   }
-  .inspection .inline-label {
-    flex-wrap: wrap;
-  }
+
 }
 .preset-toolbar {
   display: flex;

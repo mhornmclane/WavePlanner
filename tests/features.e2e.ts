@@ -1,7 +1,20 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { baseline, profiles, teamId } from "../src/data";
 import { simulate } from "../src/engine";
 import { clock, duration, pace } from "../src/format";
+
+async function openExchange(page: Page, index: number) {
+  const hit = page.locator(`.hit-line[data-leg="${index || 1}"]`).first();
+  await hit.scrollIntoViewIfNeeded();
+  const point = await hit.evaluate((el, index) => {
+    const line = el as SVGLineElement;
+    const f = index === 0 ? 0.05 : 0.95;
+    const p = new DOMPoint(line.x1.baseVal.value * (1 - f) + line.x2.baseVal.value * f,
+      line.y1.baseVal.value * (1 - f) + line.y2.baseVal.value * f).matrixTransform(line.getScreenCTM()!);
+    return { clientX: p.x, clientY: p.y };
+  }, index);
+  await hit.dispatchEvent("pointerdown", point);
+}
 
 test("late-wave chart runs sequentially to the monument and explains suppressed releases", async ({
   page,
@@ -34,13 +47,6 @@ test("late-wave chart runs sequentially to the monument and explains suppressed 
     .getByRole("checkbox", { name: "2026 baseline", exact: true })
     .check();
   await page.getByLabel("Highlight team", { exact: true }).selectOption(ids[0]);
-  await page.getByLabel("Inspect leg", { exact: true }).selectOption("35");
-  await expect(page.locator(".timing-detail")).toContainText(
-    "suppressed until monument arrival",
-  );
-  await expect(page.locator(".timing-detail")).toContainText(
-    clock(late.legs[34].arrival),
-  );
   const points = await page.locator(".hit-line").evaluateAll((elements) =>
     elements.slice(0, 35).map((el) => {
       const line = el as SVGLineElement;
@@ -51,22 +57,14 @@ test("late-wave chart runs sequentially to the monument and explains suppressed 
   points
     .slice(1)
     .forEach((p, i) => expect(p.start).toBeCloseTo(points[i].end, 5));
-  await page.getByLabel("Inspect leg", { exact: true }).selectOption("36");
-  await expect(page.locator(".timing-detail")).not.toContainText("suppressed");
-  await expect(page.locator(".timing-detail")).toContainText(
-    clock(late.legs[35].departure),
-  );
   const monument = page.locator(".staffing-table tbody tr").nth(35);
   await expect(monument).toContainText(
     clock(result.exchanges[35].latestActivity),
   );
-  await page.getByLabel("Inspect exchange", { exact: true }).selectOption("35");
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, 35);
   await expect(page.locator(".exchange-popup tr")).toHaveCount(3);
   await page.keyboard.press("Escape");
   await page.getByLabel("Highlight team", { exact: true }).selectOption(ids[1]);
-  await page.getByLabel("Inspect leg", { exact: true }).selectOption("35");
-  await expect(page.locator(".timing-detail")).not.toContainText("suppressed");
   await page.screenshot({
     path: test.info().outputPath("late-wave-chart.png"),
     fullPage: true,
@@ -226,7 +224,7 @@ test("five visual pace nodes support dragging, keyboard and independent mode set
   expect(errors).toEqual([]);
 });
 
-test("exchange popup agrees with engine, supports endpoints, pinning, releases and keyboard", async ({
+test("exchange popup agrees with engine, supports endpoints, pinning, releases and Escape", async ({
   page,
 }) => {
   await page.goto("./");
@@ -264,9 +262,7 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
   await expect(popup).toHaveAttribute("role", "dialog");
   await page.keyboard.press("Escape");
   await expect(popup).toHaveCount(0);
-  await page.getByLabel("Inspect exchange", { exact: true }).selectOption("71");
-  await page.getByRole("button", { name: "Show exchange details" }).focus();
-  await page.keyboard.press("Enter");
+  await openExchange(page, 71);
   await expect(popup).toContainText("FINISH");
   await expect(
     popup.getByRole("row", { name: /^Last activity/ }).locator("td"),
@@ -275,8 +271,7 @@ test("exchange popup agrees with engine, supports endpoints, pinning, releases a
   await page
     .getByRole("checkbox", { name: "2026 baseline", exact: true })
     .check();
-  await page.getByLabel("Inspect exchange", { exact: true }).selectOption("0");
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, 0);
   await expect(popup).toContainText("START");
   await expect(popup).not.toContainText("baseline");
   await expect(
@@ -346,7 +341,7 @@ test("mobile visual editor and pinned popup remain within viewport", async ({
       () => document.documentElement.scrollWidth <= innerWidth + 1,
     ),
   ).toBe(true);
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, 0);
   const popup = page.locator(".exchange-popup");
   await expect(popup).toBeVisible();
   const rect = (await popup.boundingBox())!;
@@ -386,10 +381,7 @@ test("compact popup uses field activity including late runners and ignores buffe
   await page
     .getByRole("checkbox", { name: "2026 baseline", exact: true })
     .check();
-  await page
-    .getByLabel("Inspect exchange", { exact: true })
-    .selectOption(String(field.index));
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, field.index);
   const popup = page.locator(".exchange-popup");
   const checkValues = async () => {
     await expect(popup.locator("tr")).toHaveCount(3);
@@ -409,7 +401,7 @@ test("compact popup uses field activity including late runners and ignores buffe
   await page
     .getByLabel("Highlight team", { exact: true })
     .selectOption(slower[0].teamId);
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, field.index);
   await checkValues();
   await page.screenshot({ path: test.info().outputPath("compact-popup.png") });
   await page.keyboard.press("Escape");
@@ -418,7 +410,7 @@ test("compact popup uses field activity including late runners and ignores buffe
     .click();
   await page.getByLabel("Before first activity", { exact: true }).fill("60");
   await page.getByLabel("After last activity", { exact: true }).fill("120");
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, field.index);
   await checkValues();
   await page.getByLabel("Chart zoom").fill("2");
   await expect(popup).toHaveCount(0);
@@ -443,10 +435,7 @@ test("compact popup handles cross-midnight times and disappears with an empty fi
     mimeType: "application/json",
     buffer: Buffer.from(JSON.stringify(s)),
   });
-  await page
-    .getByLabel("Inspect exchange", { exact: true })
-    .selectOption(String(exchange.index));
-  await page.getByRole("button", { name: "Show exchange details" }).click();
+  await openExchange(page, exchange.index);
   const popup = page.locator(".exchange-popup");
   await expect(
     popup.getByRole("row", { name: /^First arrival/ }).locator("td"),
@@ -460,8 +449,6 @@ test("compact popup handles cross-midnight times and disappears with an empty fi
   await page.keyboard.press("Escape");
   await page.getByRole("tab", { name: /Historical field/ }).click();
   await page.getByRole("button", { name: "Clear all", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Show exchange details" }),
-  ).toBeDisabled();
+  await expect(page.locator(".hit-line")).toHaveCount(0);
   await expect(popup).toHaveCount(0);
 });
