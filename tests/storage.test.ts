@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { baseline } from "../src/data";
 import { simulate } from "../src/engine";
+import { clock } from "../src/format";
 import {
   parseScenario,
   readSaves,
@@ -11,6 +12,29 @@ import {
 } from "../src/storage";
 
 describe("configuration serialization and browser storage", () => {
+  it.each([
+    [-3, "D0 22:00"],
+    [3, "D1 04:00"],
+    [0.5, "D1 01:30"],
+    [-1, "D1 00:00"],
+  ])(
+    "preserves a %s hour wave offset across midnight and JSON round trips",
+    (hours, expected) => {
+      const original = baseline();
+      const s = baseline();
+      s.waves[0].start = 3600 + hours * 3600;
+      const loaded = parseScenario(serializeScenario(s));
+      expect(loaded.waves[0].start).toBe(s.waves[0].start);
+      expect(clock(loaded.waves[0].start)).toBe(expected);
+      const result = simulate(loaded);
+      expect(
+        result.teams.every((t) => t.legs[0].departure === s.waves[0].start),
+      ).toBe(true);
+      expect(result.teams.map((t) => t.movingTime)).toEqual(
+        simulate(original).teams.map((t) => t.movingTime),
+      );
+    },
+  );
   it("round trips a non-default configuration and its exact simulated results", () => {
     const s = baseline();
     s.name = "Two waves";
@@ -46,7 +70,7 @@ describe("configuration serialization and browser storage", () => {
   it("rejects wrong versions, source data, malformed JSON and oversized input", () => {
     expect(() => parseScenario("{bad")).toThrow("JSON");
     expect(() => parseScenario(" ".repeat(1_000_001))).toThrow("large");
-    expect(() => validateScenario({ ...baseline(), schemaVersion: 2 })).toThrow(
+    expect(() => validateScenario({ ...baseline(), schemaVersion: 3 })).toThrow(
       "version",
     );
     expect(() => validateScenario({ ...baseline(), sources: {} })).toThrow(
@@ -82,7 +106,7 @@ describe("configuration serialization and browser storage", () => {
     ["duplicate waves", (s: any) => s.waves.push(s.waves[0])],
     ["empty waves", (s: any) => (s.waves = [])],
     ["invalid color", (s: any) => (s.waves[0].color = "url(bad)")],
-    ["negative time", (s: any) => (s.waves[0].start = -1)],
+    ["start too early", (s: any) => (s.waves[0].start = -30 * 86400 - 1)],
     ["nonfinite number", (s: any) => (s.release.anchor = Infinity)],
     ["zero pace", (s: any) => (s.release.segments[0].pace = 0)],
     [

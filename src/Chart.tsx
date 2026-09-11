@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
-import { course, ORIGIN, profileById } from "./data";
-import { clock, duration, elapsed } from "./format";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { bins, course, ORIGIN, profileById } from "./data";
+import { clock, duration, elapsed, pace } from "./format";
+import { ExchangePopup, type PopupTarget } from "./ExchangePopup";
+import { releasePace } from "./engine";
 import type { LegTiming, Scenario, Simulation } from "./model";
 
 interface Props {
@@ -23,6 +25,54 @@ export function Chart({
   const [selectedId, setSelected] = useState("");
   const [inspectLeg, setInspectLeg] = useState(1);
   const [hover, setHover] = useState<LegTiming | null>(null);
+  const [popup, setPopup] = useState<PopupTarget | null>(null);
+  const [inspectExchange, setInspectExchange] = useState(0);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function cancelClose() {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  }
+  function leavePopup() {
+    cancelClose();
+    closeTimer.current = setTimeout(
+      () => setPopup((v) => (v?.pinned ? v : null)),
+      180,
+    );
+  }
+  useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    },
+    [],
+  );
+  useEffect(() => {
+    setPopup(null);
+  }, [zoom, axis, selectedId]);
+  function inspectPointer(
+    e: React.PointerEvent<SVGLineElement>,
+    l: LegTiming,
+    pinned = false,
+  ) {
+    if (popup?.pinned && !pinned) return;
+    cancelClose();
+    const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(
+      e.currentTarget.getScreenCTM()!.inverse(),
+    );
+    const startDistance = Math.hypot(
+      point.x - x(l.departure),
+      point.y - y(l.leg - 1),
+    );
+    const endDistance = Math.hypot(point.x - x(l.arrival), point.y - y(l.leg));
+    setHover(l);
+    setPopup({
+      teamId: l.teamId,
+      leg: l.leg,
+      index: startDistance <= endDistance ? l.leg - 1 : l.leg,
+      x: e.clientX,
+      y: e.clientY,
+      pinned,
+    });
+  }
+
   const selected = result.teams.some((t) => t.teamId === selectedId)
     ? selectedId
     : "";
@@ -66,6 +116,7 @@ export function Chart({
   const ticks: number[] = [];
   for (let h = Math.ceil(extent.min / step) * step; h <= extent.max; h += step)
     ticks.push(h);
+  if (ticks[0] !== extent.min) ticks.unshift(extent.min);
   const yTicks =
     axis === "miles"
       ? [0, 25, 50, 75, 100, 125, 150, 175, 200, 205.72]
@@ -167,7 +218,7 @@ export function Chart({
           <svg
             viewBox={`0 0 ${width} ${height}`}
             style={{ width: `${zoom * 100}%`, minWidth: 800 }}
-            role="img"
+            role="group"
             aria-label={`Course timeline for ${result.teams.length} teams. ${result.releaseCount} time releases. Last runner off course ${clock(result.lastOffCourse)}.`}
           >
             <rect
@@ -231,6 +282,25 @@ export function Chart({
             >
               ELAPSED HOURS FROM DAY 1, 01:00
             </text>
+            {bins.slice(1).map((bin) => (
+              <g key={bin.bin_id} pointerEvents="none">
+                <line
+                  x1={left}
+                  x2={right}
+                  y1={y(bin.first_leg - 1)}
+                  y2={y(bin.first_leg - 1)}
+                  stroke="#b4c4db"
+                  strokeDasharray="2 5"
+                />
+                <text
+                  x={left + 5}
+                  y={y(bin.first_leg - 1) - 5}
+                  className="chart-annotation"
+                >
+                  PACE BIN · LEG {bin.first_leg}
+                </text>
+              </g>
+            ))}
             {[35, 53, 69].map((index) => (
               <g key={index}>
                 <line
@@ -291,9 +361,9 @@ export function Chart({
                   .map((r, i) => `${i ? "L" : "M"}${x(r)},${y(i)}`)
                   .join(" ")}
                 fill="none"
-                stroke="#172c2b"
-                strokeDasharray="6 4"
-                strokeWidth="2"
+                stroke="#102e45"
+                strokeDasharray="8 3"
+                strokeWidth="3"
               />
             )}
             {[...result.teams]
@@ -345,25 +415,75 @@ export function Chart({
                           stroke="transparent"
                           strokeWidth="7"
                           className="hit-line"
-                          onMouseEnter={() => setHover(l)}
-                          onClick={() => {
-                            setSelected(t.teamId);
-                            setInspectLeg(l.leg);
-                            setHover(null);
-                          }}
-                        >
-                          <title>
-                            {profileById.get(t.teamId)!.team} (
-                            {profileById.get(t.teamId)!.year}) · Leg {l.leg} ·{" "}
-                            {clock(l.departure)} → {clock(l.arrival)} · Moving{" "}
-                            {duration(l.duration)}
-                            {l.releaseUsed ? " · Time release" : ""}
-                          </title>
-                        </line>
+                          data-team-id={t.teamId}
+                          data-leg={l.leg}
+                          onPointerMove={(e) => inspectPointer(e, l)}
+                          onPointerLeave={leavePopup}
+                          onPointerDown={(e) => inspectPointer(e, l, true)}
+                        />
                       )}
                     </g>
                   ))}
                 </g>
+              ))}
+            {showRelease &&
+              result.releases.map((r, i) => (
+                <circle
+                  key={`release-${i}`}
+                  cx={x(r)}
+                  cy={y(i)}
+                  r={
+                    scenario.release.mode === "visual" &&
+                    bins.some((b) => b.first_leg === i + 1)
+                      ? 5
+                      : 3
+                  }
+                  fill="#102e45"
+                  stroke="white"
+                  strokeWidth="1"
+                  className="release-point"
+                  data-release-leg={i + 1}
+                  onPointerMove={(e) => {
+                    if (popup?.pinned) return;
+                    cancelClose();
+                    setPopup({
+                      index: i,
+                      leg: i + 1,
+                      x: e.clientX,
+                      y: e.clientY,
+                      pinned: false,
+                      release: true,
+                    });
+                  }}
+                  onPointerLeave={leavePopup}
+                  onPointerDown={(e) => {
+                    cancelClose();
+                    setPopup({
+                      index: i,
+                      leg: i + 1,
+                      x: e.clientX,
+                      y: e.clientY,
+                      pinned: true,
+                      release: true,
+                    });
+                  }}
+                />
+              ))}
+            {showRelease &&
+              scenario.release.mode === "visual" &&
+              bins.map((b) => (
+                <text
+                  key={`pace-${b.bin_id}`}
+                  x={Math.min(
+                    right - 55,
+                    x(result.releases[b.first_leg - 1]) + 8,
+                  )}
+                  y={y(b.first_leg - 1) - 8}
+                  className="release-pace-label"
+                  pointerEvents="none"
+                >
+                  {pace(releasePace(scenario, b.first_leg))}/mi
+                </text>
               ))}
           </svg>
         </div>
@@ -394,6 +514,66 @@ export function Chart({
           </span>
         )}
       </div>
+      <p className="chart-explanation">
+        Historical pace is constant within each of five leg bins: distance/time
+        sections are straight until pace, a release, or a wait changes the
+        trajectory. Exchange view gives unequal-distance legs equal height,
+        making slopes more varied. Each segment remains one runner’s travel.
+      </p>
+      <div className="exchange-inspector">
+        <label className="inline-label">
+          Inspect exchange
+          <select
+            aria-label="Inspect exchange"
+            value={inspectExchange}
+            onChange={(e) => {
+              setInspectExchange(+e.target.value);
+              setPopup(null);
+            }}
+          >
+            {result.exchanges.map((e) => (
+              <option key={e.index} value={e.index}>
+                {e.index} · {e.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          disabled={!result.teams.length}
+          onClick={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setPopup({
+              index: inspectExchange,
+              leg: inspectExchange === 71 ? 71 : inspectExchange + 1,
+              teamId: selected || result.teams[0]?.teamId,
+              x: rect.left,
+              y: rect.top,
+              pinned: true,
+            });
+          }}
+        >
+          Show exchange details
+        </button>
+        <small className="muted">
+          Uses the highlighted team, or the first selected team.
+        </small>
+      </div>
+      {popup && (
+        <ExchangePopup
+          target={popup}
+          scenario={scenario}
+          result={result}
+          comparison={comparison}
+          overlay={overlay}
+          close={() => {
+            cancelClose();
+            setPopup(null);
+          }}
+          pin={() => setPopup({ ...popup, pinned: true })}
+          enter={cancelClose}
+          leave={leavePopup}
+        />
+      )}
       <div className="inspection">
         <label className="inline-label">
           Inspect leg

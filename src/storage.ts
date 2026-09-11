@@ -1,6 +1,7 @@
 import { profileById, sources } from "./data";
 import type { Scenario, Simulation } from "./model";
 import { clock } from "./format";
+import { syncAssignments } from "./waves";
 
 const object = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === "object" && !Array.isArray(v);
@@ -10,8 +11,25 @@ const label = (v: unknown): v is string =>
   typeof v === "string" && !!v.trim() && v.length <= 120;
 
 export function validateScenario(value: unknown): Scenario {
-  if (!object(value) || value.schemaVersion !== 1)
-    throw new Error("Unsupported configuration version. Expected version 1.");
+  if (
+    !object(value) ||
+    ![1, 2].includes(Number(value.schemaVersion)) ||
+    typeof value.schemaVersion !== "number"
+  )
+    throw new Error(
+      "Unsupported configuration version. Expected version 1 or 2.",
+    );
+  if (value.schemaVersion === 1) {
+    value = {
+      ...value,
+      schemaVersion: 2,
+      waveRules: { mode: "manual", boundaries: [] },
+      release: object(value.release)
+        ? { ...value.release, visualPaces: [625, 625, 625, 625, 625] }
+        : value.release,
+    };
+  }
+  if (!object(value)) throw new Error("Invalid configuration.");
   if (
     !object(value.sources) ||
     value.sources.course !== sources.course ||
@@ -41,16 +59,31 @@ export function validateScenario(value: unknown): Scenario {
         !object(w) ||
         !label(w.id) ||
         !label(w.name) ||
-        !finite(w.start) ||
+        !finite(w.start, -30 * 86400) ||
         typeof w.color !== "string" ||
         !/^#[0-9a-f]{6}$/i.test(w.color),
     ) ||
     new Set(waves.map((w) => w.id)).size !== waves.length
   )
     throw new Error(
-      "Each wave needs a unique ID, name, color, and a valid Day/time start.",
+      "Each wave needs a unique ID, name, color, and a valid numeric start offset (within 30 days of Day 1 midnight).",
     );
   const assignments = value.assignments;
+  const rules = value.waveRules;
+  if (
+    !object(rules) ||
+    typeof rules.mode !== "string" ||
+    !["manual", "pace"].includes(rules.mode) ||
+    !Array.isArray(rules.boundaries) ||
+    (rules.mode === "pace" && rules.boundaries.length !== waves.length - 1) ||
+    (rules.mode === "manual" && rules.boundaries.length !== 0) ||
+    rules.boundaries.some(
+      (b, i, all) => !finite(b, 1, 5999) || (i > 0 && b <= all[i - 1]),
+    )
+  )
+    throw new Error(
+      "Wave pace boundaries must be increasing, shared by adjacent waves, and cover the field.",
+    );
   if (
     !object(assignments) ||
     ids.some(
@@ -64,7 +97,8 @@ export function validateScenario(value: unknown): Scenario {
   const r = value.release;
   if (
     !object(r) ||
-    !["published", "generated"].includes(String(r.mode)) ||
+    typeof r.mode !== "string" ||
+    !["published", "generated", "visual"].includes(r.mode) ||
     !finite(r.anchor) ||
     !Array.isArray(r.segments) ||
     !r.segments.length ||
@@ -72,6 +106,14 @@ export function validateScenario(value: unknown): Scenario {
   )
     throw new Error(
       "The release schedule needs a valid mode, anchor, and pace segments.",
+    );
+  if (
+    !Array.isArray(r.visualPaces) ||
+    r.visualPaces.length !== 5 ||
+    r.visualPaces.some((p) => !finite(p, 1, 5999))
+  )
+    throw new Error(
+      "Visual pace needs exactly five positive m:ss pace levels.",
     );
   if (
     r.segments.some(
@@ -101,7 +143,7 @@ export function validateScenario(value: unknown): Scenario {
     throw new Error("Staffing buffers must be between 0 and 1,440 minutes.");
   const result = structuredClone(value) as unknown as Scenario;
   result.release.segments.sort((a, b) => a.startLeg - b.startLeg);
-  return result;
+  return syncAssignments(result);
 }
 export function serializeScenario(s: Scenario): string {
   return JSON.stringify(validateScenario(s), null, 2);
@@ -168,6 +210,7 @@ export function staffingCsv(
       "Earliest arrival",
       "Latest arrival",
       "Earliest departure",
+      "Latest departure",
       "Latest activity",
       "Coverage begins",
       "Coverage ends",
@@ -186,6 +229,7 @@ export function staffingCsv(
       clock(e.earliestArrival),
       clock(e.latestArrival),
       clock(e.earliestDeparture),
+      clock(e.latestDeparture),
       clock(e.latestActivity),
       clock(e.coverageStart, "down"),
       clock(e.coverageEnd, "up"),

@@ -62,6 +62,7 @@ export function Staffing({
               <th>First arrival</th>
               <th>Last arrival</th>
               <th>First departure</th>
+              <th>Last departure</th>
               <th>Last activity</th>
               <th>Coverage begins</th>
               <th>Coverage ends</th>
@@ -96,6 +97,7 @@ export function Staffing({
                   <td>{clock(e.earliestArrival)}</td>
                   <td>{clock(e.latestArrival)}</td>
                   <td>{clock(e.earliestDeparture)}</td>
+                  <td>{clock(e.latestDeparture)}</td>
                   <td>{clock(e.latestActivity)}</td>
                   <td>{clock(e.coverageStart, "down")}</td>
                   <td>{clock(e.coverageEnd, "up")}</td>

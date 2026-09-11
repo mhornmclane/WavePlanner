@@ -84,6 +84,7 @@ describe("release schedules", () => {
   it("accumulates generated segments from the traversed leg without rounding", () => {
     const s = baseline();
     s.release = {
+      visualPaces: [625, 625, 625, 625, 625],
       mode: "generated",
       anchor: 3600,
       segments: [
@@ -103,6 +104,7 @@ describe("race simulation", () => {
   it("matches hand-calculated early releases and overlapping legs", () =>
     synthetic(900, (s) => {
       s.release = {
+        visualPaces: [625, 625, 625, 625, 625],
         mode: "generated",
         anchor: 3600,
         segments: [{ startLeg: 1, pace: 600 }],
@@ -118,6 +120,7 @@ describe("race simulation", () => {
   it("allows a challenge release before incoming arrival and adds no fictitious wait", () =>
     synthetic(900, (s) => {
       s.release = {
+        visualPaces: [625, 625, 625, 625, 625],
         mode: "generated",
         anchor: 3600,
         segments: [{ startLeg: 1, pace: 600 }],
@@ -161,6 +164,7 @@ describe("race simulation", () => {
   it("distinguishes final-leg arrival from outstanding runner completion", () =>
     synthetic(2400, (s) => {
       s.release = {
+        visualPaces: [625, 625, 625, 625, 625],
         mode: "generated",
         anchor: 3600,
         segments: [{ startLeg: 1, pace: 60 }],
@@ -177,6 +181,7 @@ describe("race simulation", () => {
     s.waves[0].start += 7200;
     s.challenges.monument = 5400;
     s.release = {
+      visualPaces: [625, 625, 625, 625, 625],
       mode: "generated",
       anchor: 1000,
       segments: [

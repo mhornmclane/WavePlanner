@@ -1,4 +1,5 @@
 import { bins, course, profileById } from "./data";
+import { resolveAssignments } from "./waves";
 import type {
   ClockTime,
   ExchangeSummary,
@@ -30,12 +31,26 @@ export function challengeBefore(leg: number, s: Scenario): number {
       ? s.challenges.lighthouse
       : 0;
 }
+export function releaseSegments(s: Scenario) {
+  return s.release.mode === "visual"
+    ? bins.map((b, i) => ({
+        startLeg: b.first_leg,
+        pace: s.release.visualPaces[i],
+      }))
+    : s.release.mode === "published"
+      ? [{ startLeg: 1, pace: course.event.minimum_pace_seconds_per_mile }]
+      : [...s.release.segments];
+}
+export function releasePace(s: Scenario, leg: number): number {
+  return releaseSegments(s)
+    .sort((a, b) => a.startLeg - b.startLeg)
+    .filter((p) => p.startLeg <= leg)
+    .at(-1)!.pace;
+}
 export function releaseSchedule(s: Scenario): number[] {
   if (s.release.mode === "published")
     return course.legs.map((l) => clockSeconds(l.release_time));
-  const segments = [...s.release.segments].sort(
-    (a, b) => a.startLeg - b.startLeg,
-  );
+  const segments = releaseSegments(s).sort((a, b) => a.startLeg - b.startLeg);
   const result = [s.release.anchor];
   for (let i = 1; i < course.legs.length; i++) {
     const traversedLeg = i;
@@ -91,6 +106,7 @@ export function exchangeSummaries(
       earliestArrival: minOrNull(arrivals),
       latestArrival: maxOrNull(arrivals),
       earliestDeparture: minOrNull(departures),
+      latestDeparture: maxOrNull(departures),
       latestActivity: last,
       coverageStart,
       coverageEnd,
@@ -104,9 +120,10 @@ export function exchangeSummaries(
 
 export function simulate(s: Scenario): Simulation {
   const releases = releaseSchedule(s);
+  const assignments = resolveAssignments(s);
   const teams: TeamResult[] = s.selectedTeamIds.map((id) => {
     const profile = profileById.get(id)!;
-    const wave = s.waves.find((w) => w.id === s.assignments[id])!;
+    const wave = s.waves.find((w) => w.id === assignments[id])!;
     const legs: LegTiming[] = [];
     for (const [index, courseLeg] of course.legs.entries()) {
       const prev = legs[index - 1];

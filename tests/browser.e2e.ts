@@ -54,8 +54,14 @@ test("team selection, year filtering, wave assignment and removal work", async (
 }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "+ Add wave", exact: true }).click();
+  await page.getByLabel("New shared pace boundary").fill("1:00");
+  await page
+    .getByRole("button", { name: "Confirm split", exact: true })
+    .click();
   await page.getByLabel("Wave 2 name", { exact: true }).fill("Late starters");
-  await page.getByLabel("Wave 2 start time", { exact: true }).fill("03:00");
+  await page
+    .getByLabel("Wave 2 start offset (hours)", { exact: true })
+    .fill("2");
   await page.getByRole("tab", { name: /Historical field/ }).click();
   await expect(page.locator(".team-table tbody tr")).toHaveCount(51);
   await page.getByRole("button", { name: "Clear all", exact: true }).click();
@@ -68,10 +74,6 @@ test("team selection, year filtering, wave assignment and removal work", async (
   await page.getByLabel("Filter historical year").selectOption("2026");
   await expect(page.locator(".team-table tbody tr")).toHaveCount(11);
   await page.getByRole("button", { name: "Select shown", exact: true }).click();
-  await page
-    .getByLabel("Bulk assignment wave")
-    .selectOption({ label: "Late starters" });
-  await page.getByRole("button", { name: "Assign selected shown" }).click();
   await expect(page.locator(".results-label")).toContainText(
     "11 HISTORICAL TEAMS",
   );
@@ -185,16 +187,14 @@ test("save, duplicate, load, delete and JSON/CSV exports round trip; invalid imp
     .getByLabel("Load configuration")
     .selectOption({ label: "Wave experiment" });
   await page.getByLabel("Import configuration JSON").setInputFiles(exported);
-  await expect(page.getByRole("status")).toContainText(
+  await expect(page.locator(".notice")).toContainText(
     "Imported Wave experiment",
   );
-  await page
-    .getByLabel("Import configuration JSON")
-    .setInputFiles({
-      name: "bad.json",
-      mimeType: "application/json",
-      buffer: Buffer.from('{"schemaVersion":2}'),
-    });
+  await page.getByLabel("Import configuration JSON").setInputFiles({
+    name: "bad.json",
+    mimeType: "application/json",
+    buffer: Buffer.from('{"schemaVersion":2}'),
+  });
   await expect(page.getByRole("alert")).toContainText("Import rejected");
   await expect(
     page.getByLabel("Configuration name", { exact: true }),

@@ -42,16 +42,18 @@ export interface PaceSegment {
   pace: number;
 }
 export interface Scenario {
-  schemaVersion: 1;
+  schemaVersion: 2;
   sources: { course: string; historical: string };
   name: string;
   selectedTeamIds: string[];
   waves: Wave[];
   assignments: Record<string, string>;
+  waveRules: { mode: "manual" | "pace"; boundaries: number[] };
   release: {
-    mode: "published" | "generated";
+    mode: "published" | "generated" | "visual";
     anchor: number;
     segments: PaceSegment[];
+    visualPaces: number[];
   };
   challenges: { monument: number; lighthouse: number };
   buffers: { before: number; after: number };
@@ -84,6 +86,7 @@ export interface ExchangeSummary {
   earliestArrival: number | null;
   latestArrival: number | null;
   earliestDeparture: number | null;
+  latestDeparture: number | null;
   latestActivity: number | null;
   coverageStart: number | null;
   coverageEnd: number | null;

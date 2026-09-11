@@ -22,7 +22,7 @@ export const colors = [
 ];
 export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     sources: { ...sources },
     name: "2026 baseline",
     selectedTeamIds: [...selectedTeamIds],
@@ -32,15 +32,21 @@ export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
     assignments: Object.fromEntries(
       selectedTeamIds.map((id) => [id, "wave-1"]),
     ),
+    waveRules: { mode: "manual", boundaries: [] },
     release: {
       mode: "published",
       anchor: ORIGIN,
       segments: [{ startLeg: 1, pace: 625 }],
+      visualPaces: [625, 625, 625, 625, 625],
     },
     challenges: { monument: 960, lighthouse: 1260 },
     buffers: { before: 0, after: 0 },
   };
 }
 export function initialScenario(): Scenario {
-  return { ...baseline(), name: "My race configuration" };
+  return {
+    ...baseline(),
+    name: "My race configuration",
+    waveRules: { mode: "pace", boundaries: [] },
+  };
 }

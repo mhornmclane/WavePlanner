@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { bins, colors, course, profiles, teamId } from "./data";
+import { bins, course, profiles, teamId } from "./data";
+import { Waves } from "./WaveControls";
+import { VisualPace } from "./VisualPace";
+import { syncAssignments } from "./waves";
 import { clock, pace, parsePace } from "./format";
 import type { Scenario, Simulation } from "./model";
 
@@ -50,7 +53,7 @@ export function TimeInput({
     </div>
   );
 }
-function PaceInput({
+export function PaceInput({
   value,
   onChange,
   label,
@@ -114,7 +117,10 @@ interface Props {
   setScenario: (updater: (s: Scenario) => Scenario) => void;
   result: Simulation | null;
 }
-export function Config({ scenario: s, setScenario: update, result }: Props) {
+export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
+  const update = (fn: (s: Scenario) => Scenario) =>
+    setConfig((current) => syncAssignments(fn(current)));
+  const [sort, setSort] = useState<"asc" | "desc">("asc");
   const [tab, setTab] = useState("waves");
   const [search, setSearch] = useState("");
   const [year, setYear] = useState("all");
@@ -123,6 +129,14 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
     (p) =>
       (year === "all" || p.year === +year) &&
       `${p.team} ${p.year}`.toLowerCase().includes(search.toLowerCase()),
+  );
+  filtered.sort(
+    (a, b) =>
+      (sort === "asc" ? 1 : -1) *
+        (a.overall_mean_pace_seconds_per_mile -
+          b.overall_mean_pace_seconds_per_mile) ||
+      a.team.localeCompare(b.team) ||
+      a.year - b.year,
   );
   const selected = new Set(s.selectedTeamIds);
   const activeBulk = s.waves.some((w) => w.id === bulkWave)
@@ -191,132 +205,7 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
         id={`panel-${tab}`}
         aria-labelledby={`tab-${tab}`}
       >
-        {tab === "waves" && (
-          <>
-            <div className="subsection-head">
-              <div>
-                <h3>Set the field in motion</h3>
-                <p className="muted">
-                  Assign teams in Historical field. Every wave shares one
-                  course-wide release schedule.
-                </p>
-              </div>
-              <button
-                onClick={() =>
-                  update((current) => ({
-                    ...current,
-                    waves: [
-                      ...current.waves,
-                      {
-                        id: crypto.randomUUID(),
-                        name: `Wave ${current.waves.length + 1}`,
-                        color: colors[current.waves.length % colors.length],
-                        start:
-                          Math.max(
-                            ...current.waves.map((w) =>
-                              Number.isFinite(w.start) ? w.start : 3600,
-                            ),
-                          ) + 1800,
-                      },
-                    ],
-                  }))
-                }
-                disabled={s.waves.length >= 51}
-              >
-                + Add wave
-              </button>
-            </div>
-            <div className="wave-list">
-              {s.waves.map((w, i) => (
-                <div className="wave-row" key={w.id}>
-                  <span className="wave-number">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <label className="wave-name">
-                    <span className="sr-only">Wave {i + 1} name</span>
-                    <input
-                      aria-label={`Wave ${i + 1} name`}
-                      value={w.name}
-                      maxLength={120}
-                      onChange={(e) =>
-                        update((current) => ({
-                          ...current,
-                          waves: current.waves.map((v) =>
-                            v.id === w.id ? { ...v, name: e.target.value } : v,
-                          ),
-                        }))
-                      }
-                    />
-                  </label>
-                  <input
-                    type="color"
-                    aria-label={`Wave ${i + 1} color`}
-                    value={w.color}
-                    onChange={(e) =>
-                      update((current) => ({
-                        ...current,
-                        waves: current.waves.map((v) =>
-                          v.id === w.id ? { ...v, color: e.target.value } : v,
-                        ),
-                      }))
-                    }
-                  />
-                  <TimeInput
-                    label={`Wave ${i + 1} start`}
-                    value={w.start}
-                    onChange={(start) =>
-                      update((current) => ({
-                        ...current,
-                        waves: current.waves.map((v) =>
-                          v.id === w.id ? { ...v, start } : v,
-                        ),
-                      }))
-                    }
-                  />
-                  <span className="wave-count">
-                    {
-                      s.selectedTeamIds.filter(
-                        (id) => s.assignments[id] === w.id,
-                      ).length
-                    }{" "}
-                    teams
-                  </span>
-                  <button
-                    className="quiet"
-                    aria-label={`Remove wave ${i + 1}`}
-                    disabled={s.waves.length === 1}
-                    onClick={() =>
-                      update((current) => {
-                        const waves = current.waves.filter(
-                          (v) => v.id !== w.id,
-                        );
-                        return {
-                          ...current,
-                          waves,
-                          assignments: Object.fromEntries(
-                            Object.entries(current.assignments).map(
-                              ([id, wave]) => [
-                                id,
-                                wave === w.id ? waves[0].id : wave,
-                              ],
-                            ),
-                          ),
-                        };
-                      })
-                    }
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </div>
-            <div className="config-note">
-              <span className="note-dot" />
-              Removing a wave moves its teams to the first remaining wave.
-              Starts may be earlier or later than the 2026 start.
-            </div>
-          </>
-        )}
+        {tab === "waves" && <Waves scenario={s} update={update} />}
         {tab === "teams" && (
           <>
             <div className="team-tools">
@@ -366,36 +255,40 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
               >
                 Clear shown
               </button>
-              <span className="bulk-divider" />
-              <select
-                aria-label="Bulk assignment wave"
-                value={activeBulk}
-                onChange={(e) => setBulkWave(e.target.value)}
-              >
-                {s.waves.map((w) => (
-                  <option key={w.id} value={w.id}>
-                    {w.name}
-                  </option>
-                ))}
-              </select>
-              <button
-                className="small"
-                onClick={() =>
-                  update((current) => ({
-                    ...current,
-                    assignments: {
-                      ...current.assignments,
-                      ...Object.fromEntries(
-                        filtered
-                          .filter((p) => selected.has(teamId(p)))
-                          .map((p) => [teamId(p), activeBulk]),
-                      ),
-                    },
-                  }))
-                }
-              >
-                Assign selected shown
-              </button>
+              {s.waveRules.mode === "manual" && (
+                <>
+                  <span className="bulk-divider" />
+                  <select
+                    aria-label="Bulk assignment wave"
+                    value={activeBulk}
+                    onChange={(e) => setBulkWave(e.target.value)}
+                  >
+                    {s.waves.map((w) => (
+                      <option key={w.id} value={w.id}>
+                        {w.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="small"
+                    onClick={() =>
+                      update((current) => ({
+                        ...current,
+                        assignments: {
+                          ...current.assignments,
+                          ...Object.fromEntries(
+                            filtered
+                              .filter((p) => selected.has(teamId(p)))
+                              .map((p) => [teamId(p), activeBulk]),
+                          ),
+                        },
+                      }))
+                    }
+                  >
+                    Assign selected shown
+                  </button>
+                </>
+              )}
             </div>
             <div className="table-scroll team-table">
               <table>
@@ -405,7 +298,14 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
                       <span className="sr-only">Included</span>
                     </th>
                     <th>Team / year</th>
-                    <th>Overall</th>
+                    <th aria-sort={sort === "asc" ? "ascending" : "descending"}>
+                      <button
+                        className="sort-button"
+                        onClick={() => setSort(sort === "asc" ? "desc" : "asc")}
+                      >
+                        Overall {sort === "asc" ? "↑" : "↓"}
+                      </button>
+                    </th>
                     {bins.map((b) => (
                       <th key={b.bin_id}>
                         Legs {b.first_leg}–{b.last_leg}
@@ -449,26 +349,36 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
                           </td>
                         ))}
                         <td>
-                          <select
-                            aria-label={`Wave for ${p.team} ${p.year}`}
-                            disabled={!selected.has(id)}
-                            value={s.assignments[id] ?? s.waves[0].id}
-                            onChange={(e) =>
-                              update((current) => ({
-                                ...current,
-                                assignments: {
-                                  ...current.assignments,
-                                  [id]: e.target.value,
-                                },
-                              }))
-                            }
-                          >
-                            {s.waves.map((w) => (
-                              <option key={w.id} value={w.id}>
-                                {w.name}
-                              </option>
-                            ))}
-                          </select>
+                          {s.waveRules.mode === "pace" ? (
+                            <span className="calculated-wave">
+                              {selected.has(id)
+                                ? s.waves.find(
+                                    (w) => w.id === s.assignments[id],
+                                  )?.name
+                                : "—"}
+                            </span>
+                          ) : (
+                            <select
+                              aria-label={`Wave for ${p.team} ${p.year}`}
+                              disabled={!selected.has(id)}
+                              value={s.assignments[id] ?? s.waves[0].id}
+                              onChange={(e) =>
+                                update((current) => ({
+                                  ...current,
+                                  assignments: {
+                                    ...current.assignments,
+                                    [id]: e.target.value,
+                                  },
+                                }))
+                              }
+                            >
+                              {s.waves.map((w) => (
+                                <option key={w.id} value={w.id}>
+                                  {w.name}
+                                </option>
+                              ))}
+                            </select>
+                          )}
                         </td>
                       </tr>
                     );
@@ -534,8 +444,27 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
                       </small>
                     </span>
                   </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="release-mode"
+                      checked={s.release.mode === "visual"}
+                      onChange={() =>
+                        update((current) => ({
+                          ...current,
+                          release: { ...current.release, mode: "visual" },
+                        }))
+                      }
+                    />
+                    <span>
+                      <strong>Visual five-section pace</strong>
+                      <small>
+                        Five fixed course sections with draggable pace levels.
+                      </small>
+                    </span>
+                  </label>
                 </div>
-                {s.release.mode === "generated" && (
+                {s.release.mode !== "published" && (
                   <div className="generated-controls">
                     <label className="field">
                       <span>Release time at start of leg 1</span>
@@ -550,107 +479,129 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
                         }))
                       }
                     />
-                    <div className="segment-head">
-                      <span>From leg</span>
-                      <span>Pace / mile</span>
-                    </div>
-                    {s.release.segments.map((seg, i) => (
-                      <div className="segment-row" key={i}>
-                        <input
-                          aria-label={`Segment ${i + 1} starting leg`}
-                          type="number"
-                          min="1"
-                          max="71"
-                          disabled={i === 0}
-                          value={
-                            Number.isFinite(seg.startLeg) ? seg.startLeg : ""
-                          }
-                          onChange={(e) =>
-                            update((current) => ({
-                              ...current,
-                              release: {
-                                ...current.release,
-                                segments: current.release.segments.map(
-                                  (v, j) =>
-                                    i === j
-                                      ? {
-                                          ...v,
-                                          startLeg:
-                                            e.target.value === ""
-                                              ? NaN
-                                              : +e.target.value,
-                                        }
-                                      : v,
-                                ),
-                              },
-                            }))
-                          }
-                        />
-                        <PaceInput
-                          label={`Segment ${i + 1} pace`}
-                          value={seg.pace}
-                          onChange={(v) =>
-                            update((current) => ({
-                              ...current,
-                              release: {
-                                ...current.release,
-                                segments: current.release.segments.map(
-                                  (p, j) => (i === j ? { ...p, pace: v } : p),
-                                ),
-                              },
-                            }))
-                          }
-                        />
-                        <button
-                          className="quiet"
-                          aria-label={`Remove pace segment ${i + 1}`}
-                          disabled={i === 0}
-                          onClick={() =>
-                            update((current) => ({
-                              ...current,
-                              release: {
-                                ...current.release,
-                                segments: current.release.segments.filter(
-                                  (_, j) => i !== j,
-                                ),
-                              },
-                            }))
-                          }
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      className="small"
-                      disabled={s.release.segments.length >= 71}
-                      onClick={() =>
-                        update((current) => {
-                          const used = new Set(
-                            current.release.segments.map((p) => p.startLeg),
-                          );
-                          const next = [
-                            15,
-                            29,
-                            43,
-                            57,
-                            ...Array.from({ length: 71 }, (_, i) => i + 1),
-                          ].find((l) => !used.has(l))!;
-                          return {
+                    {s.release.mode === "visual" ? (
+                      <VisualPace
+                        values={s.release.visualPaces}
+                        onChange={(index, value) =>
+                          update((current) => ({
                             ...current,
                             release: {
                               ...current.release,
-                              segments: [
-                                ...current.release.segments,
-                                { startLeg: next, pace: 625 },
-                              ],
+                              visualPaces: current.release.visualPaces.map(
+                                (v, i) => (i === index ? value : v),
+                              ),
                             },
-                          };
-                        })
-                      }
-                    >
-                      + Add pace segment
-                    </button>
+                          }))
+                        }
+                      />
+                    ) : (
+                      <>
+                        <div className="segment-head">
+                          <span>From leg</span>
+                          <span>Pace / mile</span>
+                        </div>
+                        {s.release.segments.map((seg, i) => (
+                          <div className="segment-row" key={i}>
+                            <input
+                              aria-label={`Segment ${i + 1} starting leg`}
+                              type="number"
+                              min="1"
+                              max="71"
+                              disabled={i === 0}
+                              value={
+                                Number.isFinite(seg.startLeg)
+                                  ? seg.startLeg
+                                  : ""
+                              }
+                              onChange={(e) =>
+                                update((current) => ({
+                                  ...current,
+                                  release: {
+                                    ...current.release,
+                                    segments: current.release.segments.map(
+                                      (v, j) =>
+                                        i === j
+                                          ? {
+                                              ...v,
+                                              startLeg:
+                                                e.target.value === ""
+                                                  ? NaN
+                                                  : +e.target.value,
+                                            }
+                                          : v,
+                                    ),
+                                  },
+                                }))
+                              }
+                            />
+                            <PaceInput
+                              label={`Segment ${i + 1} pace`}
+                              value={seg.pace}
+                              onChange={(v) =>
+                                update((current) => ({
+                                  ...current,
+                                  release: {
+                                    ...current.release,
+                                    segments: current.release.segments.map(
+                                      (p, j) =>
+                                        i === j ? { ...p, pace: v } : p,
+                                    ),
+                                  },
+                                }))
+                              }
+                            />
+                            <button
+                              className="quiet"
+                              aria-label={`Remove pace segment ${i + 1}`}
+                              disabled={i === 0}
+                              onClick={() =>
+                                update((current) => ({
+                                  ...current,
+                                  release: {
+                                    ...current.release,
+                                    segments: current.release.segments.filter(
+                                      (_, j) => i !== j,
+                                    ),
+                                  },
+                                }))
+                              }
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          className="small"
+                          disabled={s.release.segments.length >= 71}
+                          onClick={() =>
+                            update((current) => {
+                              const used = new Set(
+                                current.release.segments.map((p) => p.startLeg),
+                              );
+                              const next = [
+                                15,
+                                29,
+                                43,
+                                57,
+                                ...Array.from({ length: 71 }, (_, i) => i + 1),
+                              ].find((l) => !used.has(l))!;
+                              return {
+                                ...current,
+                                release: {
+                                  ...current.release,
+                                  segments: [
+                                    ...current.release.segments,
+                                    { startLeg: next, pace: 625 },
+                                  ],
+                                },
+                              };
+                            })
+                          }
+                        >
+                          + Add pace segment
+                        </button>
+                      </>
+                    )}
                     <p className="table-note">
                       A pace applies to travel starting on that leg, until the
                       next segment. Challenge allowances are added before legs
@@ -696,8 +647,8 @@ export function Config({ scenario: s, setScenario: update, result }: Props) {
                 </div>
                 <p className="table-note">
                   Changing challenge durations leaves the published timetable
-                  untouched. In generated mode it also changes the schedule’s
-                  challenge allowances.
+                  untouched. In generated and visual modes it also changes the
+                  schedule’s challenge allowances.
                 </p>
               </div>
             </div>
