@@ -131,15 +131,16 @@ export function simulate(s: Scenario): Simulation {
       const prev = legs[index - 1];
       const challenge = challengeBefore(index + 1, s);
       const ready = prev ? prev.arrival + challenge : wave.start;
-      const releaseSuppressed = lateStart && index < 35;
-      // Late waves must physically reach the monument before any later leg can start.
-      const monumentArrival =
-        lateStart && index >= 35 ? legs[34].arrival : -Infinity;
+      const { enabled, fromExchange } = s.fastWaveReleases;
+      const releaseSuppressed = lateStart && (!enabled || index < fromExchange);
+      // A later wave must reach its selected exchange before releases can start subsequent legs.
+      const activationArrival = lateStart && enabled && fromExchange > 0 && index >= fromExchange
+        ? legs[fromExchange - 1].arrival : -Infinity;
       const eligible = prev
         ? Math.max(
             prev.departure,
             wave.start,
-            monumentArrival,
+            activationArrival,
             releaseSuppressed ? ready : Math.min(ready, releases[index]),
           )
         : wave.start;

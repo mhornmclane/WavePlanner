@@ -57,7 +57,7 @@ test("opening holds hypothetical teams and disabling it removes the hold", async
   await page.goto("./");
   await page.getByLabel("Import configuration JSON").setInputFiles({ name: "fast.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(s)) });
   await page.getByRole("tab", { name: /Timing rules/ }).click();
-  await expect(page.locator(".timing-rule-editor").nth(1)).toContainText("1 team held");
+  await expect(page.locator(".timing-rule-list .timing-rule-editor").nth(1)).toContainText("1 team held");
   await page.locator(".timing-rule-summary summary").click();
   await expect(page.locator(".rule-results")).toContainText("D2 06:00");
   await page.getByLabel("Enable timing rule 2").uncheck();

@@ -10,6 +10,24 @@ export function TimingRulesEditor({ scenario, result, update }: {
     update(s => ({ ...s, timingRules: s.timingRules.map(r => r.id === id ? { ...r, ...patch } : r) }));
   }
   return <section aria-label="Timing rules editor">
+    <fieldset className="timing-rule-editor fast-wave-releases">
+      <legend>Fast-wave releases</legend>
+      <p className="muted">Applies to waves starting after Day 1, 01:00. Before the selected exchange, each outgoing runner waits for the incoming runner and any challenge. Releases can apply once the team reaches that exchange.</p>
+      <label><input type="checkbox" aria-label="Enable releases for fast waves" checked={scenario.fastWaveReleases.enabled}
+        onChange={e => update(s => ({ ...s, fastWaveReleases: { ...s.fastWaveReleases, enabled: e.target.checked } }))} /> Apply release times to fast waves</label>
+      <label className="field"><span>Apply releases starting at exchange</span>
+        <select aria-label="Fast-wave release starting exchange" disabled={!scenario.fastWaveReleases.enabled}
+          value={scenario.fastWaveReleases.fromExchange}
+          onChange={e => update(s => ({ ...s, fastWaveReleases: { ...s.fastWaveReleases, fromExchange: +e.target.value } }))}>
+          {Array.from({ length: course.legs.length }, (_, i) => <option key={i} value={i}>
+            {i === 0 ? "Start" : `EX ${i}`} · {exchangeName(i)} · start of leg {i + 1}
+          </option>)}
+        </select>
+      </label>
+      <p className="rule-status" role="status">{scenario.fastWaveReleases.enabled
+        ? `Releases apply from ${scenario.fastWaveReleases.fromExchange === 0 ? "the start" : `EX ${scenario.fastWaveReleases.fromExchange}`} onward.`
+        : "Releases are off for fast waves: all legs run sequentially, including challenges."} Opening-time rules still apply.</p>
+    </fieldset>
     <h3>Exchange deadlines and openings</h3>
     <p className="muted">Deadlines flag late teams. Opening times hold outgoing runners until the location opens. Clearance checks the later of incoming arrival and outgoing departure.</p>
     <div className="timing-rule-list">{scenario.timingRules.map((r, index) => {

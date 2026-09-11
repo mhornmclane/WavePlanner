@@ -42,7 +42,8 @@ export interface PaceSegment {
   pace: number;
 }
 export interface Scenario {
-  schemaVersion: 4;
+  schemaVersion: 5;
+  fastWaveReleases: { enabled: boolean; fromExchange: number };
   timingRules: TimingRule[];
   worstCaseTeams: Record<"fastest" | "slowest", WorstCaseTeam>;
   sources: { course: string; historical: string };

@@ -182,7 +182,7 @@ describe("visual release pace and compatibility", () => {
     delete old.waveRules;
     delete old.release.visualPaces;
     const loaded = parseScenario(JSON.stringify(old));
-    expect(loaded.schemaVersion).toBe(4);
+    expect(loaded.schemaVersion).toBe(5);
     expect(loaded.waveRules.mode).toBe("manual");
     expect(simulate(loaded)).toEqual(simulate(s));
     const saves = readSaves({

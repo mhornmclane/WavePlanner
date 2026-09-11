@@ -11,11 +11,11 @@ const label = (v: unknown): v is string =>
 export function validateScenario(value: unknown): Scenario {
   if (
     !object(value) ||
-    ![1, 2, 3, 4].includes(Number(value.schemaVersion)) ||
+    ![1, 2, 3, 4, 5].includes(Number(value.schemaVersion)) ||
     typeof value.schemaVersion !== "number"
   )
     throw new Error(
-      "Unsupported configuration version. Expected version 1, 2, 3, or 4.",
+      "Unsupported configuration version. Expected version 1, 2, 3, 4, or 5.",
     );
   if (value.schemaVersion === 1) {
     value = {
@@ -36,6 +36,14 @@ export function validateScenario(value: unknown): Scenario {
     value = { ...value, schemaVersion: 4, timingRules: defaultTimingRules() };
   }
   if (!object(value)) throw new Error("Invalid configuration.");
+  if (value.schemaVersion === 4) {
+    value = { ...value, schemaVersion: 5, fastWaveReleases: { enabled: true, fromExchange: 35 } };
+  }
+  if (!object(value)) throw new Error("Invalid configuration.");
+  const fastReleases = value.fastWaveReleases;
+  if (!object(fastReleases) || typeof fastReleases.enabled !== "boolean" ||
+      !Number.isInteger(fastReleases.fromExchange) || !finite(fastReleases.fromExchange, 0, course.legs.length - 1))
+    throw new Error("Fast-wave releases need an enabled setting and a starting exchange from 0 to 70.");
   const timing = value.timingRules;
   if (!Array.isArray(timing) || timing.some(r => !object(r) || !label(r.id) ||
       typeof r.enabled !== "boolean" || !Number.isInteger(r.exchange) ||

@@ -500,3 +500,6 @@ footer {
 .rule-results { width: 100%; border-collapse: collapse; font-size: 12px; }
 .rule-results th, .rule-results td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
 .timing-chart-legend { list-style: none; padding: 0 25px; font-size: 12px; line-height: 1.7; }
+
+.fast-wave-releases { margin-bottom: 24px; }
+.fast-wave-releases > label { display: block; margin-top: 12px; }

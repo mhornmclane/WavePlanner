@@ -22,7 +22,8 @@ export const colors = [
 ];
 export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
+    fastWaveReleases: { enabled: true, fromExchange: 35 },
     timingRules: defaultTimingRules(),
     worstCaseTeams: defaultWorstCaseTeams(),
     sources: { ...sources },

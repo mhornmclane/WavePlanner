@@ -80,7 +80,7 @@ describe("timing rules", () => {
     const old = { ...s, schemaVersion } as Record<string, unknown>;
     delete old.timingRules;
     const migrated = validateScenario(old);
-    expect(migrated.schemaVersion).toBe(4);
+    expect(migrated.schemaVersion).toBe(5);
     expect(simulate(migrated).teams).toEqual(simulate(s).teams);
   });
   it("round trips and preserves independent rules through presets and copies", () => {

@@ -114,10 +114,10 @@ export default function App() {
       setPresetId("custom");
       return;
     }
-    const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams, scenario.timingRules);
+    const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams, scenario.timingRules, scenario.fastWaveReleases);
     replace(next);
     setPresetId(id);
-    setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams and timing rules retained; release, challenge, and staffing settings reset to baseline.`);
+    setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams, timing rules, and fast-wave release settings retained; release, challenge, and staffing settings reset to baseline.`);
   }
   async function importFile(file: File | undefined) {
     if (!file) return;
