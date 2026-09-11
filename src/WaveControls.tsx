@@ -3,6 +3,7 @@ import { colors, ORIGIN, profileById } from "./data";
 import { clock, pace, parsePace } from "./format";
 import {
   conversionPreview,
+  orderedWaveEntries,
   removeWave,
   splitSuggestion,
   syncAssignments,
@@ -168,7 +169,7 @@ export function Waves({
           <h3>Set the field in motion</h3>
           <p className="muted">
             {automatic
-              ? "Waves are ordered fastest to slowest. Start times remain independent."
+              ? "Waves are numbered slowest to fastest. Start times remain independent."
               : "This saved configuration uses manual assignments. Convert to linked pace ranges when ready."}
           </p>
         </div>
@@ -193,11 +194,8 @@ export function Waves({
       {proposed && (
         <div className="range-preview">
           <h3>Preview automatic assignment</h3>
-          <p>
-            Wave order stays as listed. Applying these ranges replaces manual
-            assignments.
-          </p>
-          {proposed.waves.map((w, i) => (
+          <p>Applying these ranges replaces manual assignments.</p>
+          {orderedWaveEntries(proposed).map(({ w, i }) => (
             <details key={w.id}>
               <summary>
                 {w.name}:{" "}
@@ -236,16 +234,16 @@ export function Waves({
         </div>
       )}
       <div className="wave-list">
-        {s.waves.map((w, i) => (
+        {orderedWaveEntries(s).map(({ w, i }, displayIndex) => (
           <div className="wave-card" key={w.id}>
             <div className="wave-row">
               <span className="wave-number">
-                {String(i + 1).padStart(2, "0")}
+                {String(displayIndex + 1).padStart(2, "0")}
               </span>
               <label className="wave-name">
-                <span className="sr-only">Wave {i + 1} name</span>
+                <span className="sr-only">Wave {displayIndex + 1} name</span>
                 <input
-                  aria-label={`Wave ${i + 1} name`}
+                  aria-label={`Wave ${displayIndex + 1} name`}
                   value={w.name}
                   maxLength={120}
                   onChange={(e) =>
@@ -260,7 +258,7 @@ export function Waves({
               </label>
               <input
                 type="color"
-                aria-label={`Wave ${i + 1} color`}
+                aria-label={`Wave ${displayIndex + 1} color`}
                 value={w.color}
                 onChange={(e) =>
                   update((c) => ({
@@ -272,7 +270,7 @@ export function Waves({
                 }
               />
               <WaveStartOffset
-                label={`Wave ${i + 1} start offset (hours)`}
+                label={`Wave ${displayIndex + 1} start offset (hours)`}
                 value={w.start}
                 onChange={(start) =>
                   update((c) => ({
@@ -286,7 +284,7 @@ export function Waves({
               <span className="wave-count">{roster(s, w.id).length} teams</span>
               <button
                 className="quiet"
-                aria-label={`Remove wave ${i + 1}`}
+                aria-label={`Remove wave ${displayIndex + 1}`}
                 disabled={s.waves.length === 1}
                 onClick={() => {
                   setSplit(null);
@@ -302,7 +300,7 @@ export function Waves({
                   <span>No lower pace limit</span>
                 ) : (
                   <Boundary
-                    label={`Wave ${i + 1} minimum pace (inclusive)`}
+                    label={`Wave ${displayIndex + 1} minimum pace (inclusive)`}
                     value={s.waveRules.boundaries[i - 1]}
                     valid={(v) =>
                       validBoundary(s.waveRules.boundaries, i - 1, v)
@@ -314,7 +312,7 @@ export function Waves({
                   <span>No upper pace limit</span>
                 ) : (
                   <Boundary
-                    label={`Wave ${i + 1} maximum pace (exclusive)`}
+                    label={`Wave ${displayIndex + 1} maximum pace (exclusive)`}
                     value={s.waveRules.boundaries[i]}
                     valid={(v) => validBoundary(s.waveRules.boundaries, i, v)}
                     commit={(v) => boundary(i, v)}
@@ -405,7 +403,7 @@ export function Waves({
       )}
       <p className="table-note">
         {automatic
-          ? "Pace is min:sec per mile; lower is faster. Ranges share boundaries with no gaps. An exact-boundary team belongs to the slower range. Press Enter or leave a field to apply. Removing a wave merges into the previous range (or the next for the first wave)."
+          ? "Pace is min:sec per mile; lower is faster. Ranges share boundaries with no gaps. An exact-boundary team belongs to the slower range. Press Enter or leave a field to apply. Removing a wave merges into the adjacent faster range (or the slower range when removing the fastest wave)."
           : "Assign teams in Historical field. Your saved assignment remains unchanged until conversion."}
       </p>
     </>

@@ -124,8 +124,8 @@ test("linked wave boundaries update rosters, prevent overlap and sort the field"
   await page.getByRole("button", { name: "+ Add wave", exact: true }).click();
   await page.getByLabel("New shared pace boundary").fill("12:00");
   await page.getByRole("button", { name: "Confirm split" }).click();
-  const first = page.getByLabel("Wave 1 maximum pace (exclusive)");
-  const second = page.getByLabel("Wave 2 minimum pace (inclusive)");
+  let first = page.getByLabel("Wave 2 maximum pace (exclusive)");
+  let second = page.getByLabel("Wave 1 minimum pace (inclusive)");
   await expect(first).toHaveValue("12:00");
   await expect(second).toHaveValue("12:00");
   await first.fill("11:00");
@@ -135,15 +135,18 @@ test("linked wave boundaries update rosters, prevent overlap and sort the field"
     (p) => p.overall_mean_pace_seconds_per_mile < 660,
   ).length;
   await expect(
-    page.locator(".wave-card").first().locator(".wave-count"),
+    page.locator(".wave-card").last().locator(".wave-count"),
   ).toHaveText(`${fastCount} teams`);
-  await page.locator(".wave-members summary").first().click();
+  await page.locator(".wave-members summary").last().click();
   await expect(
-    page.locator(".wave-card").first().locator(".wave-roster li"),
+    page.locator(".wave-card").last().locator(".wave-roster li"),
   ).toHaveCount(fastCount);
-  await page.getByRole("button", { name: "Split this range" }).last().click();
+  await page.getByRole("button", { name: "Split this range" }).first().click();
   await page.getByLabel("New shared pace boundary").fill("14:00");
   await page.getByRole("button", { name: "Confirm split" }).click();
+  first = page.getByLabel("Wave 3 maximum pace (exclusive)");
+  second = page.getByLabel("Wave 2 minimum pace (inclusive)");
+  expect(await page.locator(".wave-name input").evaluateAll((inputs) => inputs.map((input) => (input as HTMLInputElement).value))).toEqual(["Wave 1", "Wave 2", "Wave 3"]);
   await first.fill("15:00");
   await first.press("Enter");
   await expect(first).toHaveAttribute("aria-invalid", "true");
@@ -203,6 +206,16 @@ test("five visual pace nodes support dragging, keyboard and independent mode set
   await page.getByRole("radio", { name: /Visual five-section pace/ }).check();
   await expect(page.getByLabel("Visual section 1 pace")).toHaveValue(after);
   await page.getByLabel("Visual section 2 pace").fill("bad");
+  await expect(page.getByRole("alert")).toContainText("five");
+  await page.getByRole("radio", { name: /Generate from pace/ }).check();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.locator(".metrics article")).not.toHaveCount(0);
+  await page.getByLabel("Segment 1 pace").fill("bad");
+  await expect(page.getByRole("alert")).toContainText("Pace segments");
+  await page.getByRole("radio", { name: /Published 2026 timetable/ }).check();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Save configuration", exact: true })).toBeEnabled();
+  await page.getByRole("radio", { name: /Visual five-section pace/ }).check();
   await expect(page.getByRole("alert")).toContainText("five");
   await page.getByLabel("Visual section 2 pace").fill("10:25");
   await expect(page.getByRole("alert")).toHaveCount(0);
@@ -313,7 +326,7 @@ test("legacy saves preserve manual assignments until a reviewed conversion", asy
   await page.getByRole("button", { name: "Preview pace ranges" }).click();
   await page.getByRole("button", { name: "Apply pace ranges" }).click();
   await expect(
-    page.getByLabel("Wave 1 maximum pace (exclusive)"),
+    page.getByLabel("Wave 2 maximum pace (exclusive)"),
   ).toBeVisible();
   await expect(page.getByRole("alert")).toHaveCount(0);
 });

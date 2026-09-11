@@ -14,7 +14,22 @@ export function resolveAssignments(s: Scenario): Record<string, string> {
   );
 }
 export function syncAssignments(s: Scenario): Scenario {
-  return { ...s, assignments: resolveAssignments(s) };
+  return {
+    ...s,
+    waves: s.waves.map((w, i) => ({
+      ...w,
+      name: /^(Wave \d+|Main start)$/.test(w.name)
+        ? `Wave ${s.waveRules.mode === "pace" ? s.waves.length - i : i + 1}`
+        : w.name,
+    })),
+    assignments: resolveAssignments(s),
+  };
+}
+// Stored pace ranges remain ascending for compatibility with saved scenarios.
+// Present them slowest first, retaining their original indices for boundary edits.
+export function orderedWaveEntries(s: Scenario) {
+  const entries = s.waves.map((w, i) => ({ w, i }));
+  return s.waveRules.mode === "pace" ? entries.reverse() : entries;
 }
 export function validBoundary(
   boundaries: number[],

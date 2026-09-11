@@ -10,6 +10,7 @@ import {
 import { exchangeSummaries, releaseSchedule, simulate } from "../src/engine";
 import {
   conversionPreview,
+  orderedWaveEntries,
   removeWave,
   resolveAssignments,
   splitSuggestion,
@@ -47,6 +48,23 @@ describe("linked pace ranges", () => {
           ? "wave-1"
           : "slower",
       );
+  });
+  it("numbers and displays default waves slowest first after splits and removals", () => {
+    const s = initialScenario();
+    s.waves.push({ id: "middle", name: "Wave 2", color: "#123456", start: 7200 });
+    s.waves.push({ id: "slow", name: "Wave 3", color: "#234567", start: 0 });
+    s.waveRules.boundaries = [600, 800];
+    const next = syncAssignments(s);
+    expect(orderedWaveEntries(next).map(({ w }) => [w.id, w.name])).toEqual([
+      ["slow", "Wave 1"], ["middle", "Wave 2"], ["wave-1", "Wave 3"],
+    ]);
+    for (const p of profiles) {
+      const w = next.waves.find((w) => w.id === next.assignments[teamId(p)])!;
+      const pace = p.overall_mean_pace_seconds_per_mile;
+      expect(w.name).toBe(pace >= 800 ? "Wave 1" : pace >= 600 ? "Wave 2" : "Wave 3");
+    }
+    expect(orderedWaveEntries(removeWave(next, 1)).map(({ w }) => w.name))
+      .toEqual(["Wave 1", "Wave 2"]);
   });
   it("recalculates selected teams and never changes moving time", () => {
     const s = twoWaves();
@@ -92,7 +110,9 @@ describe("linked pace ranges", () => {
     const s = baseline();
     s.waves.push({ id: "late", name: "Late", color: "#445566", start: 12000 });
     const next = conversionPreview(s);
-    expect(next.waves).toEqual(s.waves);
+    expect(next.waves.map(({ name, ...w }) => w)).toEqual(
+      s.waves.map(({ name, ...w }) => w),
+    );
     expect(next.waveRules.boundaries).toHaveLength(1);
     expect(Object.keys(next.assignments)).toHaveLength(51);
     expect(validateScenario(next)).toEqual(next);
@@ -132,6 +152,27 @@ describe("visual release pace and compatibility", () => {
     s.challenges.monument = 0;
     expect(releaseSchedule(s)).toEqual(published);
   });
+  it("validates only the selected release mode and retains inactive edits", () => {
+    const s = baseline();
+    s.release.visualPaces[1] = NaN;
+    s.release.mode = "generated";
+    expect(simulate(validateScenario(s)).releases).toEqual(releaseSchedule(s));
+    s.release.mode = "visual";
+    expect(() => validateScenario(s)).toThrow("five");
+    s.release.visualPaces[1] = 625;
+    s.release.segments = [{ startLeg: 2, pace: NaN }];
+    expect(simulate(validateScenario(s)).releases).toEqual(releaseSchedule(s));
+    s.release.mode = "generated";
+    expect(() => validateScenario(s)).toThrow("Pace segments");
+    s.release.mode = "published";
+    s.release.anchor = NaN;
+    s.release.visualPaces[1] = NaN;
+    expect(simulate(validateScenario(s)).releases).toEqual(releaseSchedule(baseline()));
+    const loaded = parseScenario(serializeScenario(s));
+    expect(simulate(loaded).releases).toEqual(releaseSchedule(baseline()));
+    loaded.release.mode = "generated";
+    expect(() => validateScenario(loaded)).toThrow("anchor");
+  });
   it("migrates v1 files and saves with identical manual assignments and results", () => {
     const s = baseline();
     s.waves.push({ id: "late", name: "Late", color: "#445566", start: 12000 });
@@ -165,6 +206,7 @@ describe("visual release pace and compatibility", () => {
     "rejects invalid five-node pace values %s",
     (...values) => {
       const s = baseline();
+      s.release.mode = "visual";
       s.release.visualPaces = values as number[];
       expect(() => validateScenario(s)).toThrow("five");
     },

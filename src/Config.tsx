@@ -2,7 +2,7 @@ import { useState } from "react";
 import { bins, course, profiles, teamId } from "./data";
 import { Waves } from "./WaveControls";
 import { VisualPace } from "./VisualPace";
-import { syncAssignments } from "./waves";
+import { orderedWaveEntries, syncAssignments } from "./waves";
 import { clock, pace, parsePace } from "./format";
 import type { Scenario, Simulation } from "./model";
 
@@ -263,7 +263,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
                     value={activeBulk}
                     onChange={(e) => setBulkWave(e.target.value)}
                   >
-                    {s.waves.map((w) => (
+                    {orderedWaveEntries(s).map(({ w }) => (
                       <option key={w.id} value={w.id}>
                         {w.name}
                       </option>
@@ -372,7 +372,7 @@ export function Config({ scenario: s, setScenario: setConfig, result }: Props) {
                                 }))
                               }
                             >
-                              {s.waves.map((w) => (
+                              {orderedWaveEntries(s).map(({ w }) => (
                                 <option key={w.id} value={w.id}>
                                   {w.name}
                                 </option>

@@ -1,3 +1,4 @@
+import { orderedWaveEntries } from "./waves";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { bins, course, ORIGIN, profileById } from "./data";
 import { clock, duration, elapsed, pace } from "./format";
@@ -489,7 +490,7 @@ export function Chart({
         </div>
       )}
       <div className="legend">
-        {scenario.waves.map((w) => (
+        {orderedWaveEntries(scenario).map(({ w }) => (
           <span key={w.id}>
             <i style={{ background: w.color }} />
             {w.name}

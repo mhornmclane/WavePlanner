@@ -27,7 +27,7 @@ export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
     name: "2026 baseline",
     selectedTeamIds: [...selectedTeamIds],
     waves: [
-      { id: "wave-1", name: "Main start", color: colors[0], start: ORIGIN },
+      { id: "wave-1", name: "Wave 1", color: colors[0], start: ORIGIN },
     ],
     assignments: Object.fromEntries(
       selectedTeamIds.map((id) => [id, "wave-1"]),

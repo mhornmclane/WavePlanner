@@ -58,9 +58,9 @@ test("team selection, year filtering, wave assignment and removal work", async (
   await page
     .getByRole("button", { name: "Confirm split", exact: true })
     .click();
-  await page.getByLabel("Wave 2 name", { exact: true }).fill("Late starters");
+  await page.getByLabel("Wave 1 name", { exact: true }).fill("Late starters");
   await page
-    .getByLabel("Wave 2 start offset (hours)", { exact: true })
+    .getByLabel("Wave 1 start offset (hours)", { exact: true })
     .fill("2");
   await page.getByRole("tab", { name: /Historical field/ }).click();
   await expect(page.locator(".team-table tbody tr")).toHaveCount(51);
@@ -78,9 +78,9 @@ test("team selection, year filtering, wave assignment and removal work", async (
     "11 HISTORICAL TEAMS",
   );
   await page.getByRole("tab", { name: /Starting waves/ }).click();
-  await expect(page.locator(".wave-row").nth(1)).toContainText("11 teams");
+  await expect(page.locator(".wave-row").nth(0)).toContainText("11 teams");
   await page
-    .getByRole("button", { name: "Remove wave 2", exact: true })
+    .getByRole("button", { name: "Remove wave 1", exact: true })
     .click();
   await expect(page.locator(".wave-row")).toHaveCount(1);
   await expect(page.locator(".wave-row")).toContainText("11 teams");

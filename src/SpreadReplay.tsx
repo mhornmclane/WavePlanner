@@ -1,3 +1,4 @@
+import { orderedWaveEntries } from "./waves";
 import { useEffect, useMemo, useState } from "react";
 import { profileById } from "./data";
 import { clock, duration } from "./format";
@@ -218,7 +219,7 @@ export function SpreadReplay({
         </label>
       </div>
       <div className="replay-legend">
-        {scenario.waves.map((wave) => (
+        {orderedWaveEntries(scenario).map(({ w: wave }) => (
           <span key={wave.id}>
             <i style={{ background: wave.color }} />
             {wave.name}

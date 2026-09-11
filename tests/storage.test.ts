@@ -119,6 +119,7 @@ describe("configuration serialization and browser storage", () => {
     ["oversized challenge", (s: any) => (s.challenges.monument = 86401)],
   ])("rejects %s", (_, change) => {
     const s = baseline();
+    s.release.mode = "generated";
     change(s);
     expect(() => validateScenario(s)).toThrow();
   });
