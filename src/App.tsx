@@ -16,9 +16,19 @@ import {
   type SavedScenario,
 } from "./storage";
 import type { Scenario } from "./model";
+import { createPreset, presets, type PresetId } from "./presets";
 
 export default function App() {
   const [scenario, setScenario] = useState(initialScenario);
+  const [presetId, setPresetId] = useState<PresetId | "custom">("custom");
+  const [configRevision, setConfigRevision] = useState(0);
+  const activePreset = presets.find((p) => p.id === presetId);
+  function editScenario(updater: (s: Scenario) => Scenario) {
+    const next = updater(scenario);
+    if (JSON.stringify(next) === JSON.stringify(scenario)) return;
+    setPresetId("custom");
+    setScenario(next);
+  }
   const [overlay, setOverlay] = useState(false);
   const [visualizer, setVisualizer] = useState<"chart" | "replay">("chart");
   const [saves, setSaves] = useState<SavedScenario[]>([]);
@@ -56,6 +66,8 @@ export default function App() {
   const dirty = JSON.stringify(scenario) !== savedText;
   function replace(s: Scenario, id = "") {
     setScenario(s);
+    setPresetId("custom");
+    setConfigRevision((revision) => revision + 1);
     setLoadedId(id);
     setSavedText(id ? JSON.stringify(s) : "");
     setFileError("");
@@ -89,21 +101,21 @@ export default function App() {
     }
   }
   function load(id: string) {
-    if (id === "baseline") {
-      replace({
-        ...baseline(scenario.selectedTeamIds),
-        name: "2026 baseline copy",
-      });
-      setNotice(
-        "Loaded a working copy of the baseline for the selected field. The baseline comparison stays unchanged.",
-      );
-      return;
-    }
     const saved = saves.find((s) => s.id === id);
     if (saved) {
       replace(structuredClone(saved.scenario), id);
       setNotice(`Loaded ${saved.scenario.name}.`);
     }
+  }
+  function loadPreset(id: PresetId | "custom") {
+    if (id === "custom") {
+      setPresetId("custom");
+      return;
+    }
+    const next = createPreset(id, scenario.selectedTeamIds);
+    replace(next);
+    setPresetId(id);
+    setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams retained; release, challenge, and staffing settings reset to baseline.`);
   }
   async function importFile(file: File | undefined) {
     if (!file) return;
@@ -146,6 +158,21 @@ export default function App() {
               {dirty ? "Unsaved configuration" : "Saved in this browser"}
             </span>
           </div>
+          <div className="preset-toolbar">
+            <label className="field">
+              <span>Configuration preset</span>
+              <select value={presetId} onChange={(e) => loadPreset(e.target.value as PresetId | "custom")}>
+                <option value="custom">Custom</option>
+                {presets.map((preset) => (
+                  <option key={preset.id} value={preset.id}>{preset.name}</option>
+                ))}
+              </select>
+            </label>
+            <div className="preset-summary">
+              <p>{activePreset?.summary ?? "Adjust the controls below, or load a saved configuration."}</p>
+              <small>All times are Day 1. Pace is average min:sec per mile. Presets are fully editable.</small>
+            </div>
+          </div>
           <div className="save-toolbar">
             <label className="scenario-name">
               <span className="sr-only">Configuration name</span>
@@ -154,7 +181,7 @@ export default function App() {
                 maxLength={120}
                 value={scenario.name}
                 onChange={(e) =>
-                  setScenario((s) => ({ ...s, name: e.target.value }))
+                  editScenario((s) => ({ ...s, name: e.target.value }))
                 }
               />
             </label>
@@ -173,7 +200,6 @@ export default function App() {
               <option value="" disabled>
                 Load configuration…
               </option>
-              <option value="baseline">2026 baseline · use a copy</option>
               {saves.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.scenario.name}
@@ -241,8 +267,9 @@ export default function App() {
             </div>
           </div>
           <Config
+            key={configRevision}
             scenario={scenario}
-            setScenario={setScenario}
+            setScenario={editScenario}
             result={result}
           />
         </section>

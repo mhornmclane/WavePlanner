@@ -481,3 +481,15 @@ footer {
     flex-wrap: wrap;
   }
 }
+.preset-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e5e3;
+}
+.preset-toolbar .field { margin: 0; }
+.preset-summary { flex: 1 1 280px; }
+.preset-summary p { margin: 0 0 6px; }
+.preset-summary small { color: #626d68; }
