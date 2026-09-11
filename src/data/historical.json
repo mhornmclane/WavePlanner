@@ -1,0 +1,1137 @@
+{
+  "schema_version": "1.0",
+  "title": "Ruck4HIT authoritative historical team pace record",
+  "authority": "User-designated authoritative reference for historical team paces and staffing evaluations. Use all supplied values as fixed reference data.",
+  "event": "Ruck4HIT Cape Cod",
+  "prepared_on": "2026-09-11",
+  "years": [
+    2024,
+    2025,
+    2026
+  ],
+  "record_key": [
+    "year",
+    "team"
+  ],
+  "record_count": 51,
+  "team_counts_by_year": {
+    "2024": 20,
+    "2025": 20,
+    "2026": 11
+  },
+  "pace_definition": {
+    "unit": "seconds per mile",
+    "precision": "Whole seconds, matching the displayed Pace Bins table.",
+    "overall_mean": "Arithmetic mean of the 71 leg paces, with equal weight per leg, rounded to the nearest second per mile.",
+    "bin_mean": "Arithmetic mean of the paces on the legs in that bin, with equal weight per leg, rounded to the nearest second per mile.",
+    "direction": "Lower values mean faster travel.",
+    "display_conversion": "To display a pace as m:ss, divide the integer seconds by 60 for minutes and use the remainder for seconds."
+  },
+  "agent_usage_instructions": [
+    "Treat this file as the source of truth for team pace inputs. Do not recalculate, rescale, or replace its pace values.",
+    "Select a record by year and exact team name. Preserve team names; cross-year name consolidation requires an explicit mapping supplied by the evaluation task.",
+    "The five bins represent course progress by completed leg number, not equal clock-time periods.",
+    "Use the supplied overall mean when comparing whole-course pace. Do not take a simple average of the five bin means: the last bin contains 15 legs and the other bins contain 14.",
+    "For a leg-based staffing time model, multiply the leg distance in miles by that team’s applicable bin pace in seconds per mile. Sum leg travel times to obtain baseline elapsed seconds.",
+    "Add exchange service time, breaks, coverage buffers, shift limits, and start-time offsets as separate evaluation inputs; they are not encoded in these pace values.",
+    "Team pace is a team-level input. Supply individual capability and roster availability separately when evaluating assignments."
+  ],
+  "course": {
+    "reference": "2026 course distance and exchange framework used consistently across all records",
+    "distance_unit": "miles",
+    "total_legs": 71,
+    "total_distance_miles": 205.72,
+    "bins": [
+      {
+        "bin_id": "legs_01_14",
+        "first_leg": 1,
+        "last_leg": 14,
+        "leg_count": 14,
+        "distance_miles": 37.21
+      },
+      {
+        "bin_id": "legs_15_28",
+        "first_leg": 15,
+        "last_leg": 28,
+        "leg_count": 14,
+        "distance_miles": 43.94
+      },
+      {
+        "bin_id": "legs_29_42",
+        "first_leg": 29,
+        "last_leg": 42,
+        "leg_count": 14,
+        "distance_miles": 37.82
+      },
+      {
+        "bin_id": "legs_43_56",
+        "first_leg": 43,
+        "last_leg": 56,
+        "leg_count": 14,
+        "distance_miles": 42.33
+      },
+      {
+        "bin_id": "legs_57_71",
+        "first_leg": 57,
+        "last_leg": 71,
+        "leg_count": 15,
+        "distance_miles": 44.42
+      }
+    ],
+    "legs": [
+      {
+        "leg": 1,
+        "distance_miles": 2.72,
+        "start_exchange": "CC Fairgrounds, Ashumet Rd",
+        "end_exchange": "George Gaspa Sports Complex, 888 Sandwich Rd"
+      },
+      {
+        "leg": 2,
+        "distance_miles": 2.79,
+        "start_exchange": "George Gaspa Sports Complex",
+        "end_exchange": "Recovering Champions, 279 Brick Kiln Rd"
+      },
+      {
+        "leg": 3,
+        "distance_miles": 2.32,
+        "start_exchange": "Recovering Champions",
+        "end_exchange": "Chapoquoit Grill, 410 Rte 28A"
+      },
+      {
+        "leg": 4,
+        "distance_miles": 2.63,
+        "start_exchange": "Chapoquoit Grill",
+        "end_exchange": "Shining Sea Bikeway @ Seafood Sam's, 356 Palmer Ave"
+      },
+      {
+        "leg": 5,
+        "distance_miles": 3.17,
+        "start_exchange": "CCRT @ Seafood Sam's",
+        "end_exchange": "Surf Drive Beach, 56 Surf Drive"
+      },
+      {
+        "leg": 6,
+        "distance_miles": 2.79,
+        "start_exchange": "Surf Drive",
+        "end_exchange": "Shipwrecked, 240 Grand Ave"
+      },
+      {
+        "leg": 7,
+        "distance_miles": 2.61,
+        "start_exchange": "Shipwrecked",
+        "end_exchange": "Menauhant Beach, 659 Menauhant Rd"
+      },
+      {
+        "leg": 8,
+        "distance_miles": 2.01,
+        "start_exchange": "Menauhant Beach",
+        "end_exchange": "Kenyon's Market, 15 Central Ave"
+      },
+      {
+        "leg": 9,
+        "distance_miles": 2.51,
+        "start_exchange": "Kenyon's Market",
+        "end_exchange": "85-89 Martin Rd"
+      },
+      {
+        "leg": 10,
+        "distance_miles": 2.7,
+        "start_exchange": "Martin Rd",
+        "end_exchange": "Cape Cod Children's Museum, 577 Great Neck Rd S"
+      },
+      {
+        "leg": 11,
+        "distance_miles": 2.67,
+        "start_exchange": "Children's Museum",
+        "end_exchange": "Heroes In Transition Office, 766 Falmouth Rd"
+      },
+      {
+        "leg": 12,
+        "distance_miles": 2.1,
+        "start_exchange": "HIT Office",
+        "end_exchange": "Smitty's Ice Cream, Mashpee Rotary"
+      },
+      {
+        "leg": 13,
+        "distance_miles": 3.51,
+        "start_exchange": "Smitty's",
+        "end_exchange": "Elizabeth Lowell Park, 10 Lowell Ave"
+      },
+      {
+        "leg": 14,
+        "distance_miles": 2.68,
+        "start_exchange": "Lowell Park",
+        "end_exchange": "Prince Cove Marina, 235 Cedar Tree Neck Rd"
+      },
+      {
+        "leg": 15,
+        "distance_miles": 3.19,
+        "start_exchange": "Prince Cove Marina",
+        "end_exchange": "Ellen A. McBarron Field, 930 Old Falmouth Rd"
+      },
+      {
+        "leg": 16,
+        "distance_miles": 3.31,
+        "start_exchange": "McBarron Field",
+        "end_exchange": "Cape and Coast Bank, 1121 Rte 6A"
+      },
+      {
+        "leg": 17,
+        "distance_miles": 3.64,
+        "start_exchange": "Cape & Coast",
+        "end_exchange": "St. Mary's Church, 3055 Rte 6A"
+      },
+      {
+        "leg": 18,
+        "distance_miles": 2.61,
+        "start_exchange": "St. Mary's",
+        "end_exchange": "Cummaquid Golf Club, 97 Marstons Ln"
+      },
+      {
+        "leg": 19,
+        "distance_miles": 3.05,
+        "start_exchange": "Cummaquid GC",
+        "end_exchange": "Fiddlers Green Plaza, 704 Rte 6A"
+      },
+      {
+        "leg": 20,
+        "distance_miles": 3.23,
+        "start_exchange": "Fiddlers Green",
+        "end_exchange": "Dennis Senior Center, 407 Setucket Rd"
+      },
+      {
+        "leg": 21,
+        "distance_miles": 3.4,
+        "start_exchange": "Dennis Senior Center",
+        "end_exchange": "Brewster Transfer Station, 179 Run Hill Rd"
+      },
+      {
+        "leg": 22,
+        "distance_miles": 2.56,
+        "start_exchange": "Brewster Transfer Station",
+        "end_exchange": "Brewster Town Hall, 2198 Rte 6A"
+      },
+      {
+        "leg": 23,
+        "distance_miles": 2.86,
+        "start_exchange": "Brewster Town Hall",
+        "end_exchange": "Crosby Beach, 276 Crosby Ln"
+      },
+      {
+        "leg": 24,
+        "distance_miles": 3.56,
+        "start_exchange": "Crosby Beach",
+        "end_exchange": "Cape Cod Rail Trail P/Lot, 17 Old Colony Way"
+      },
+      {
+        "leg": 25,
+        "distance_miles": 3.58,
+        "start_exchange": "CCRT @ Old Colony Way",
+        "end_exchange": "Eastham Superette, 2475 US-Rte 6"
+      },
+      {
+        "leg": 26,
+        "distance_miles": 2.87,
+        "start_exchange": "Eastham Superette",
+        "end_exchange": "Cape Cod Rail Trail, Nauset Rd & Railroad Ave"
+      },
+      {
+        "leg": 27,
+        "distance_miles": 3.62,
+        "start_exchange": "CCRT @ Nauset & Railroad",
+        "end_exchange": "Cape Cod Rail Trail, 29 Lecount Hollow Rd"
+      },
+      {
+        "leg": 28,
+        "distance_miles": 2.46,
+        "start_exchange": "CCRT @ Lecount Hollow Rd",
+        "end_exchange": "Beachcomber, Cahoon Hollow & Ocean View Rd"
+      },
+      {
+        "leg": 29,
+        "distance_miles": 3.25,
+        "start_exchange": "Beachcomber",
+        "end_exchange": "Moby Dick Restaurant, 3225 US-Rte 6"
+      },
+      {
+        "leg": 30,
+        "distance_miles": 3.54,
+        "start_exchange": "Moby Dick",
+        "end_exchange": "Collins Rd & South Pamet Rd"
+      },
+      {
+        "leg": 31,
+        "distance_miles": 2.23,
+        "start_exchange": "Collins & S. Pamet",
+        "end_exchange": "268 Route 6"
+      },
+      {
+        "leg": 32,
+        "distance_miles": 2.01,
+        "start_exchange": "268 Route 6",
+        "end_exchange": "South Highland & South Hollow Rd"
+      },
+      {
+        "leg": 33,
+        "distance_miles": 2.09,
+        "start_exchange": "S. Highland & S. Hollow",
+        "end_exchange": "Prince of Whales, 104 Shore Rd"
+      },
+      {
+        "leg": 34,
+        "distance_miles": 3.11,
+        "start_exchange": "Prince of Whales",
+        "end_exchange": "Kalmar Village, 674 Shore Rd"
+      },
+      {
+        "leg": 35,
+        "distance_miles": 2.7,
+        "start_exchange": "Kalmar Village",
+        "end_exchange": "Pilgrim Monument, 1 High Pole Rd"
+      },
+      {
+        "leg": 36,
+        "distance_miles": 2.63,
+        "start_exchange": "Pilgrim Monument",
+        "end_exchange": "Kalmar Village, 674 Shore Rd"
+      },
+      {
+        "leg": 37,
+        "distance_miles": 3.11,
+        "start_exchange": "Kalmar Village",
+        "end_exchange": "Prince of Whales, 104 Shore Rd"
+      },
+      {
+        "leg": 38,
+        "distance_miles": 2.09,
+        "start_exchange": "Prince of Whales",
+        "end_exchange": "South Highland & South Hollow Rd"
+      },
+      {
+        "leg": 39,
+        "distance_miles": 2.02,
+        "start_exchange": "S. Highland & S. Hollow",
+        "end_exchange": "268 Route 6"
+      },
+      {
+        "leg": 40,
+        "distance_miles": 2.23,
+        "start_exchange": "268 Route 6",
+        "end_exchange": "Collins Rd & South Pamet Rd"
+      },
+      {
+        "leg": 41,
+        "distance_miles": 3.56,
+        "start_exchange": "Collins & S. Pamet",
+        "end_exchange": "Moby Dick's Restaurant, 3225 US-Route 6"
+      },
+      {
+        "leg": 42,
+        "distance_miles": 3.25,
+        "start_exchange": "Moby Dick's",
+        "end_exchange": "Beachcomber, Cahoon Hollow & Ocean View Rd"
+      },
+      {
+        "leg": 43,
+        "distance_miles": 2.47,
+        "start_exchange": "Beachcomber",
+        "end_exchange": "Cape Cod Rail Trail @ 29 Lecount Hollow Rd"
+      },
+      {
+        "leg": 44,
+        "distance_miles": 3.6,
+        "start_exchange": "CCRT @ Lecount Hollow Rd",
+        "end_exchange": "Cape Cod Rail Trail, Nauset Rd & Railroad Ave"
+      },
+      {
+        "leg": 45,
+        "distance_miles": 2.86,
+        "start_exchange": "CCRT @ Nauset & Railroad",
+        "end_exchange": "Eastham Superette, 2475 US-Route 6"
+      },
+      {
+        "leg": 46,
+        "distance_miles": 3.16,
+        "start_exchange": "Eastham Superette",
+        "end_exchange": "CCRT @ St. Joan of Arc Church, 61 Canal Rd"
+      },
+      {
+        "leg": 47,
+        "distance_miles": 2.95,
+        "start_exchange": "CCRT @ Joan of Arc",
+        "end_exchange": "CCRT @ Nickerson State Park, 3499 Route 6A"
+      },
+      {
+        "leg": 48,
+        "distance_miles": 2.66,
+        "start_exchange": "CCRT @ Nickerson State Park",
+        "end_exchange": "CCRT @ 500 Long Pond Rd"
+      },
+      {
+        "leg": 49,
+        "distance_miles": 3.35,
+        "start_exchange": "CCRT @ Long Pond Rd",
+        "end_exchange": "CCRT @ 55 Headwaters Dr"
+      },
+      {
+        "leg": 50,
+        "distance_miles": 2.33,
+        "start_exchange": "CCRT @ Headwaters Dr",
+        "end_exchange": "Old Colony Rail Trail @ 1 Oak St"
+      },
+      {
+        "leg": 51,
+        "distance_miles": 2.93,
+        "start_exchange": "OCRT @ Oak St",
+        "end_exchange": "OCRT @ Meetinghouse Rd"
+      },
+      {
+        "leg": 52,
+        "distance_miles": 3.25,
+        "start_exchange": "OCRT @ Meetinghouse Rd",
+        "end_exchange": "Rear of Monomoy Middle Sch, 135 Stepping Stones Rd"
+      },
+      {
+        "leg": 53,
+        "distance_miles": 2.61,
+        "start_exchange": "Stepping Stones Rd",
+        "end_exchange": "Chatham Lighthouse, 17 Silver Leaf Ln"
+      },
+      {
+        "leg": 54,
+        "distance_miles": 3.08,
+        "start_exchange": "Chatham Lighthouse",
+        "end_exchange": "Ocean State Job Lot, 1674 Route 28"
+      },
+      {
+        "leg": 55,
+        "distance_miles": 3.72,
+        "start_exchange": "Ocean State Job Lot",
+        "end_exchange": "Saquatucket Marina, 715 Route 28"
+      },
+      {
+        "leg": 56,
+        "distance_miles": 3.36,
+        "start_exchange": "Saquatucket Marina",
+        "end_exchange": "Sea View Park, 475 Lower County Rd"
+      },
+      {
+        "leg": 57,
+        "distance_miles": 2.87,
+        "start_exchange": "Sea View Park",
+        "end_exchange": "Good Friends Café, 83 School St"
+      },
+      {
+        "leg": 58,
+        "distance_miles": 3.68,
+        "start_exchange": "Good Friends Café",
+        "end_exchange": "West Yarmouth Post Office, 602 Route 28"
+      },
+      {
+        "leg": 59,
+        "distance_miles": 3.35,
+        "start_exchange": "W. Yarmouth Post Office",
+        "end_exchange": "Smith Family Popcorn, 545 Main St"
+      },
+      {
+        "leg": 60,
+        "distance_miles": 3.39,
+        "start_exchange": "Smith Family Popcorn",
+        "end_exchange": "Barnstable Police Dept, 1200 Phinney's Ln"
+      },
+      {
+        "leg": 61,
+        "distance_miles": 2.93,
+        "start_exchange": "Barnstable PD",
+        "end_exchange": "Barnstable Land Trust, 1540 Route 6A"
+      },
+      {
+        "leg": 62,
+        "distance_miles": 3.12,
+        "start_exchange": "Barnstable Land Trust",
+        "end_exchange": "Amari Restaurant, 674 Route 6A"
+      },
+      {
+        "leg": 63,
+        "distance_miles": 3.23,
+        "start_exchange": "Amari's",
+        "end_exchange": "Scenic Roots, 349 Route 6A"
+      },
+      {
+        "leg": 64,
+        "distance_miles": 3.87,
+        "start_exchange": "Scenic Roots",
+        "end_exchange": "Canal Service Rd/Sandwich Marina, 10 Freezer Rd"
+      },
+      {
+        "leg": 65,
+        "distance_miles": 2.45,
+        "start_exchange": "Sandwich Marina",
+        "end_exchange": "American Legion Post 188, 20 Main St/Rte 130"
+      },
+      {
+        "leg": 66,
+        "distance_miles": 2.74,
+        "start_exchange": "American Legion",
+        "end_exchange": "Sandwich Chamber of Commerce, 520 Rte 130"
+      },
+      {
+        "leg": 67,
+        "distance_miles": 2.34,
+        "start_exchange": "Chamber of Commerce",
+        "end_exchange": "Fitzie's Barbershop, 355 Cotuit Rd"
+      },
+      {
+        "leg": 68,
+        "distance_miles": 2.05,
+        "start_exchange": "Fitzie's",
+        "end_exchange": "Forestdale Church, 110 Route 130"
+      },
+      {
+        "leg": 69,
+        "distance_miles": 2.53,
+        "start_exchange": "Forestdale Church",
+        "end_exchange": "JBCC, Sandwich Gate @ Snake Pond Rd"
+      },
+      {
+        "leg": 70,
+        "distance_miles": 3.66,
+        "start_exchange": "JBCC Sandwich Gate",
+        "end_exchange": "Exit JBCC, Falmouth Gate - Simpkins Rd & Kittredge Rd"
+      },
+      {
+        "leg": 71,
+        "distance_miles": 2.21,
+        "start_exchange": "Kittredge Rd",
+        "end_exchange": "Cape Cod Fairgrounds on Ashumet Rd"
+      }
+    ]
+  },
+  "field_dictionary": {
+    "year": "Year associated with the team pace record.",
+    "team": "Team name preserved exactly from the source table.",
+    "overall_mean_pace_seconds_per_mile": "Whole-course unweighted mean leg pace.",
+    "bin_mean_pace_seconds_per_mile": "Object mapping each course bin_id to its unweighted mean leg pace."
+  },
+  "records": [
+    {
+      "year": 2024,
+      "team": "BCSO",
+      "overall_mean_pace_seconds_per_mile": 634,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 598,
+        "legs_15_28": 612,
+        "legs_29_42": 677,
+        "legs_43_56": 666,
+        "legs_57_71": 617
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Chatham First Responders",
+      "overall_mean_pace_seconds_per_mile": 600,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 580,
+        "legs_15_28": 583,
+        "legs_29_42": 597,
+        "legs_43_56": 607,
+        "legs_57_71": 628
+      }
+    },
+    {
+      "year": 2024,
+      "team": "ER RuckERs",
+      "overall_mean_pace_seconds_per_mile": 630,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 610,
+        "legs_15_28": 614,
+        "legs_29_42": 660,
+        "legs_43_56": 621,
+        "legs_57_71": 645
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Front Toward Victory",
+      "overall_mean_pace_seconds_per_mile": 635,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 589,
+        "legs_15_28": 593,
+        "legs_29_42": 659,
+        "legs_43_56": 684,
+        "legs_57_71": 648
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Hazard",
+      "overall_mean_pace_seconds_per_mile": 633,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 607,
+        "legs_15_28": 615,
+        "legs_29_42": 672,
+        "legs_43_56": 647,
+        "legs_57_71": 624
+      }
+    },
+    {
+      "year": 2024,
+      "team": "I thought this was a 5K",
+      "overall_mean_pace_seconds_per_mile": 543,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 507,
+        "legs_15_28": 517,
+        "legs_29_42": 555,
+        "legs_43_56": 558,
+        "legs_57_71": 576
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Oh Dee Why Are We Here",
+      "overall_mean_pace_seconds_per_mile": 614,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 541,
+        "legs_15_28": 588,
+        "legs_29_42": 609,
+        "legs_43_56": 710,
+        "legs_57_71": 620
+      }
+    },
+    {
+      "year": 2024,
+      "team": "One More Rep",
+      "overall_mean_pace_seconds_per_mile": 637,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 630,
+        "legs_15_28": 619,
+        "legs_29_42": 663,
+        "legs_43_56": 653,
+        "legs_57_71": 621
+      }
+    },
+    {
+      "year": 2024,
+      "team": "RG Ruckers",
+      "overall_mean_pace_seconds_per_mile": 631,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 580,
+        "legs_15_28": 599,
+        "legs_29_42": 644,
+        "legs_43_56": 684,
+        "legs_57_71": 648
+      }
+    },
+    {
+      "year": 2024,
+      "team": "RideAway Ruck Squad",
+      "overall_mean_pace_seconds_per_mile": 566,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 532,
+        "legs_15_28": 540,
+        "legs_29_42": 594,
+        "legs_43_56": 590,
+        "legs_57_71": 574
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Ruck It Up",
+      "overall_mean_pace_seconds_per_mile": 637,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 618,
+        "legs_15_28": 622,
+        "legs_29_42": 667,
+        "legs_43_56": 657,
+        "legs_57_71": 620
+      }
+    },
+    {
+      "year": 2024,
+      "team": "RuckHabilitation",
+      "overall_mean_pace_seconds_per_mile": 628,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 605,
+        "legs_15_28": 590,
+        "legs_29_42": 632,
+        "legs_43_56": 676,
+        "legs_57_71": 636
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Ruckin' Seagulls",
+      "overall_mean_pace_seconds_per_mile": 630,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 609,
+        "legs_15_28": 617,
+        "legs_29_42": 657,
+        "legs_43_56": 655,
+        "legs_57_71": 614
+      }
+    },
+    {
+      "year": 2024,
+      "team": "ShipRUCKed Crew",
+      "overall_mean_pace_seconds_per_mile": 637,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 608,
+        "legs_15_28": 631,
+        "legs_29_42": 667,
+        "legs_43_56": 663,
+        "legs_57_71": 618
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Team Alpha Fox Trot",
+      "overall_mean_pace_seconds_per_mile": 632,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 613,
+        "legs_15_28": 616,
+        "legs_29_42": 657,
+        "legs_43_56": 684,
+        "legs_57_71": 594
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Team Otis- Send a RUCKer!",
+      "overall_mean_pace_seconds_per_mile": 618,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 576,
+        "legs_15_28": 588,
+        "legs_29_42": 656,
+        "legs_43_56": 647,
+        "legs_57_71": 623
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Team ShamRuck",
+      "overall_mean_pace_seconds_per_mile": 628,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 592,
+        "legs_15_28": 596,
+        "legs_29_42": 644,
+        "legs_43_56": 680,
+        "legs_57_71": 628
+      }
+    },
+    {
+      "year": 2024,
+      "team": "The Milk Men",
+      "overall_mean_pace_seconds_per_mile": 557,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 510,
+        "legs_15_28": 532,
+        "legs_29_42": 556,
+        "legs_43_56": 610,
+        "legs_57_71": 577
+      }
+    },
+    {
+      "year": 2024,
+      "team": "United in Service",
+      "overall_mean_pace_seconds_per_mile": 530,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 521,
+        "legs_15_28": 506,
+        "legs_29_42": 539,
+        "legs_43_56": 527,
+        "legs_57_71": 556
+      }
+    },
+    {
+      "year": 2024,
+      "team": "Worst Pace Scenario",
+      "overall_mean_pace_seconds_per_mile": 569,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 546,
+        "legs_15_28": 545,
+        "legs_29_42": 597,
+        "legs_43_56": 567,
+        "legs_57_71": 589
+      }
+    },
+    {
+      "year": 2025,
+      "team": "1620Ruckers",
+      "overall_mean_pace_seconds_per_mile": 682,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 636,
+        "legs_15_28": 639,
+        "legs_29_42": 708,
+        "legs_43_56": 726,
+        "legs_57_71": 699
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Chatham First Responders",
+      "overall_mean_pace_seconds_per_mile": 600,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 564,
+        "legs_15_28": 602,
+        "legs_29_42": 593,
+        "legs_43_56": 619,
+        "legs_57_71": 622
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Falmouth PD",
+      "overall_mean_pace_seconds_per_mile": 700,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 621,
+        "legs_15_28": 666,
+        "legs_29_42": 666,
+        "legs_43_56": 734,
+        "legs_57_71": 804
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Hazard",
+      "overall_mean_pace_seconds_per_mile": 795,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 697,
+        "legs_15_28": 777,
+        "legs_29_42": 796,
+        "legs_43_56": 858,
+        "legs_57_71": 847
+      }
+    },
+    {
+      "year": 2025,
+      "team": "I Thought This Was a 5K",
+      "overall_mean_pace_seconds_per_mile": 516,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 467,
+        "legs_15_28": 481,
+        "legs_29_42": 527,
+        "legs_43_56": 523,
+        "legs_57_71": 576
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Long Islanders",
+      "overall_mean_pace_seconds_per_mile": 642,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 577,
+        "legs_15_28": 619,
+        "legs_29_42": 636,
+        "legs_43_56": 702,
+        "legs_57_71": 675
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Oh Deer Why are we Here?",
+      "overall_mean_pace_seconds_per_mile": 618,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 528,
+        "legs_15_28": 573,
+        "legs_29_42": 615,
+        "legs_43_56": 750,
+        "legs_57_71": 627
+      }
+    },
+    {
+      "year": 2025,
+      "team": "One More Rep",
+      "overall_mean_pace_seconds_per_mile": 686,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 607,
+        "legs_15_28": 648,
+        "legs_29_42": 651,
+        "legs_43_56": 771,
+        "legs_57_71": 750
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Quench Queens",
+      "overall_mean_pace_seconds_per_mile": 820,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 744,
+        "legs_15_28": 758,
+        "legs_29_42": 811,
+        "legs_43_56": 959,
+        "legs_57_71": 829
+      }
+    },
+    {
+      "year": 2025,
+      "team": "RG Ruckers",
+      "overall_mean_pace_seconds_per_mile": 654,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 579,
+        "legs_15_28": 604,
+        "legs_29_42": 638,
+        "legs_43_56": 661,
+        "legs_57_71": 779
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Rideaway Ruck Squad",
+      "overall_mean_pace_seconds_per_mile": 660,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 565,
+        "legs_15_28": 606,
+        "legs_29_42": 632,
+        "legs_43_56": 729,
+        "legs_57_71": 764
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Ruck It Up",
+      "overall_mean_pace_seconds_per_mile": 628,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 623,
+        "legs_15_28": 649,
+        "legs_29_42": 616,
+        "legs_43_56": 625,
+        "legs_57_71": 626
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Ruckhabilitation",
+      "overall_mean_pace_seconds_per_mile": 645,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 559,
+        "legs_15_28": 605,
+        "legs_29_42": 623,
+        "legs_43_56": 684,
+        "legs_57_71": 747
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Ruckin' Seagulls",
+      "overall_mean_pace_seconds_per_mile": 646,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 622,
+        "legs_15_28": 651,
+        "legs_29_42": 631,
+        "legs_43_56": 647,
+        "legs_57_71": 677
+      }
+    },
+    {
+      "year": 2025,
+      "team": "ShipRUCKed",
+      "overall_mean_pace_seconds_per_mile": 647,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 596,
+        "legs_15_28": 603,
+        "legs_29_42": 658,
+        "legs_43_56": 689,
+        "legs_57_71": 686
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Team BCSO",
+      "overall_mean_pace_seconds_per_mile": 668,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 620,
+        "legs_15_28": 643,
+        "legs_29_42": 691,
+        "legs_43_56": 676,
+        "legs_57_71": 706
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Team ShamRuck",
+      "overall_mean_pace_seconds_per_mile": 709,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 647,
+        "legs_15_28": 646,
+        "legs_29_42": 722,
+        "legs_43_56": 818,
+        "legs_57_71": 714
+      }
+    },
+    {
+      "year": 2025,
+      "team": "The Juice is Loose",
+      "overall_mean_pace_seconds_per_mile": 544,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 499,
+        "legs_15_28": 508,
+        "legs_29_42": 546,
+        "legs_43_56": 565,
+        "legs_57_71": 596
+      }
+    },
+    {
+      "year": 2025,
+      "team": "United in Service",
+      "overall_mean_pace_seconds_per_mile": 602,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 569,
+        "legs_15_28": 563,
+        "legs_29_42": 571,
+        "legs_43_56": 640,
+        "legs_57_71": 663
+      }
+    },
+    {
+      "year": 2025,
+      "team": "Worst Pace Scenario",
+      "overall_mean_pace_seconds_per_mile": 568,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 517,
+        "legs_15_28": 547,
+        "legs_29_42": 565,
+        "legs_43_56": 592,
+        "legs_57_71": 617
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Alpha Foxtrot (JONES)",
+      "overall_mean_pace_seconds_per_mile": 673,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 597,
+        "legs_15_28": 620,
+        "legs_29_42": 668,
+        "legs_43_56": 785,
+        "legs_57_71": 695
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Chatham First Responders (JONES)",
+      "overall_mean_pace_seconds_per_mile": 590,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 551,
+        "legs_15_28": 577,
+        "legs_29_42": 592,
+        "legs_43_56": 619,
+        "legs_57_71": 612
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Hazard (JONES)",
+      "overall_mean_pace_seconds_per_mile": 645,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 602,
+        "legs_15_28": 637,
+        "legs_29_42": 665,
+        "legs_43_56": 659,
+        "legs_57_71": 661
+      }
+    },
+    {
+      "year": 2026,
+      "team": "I Thought This Was A 5K (JETHRO)",
+      "overall_mean_pace_seconds_per_mile": 525,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 471,
+        "legs_15_28": 504,
+        "legs_29_42": 517,
+        "legs_43_56": 513,
+        "legs_57_71": 612
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Meal Team 6 (JETHRO)",
+      "overall_mean_pace_seconds_per_mile": 535,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 486,
+        "legs_15_28": 500,
+        "legs_29_42": 531,
+        "legs_43_56": 545,
+        "legs_57_71": 607
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Oh Deer, Why Are We Here? (JETHRO)",
+      "overall_mean_pace_seconds_per_mile": 597,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 539,
+        "legs_15_28": 561,
+        "legs_29_42": 583,
+        "legs_43_56": 668,
+        "legs_57_71": 631
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Relentless Ruckers (JONES)",
+      "overall_mean_pace_seconds_per_mile": 710,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 641,
+        "legs_15_28": 675,
+        "legs_29_42": 698,
+        "legs_43_56": 845,
+        "legs_57_71": 692
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Ruckin' Seagulls (JONES)",
+      "overall_mean_pace_seconds_per_mile": 640,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 593,
+        "legs_15_28": 635,
+        "legs_29_42": 620,
+        "legs_43_56": 711,
+        "legs_57_71": 639
+      }
+    },
+    {
+      "year": 2026,
+      "team": "TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+      "overall_mean_pace_seconds_per_mile": 621,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 566,
+        "legs_15_28": 613,
+        "legs_29_42": 626,
+        "legs_43_56": 676,
+        "legs_57_71": 622
+      }
+    },
+    {
+      "year": 2026,
+      "team": "United In Service (JETHRO)",
+      "overall_mean_pace_seconds_per_mile": 562,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 523,
+        "legs_15_28": 525,
+        "legs_29_42": 559,
+        "legs_43_56": 594,
+        "legs_57_71": 606
+      }
+    },
+    {
+      "year": 2026,
+      "team": "Worst Pace Scenario (JETHRO)",
+      "overall_mean_pace_seconds_per_mile": 571,
+      "bin_mean_pace_seconds_per_mile": {
+        "legs_01_14": 525,
+        "legs_15_28": 538,
+        "legs_29_42": 581,
+        "legs_43_56": 587,
+        "legs_57_71": 619
+      }
+    }
+  ],
+  "source": {
+    "workbook": "Ruckdata_summaries.xlsx",
+    "sheet": "Pace Bins",
+    "range": "A6:H57",
+    "sha256": "6d87e08f2566a3889083d0104b936562d5ad2700306b389efc13fa99a16fc9c9",
+    "course_distance_source": "2026!A1:D72"
+  }
+}

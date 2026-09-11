@@ -1,0 +1,1717 @@
+{
+  "_meta": {
+    "version": "2026-01-29",
+    "source": "Course Matrix (v JAN 29 2026)",
+    "generated_by": "parse_course_matrix.py",
+    "notes": "Release times use day 1/2 relative to event start. Actual calendar date is configured at the event level."
+  },
+  "event": {
+    "name": "Ruck4HIT 2026",
+    "total_distance_miles": 205.72,
+    "total_legs": 71,
+    "start_location": "Cape Cod Fairgrounds, Ashumet Rd",
+    "finish_location": "Cape Cod Fairgrounds on Ashumet Rd",
+    "minimum_pace_per_mile": "10:25",
+    "minimum_pace_seconds_per_mile": 625,
+    "nighttime_hours": {
+      "start": "19:00",
+      "end": "06:00"
+    },
+    "helos_start_leg": 36,
+    "challenges": [
+      {
+        "challenge_number": 1,
+        "at_leg": 35,
+        "location": "Pilgrim Monument, 1 High Pole Rd"
+      },
+      {
+        "challenge_number": 2,
+        "at_leg": 53,
+        "location": "Chatham Lighthouse, 17 Silver Leaf Ln"
+      }
+    ],
+    "towns_traversed": [
+      "Falmouth",
+      "Mashpee",
+      "Barnstable",
+      "Yarmouth",
+      "Dennis",
+      "Brewster",
+      "Orleans",
+      "Eastham",
+      "Wellfleet",
+      "Truro",
+      "Provincetown",
+      "Harwich",
+      "Chatham",
+      "Sandwich",
+      "Sandwich / Bourne / Sandwich",
+      "Joint Base Cape Cod",
+      "Mashpee / Falmouth"
+    ]
+  },
+  "summary": {
+    "total_legs": 71,
+    "total_distance_miles": 205.72,
+    "challenge_legs": [
+      35,
+      53
+    ],
+    "nighttime_legs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57
+    ],
+    "runner_rotation_cycle_length": 7,
+    "max_runner_slots_14_person": 14
+  },
+  "legs": [
+    {
+      "leg_number": 1,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 1
+      },
+      "distance_miles": 2.72,
+      "start_location": "CC Fairgrounds, Ashumet Rd",
+      "end_location": "George Gaspa Sports Complex, 888 Sandwich Rd",
+      "cumulative_distance_miles": 2.72,
+      "release_time": {
+        "day": 1,
+        "time_24h": "01:00",
+        "original": "1:00am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 2,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 2
+      },
+      "distance_miles": 2.79,
+      "start_location": "George Gaspa Sports Complex",
+      "end_location": "Recovering Champions, 279 Brick Kiln Rd",
+      "cumulative_distance_miles": 5.51,
+      "release_time": {
+        "day": 1,
+        "time_24h": "01:28",
+        "original": "1:28am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 3,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 3
+      },
+      "distance_miles": 2.32,
+      "start_location": "Recovering Champions",
+      "end_location": "Chapoquoit Grill, 410 Rte 28A",
+      "cumulative_distance_miles": 7.83,
+      "release_time": {
+        "day": 1,
+        "time_24h": "01:57",
+        "original": "1:57am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 4,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 4
+      },
+      "distance_miles": 2.63,
+      "start_location": "Chapoquoit Grill",
+      "end_location": "Shining Sea Bikeway @ Seafood Sam's, 356 Palmer Ave",
+      "cumulative_distance_miles": 10.46,
+      "release_time": {
+        "day": 1,
+        "time_24h": "02:21",
+        "original": "2:21am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 5,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 5
+      },
+      "distance_miles": 3.17,
+      "start_location": "CCRT @ Seafood Sam's",
+      "end_location": "Surf Drive Beach, 56 Surf Drive",
+      "cumulative_distance_miles": 13.63,
+      "release_time": {
+        "day": 1,
+        "time_24h": "02:48",
+        "original": "2:48am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 6,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 6
+      },
+      "distance_miles": 2.79,
+      "start_location": "Surf Drive",
+      "end_location": "Shipwrecked, 240 Grand Ave",
+      "cumulative_distance_miles": 16.42,
+      "release_time": {
+        "day": 1,
+        "time_24h": "03:21",
+        "original": "3:21am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 7,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 7
+      },
+      "distance_miles": 2.61,
+      "start_location": "Shipwrecked",
+      "end_location": "Menauhant Beach, 659 Menauhant Rd",
+      "cumulative_distance_miles": 19.03,
+      "release_time": {
+        "day": 1,
+        "time_24h": "03:50",
+        "original": "3:50am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 8,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 8
+      },
+      "distance_miles": 2.01,
+      "start_location": "Menauhant Beach",
+      "end_location": "Kenyon's Market, 15 Central Ave",
+      "cumulative_distance_miles": 21.04,
+      "release_time": {
+        "day": 1,
+        "time_24h": "04:17",
+        "original": "4:17am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 9,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 9
+      },
+      "distance_miles": 2.51,
+      "start_location": "Kenyon's Market",
+      "end_location": "85-89 Martin Rd",
+      "cumulative_distance_miles": 23.55,
+      "release_time": {
+        "day": 1,
+        "time_24h": "04:38",
+        "original": "4:38am"
+      },
+      "town": "Falmouth",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 10,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 10
+      },
+      "distance_miles": 2.7,
+      "start_location": "Martin Rd",
+      "end_location": "Cape Cod Children's Museum, 577 Great Neck Rd S",
+      "cumulative_distance_miles": 26.25,
+      "release_time": {
+        "day": 1,
+        "time_24h": "05:04",
+        "original": "5:04am"
+      },
+      "town": "Mashpee",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 11,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 11
+      },
+      "distance_miles": 2.67,
+      "start_location": "Children's Museum",
+      "end_location": "Heroes In Transition Office, 766 Falmouth Rd",
+      "cumulative_distance_miles": 28.92,
+      "release_time": {
+        "day": 1,
+        "time_24h": "05:32",
+        "original": "5:32am"
+      },
+      "town": "Mashpee",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 12,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 12
+      },
+      "distance_miles": 2.1,
+      "start_location": "HIT Office",
+      "end_location": "Smitty's Ice Cream, Mashpee Rotary",
+      "cumulative_distance_miles": 31.02,
+      "release_time": {
+        "day": 1,
+        "time_24h": "06:00",
+        "original": "6:00am"
+      },
+      "town": "Mashpee",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 13,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 13
+      },
+      "distance_miles": 3.51,
+      "start_location": "Smitty's",
+      "end_location": "Elizabeth Lowell Park, 10 Lowell Ave",
+      "cumulative_distance_miles": 34.53,
+      "release_time": {
+        "day": 1,
+        "time_24h": "06:22",
+        "original": "6:22am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 14,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 14
+      },
+      "distance_miles": 2.68,
+      "start_location": "Lowell Park",
+      "end_location": "Prince Cove Marina, 235 Cedar Tree Neck Rd",
+      "cumulative_distance_miles": 37.21,
+      "release_time": {
+        "day": 1,
+        "time_24h": "06:59",
+        "original": "6:59am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 15,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 1
+      },
+      "distance_miles": 3.19,
+      "start_location": "Prince Cove Marina",
+      "end_location": "Ellen A. McBarron Field, 930 Old Falmouth Rd",
+      "cumulative_distance_miles": 40.4,
+      "release_time": {
+        "day": 1,
+        "time_24h": "07:27",
+        "original": "7:27am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 16,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 2
+      },
+      "distance_miles": 3.31,
+      "start_location": "McBarron Field",
+      "end_location": "Cape and Coast Bank, 1121 Rte 6A",
+      "cumulative_distance_miles": 43.71,
+      "release_time": {
+        "day": 1,
+        "time_24h": "08:00",
+        "original": "8:00am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 17,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 3
+      },
+      "distance_miles": 3.64,
+      "start_location": "Cape & Coast",
+      "end_location": "St. Mary's Church, 3055 Rte 6A",
+      "cumulative_distance_miles": 47.35,
+      "release_time": {
+        "day": 1,
+        "time_24h": "08:34",
+        "original": "8:34am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 18,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 4
+      },
+      "distance_miles": 2.61,
+      "start_location": "St. Mary's",
+      "end_location": "Cummaquid Golf Club, 97 Marstons Ln",
+      "cumulative_distance_miles": 49.96,
+      "release_time": {
+        "day": 1,
+        "time_24h": "09:12",
+        "original": "9:12am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 19,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 5
+      },
+      "distance_miles": 3.05,
+      "start_location": "Cummaquid GC",
+      "end_location": "Fiddlers Green Plaza, 704 Rte 6A",
+      "cumulative_distance_miles": 53.01,
+      "release_time": {
+        "day": 1,
+        "time_24h": "09:39",
+        "original": "9:39am"
+      },
+      "town": "Yarmouth",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 20,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 6
+      },
+      "distance_miles": 3.23,
+      "start_location": "Fiddlers Green",
+      "end_location": "Dennis Senior Center, 407 Setucket Rd",
+      "cumulative_distance_miles": 56.24,
+      "release_time": {
+        "day": 1,
+        "time_24h": "10:11",
+        "original": "10:11am"
+      },
+      "town": "Dennis",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 21,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 7
+      },
+      "distance_miles": 3.4,
+      "start_location": "Dennis Senior Center",
+      "end_location": "Brewster Transfer Station, 179 Run Hill Rd",
+      "cumulative_distance_miles": 59.64,
+      "release_time": {
+        "day": 1,
+        "time_24h": "10:44",
+        "original": "10:44am"
+      },
+      "town": "Brewster",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 22,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 8
+      },
+      "distance_miles": 2.56,
+      "start_location": "Brewster Transfer Station",
+      "end_location": "Brewster Town Hall, 2198 Rte 6A",
+      "cumulative_distance_miles": 62.2,
+      "release_time": {
+        "day": 1,
+        "time_24h": "11:20",
+        "original": "11:20am"
+      },
+      "town": "Brewster",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 23,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 9
+      },
+      "distance_miles": 2.86,
+      "start_location": "Brewster Town Hall",
+      "end_location": "Crosby Beach, 276 Crosby Ln",
+      "cumulative_distance_miles": 65.06,
+      "release_time": {
+        "day": 1,
+        "time_24h": "11:47",
+        "original": "11:47am"
+      },
+      "town": "Brewster",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "coffee",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 24,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 10
+      },
+      "distance_miles": 3.56,
+      "start_location": "Crosby Beach",
+      "end_location": "Cape Cod Rail Trail P/Lot, 17 Old Colony Way",
+      "cumulative_distance_miles": 68.62,
+      "release_time": {
+        "day": 1,
+        "time_24h": "12:17",
+        "original": "12:17pm"
+      },
+      "town": "Orleans",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 25,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 11
+      },
+      "distance_miles": 3.58,
+      "start_location": "CCRT @ Old Colony Way",
+      "end_location": "Eastham Superette, 2475 US-Rte 6",
+      "cumulative_distance_miles": 72.2,
+      "release_time": {
+        "day": 1,
+        "time_24h": "12:54",
+        "original": "12:54pm"
+      },
+      "town": "Eastham",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 26,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 12
+      },
+      "distance_miles": 2.87,
+      "start_location": "Eastham Superette",
+      "end_location": "Cape Cod Rail Trail, Nauset Rd & Railroad Ave",
+      "cumulative_distance_miles": 75.07,
+      "release_time": {
+        "day": 1,
+        "time_24h": "13:31",
+        "original": "1:31pm"
+      },
+      "town": "Eastham",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 27,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 13
+      },
+      "distance_miles": 3.62,
+      "start_location": "CCRT @ Nauset & Railroad",
+      "end_location": "Cape Cod Rail Trail, 29 Lecount Hollow Rd",
+      "cumulative_distance_miles": 78.69,
+      "release_time": {
+        "day": 1,
+        "time_24h": "14:01",
+        "original": "2:01pm"
+      },
+      "town": "Wellfleet",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "coffee",
+          "food",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 28,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 14
+      },
+      "distance_miles": 2.46,
+      "start_location": "CCRT @ Lecount Hollow Rd",
+      "end_location": "Beachcomber, Cahoon Hollow & Ocean View Rd",
+      "cumulative_distance_miles": 81.15,
+      "release_time": {
+        "day": 1,
+        "time_24h": "14:39",
+        "original": "2:39pm"
+      },
+      "town": "Wellfleet",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 29,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 1
+      },
+      "distance_miles": 3.25,
+      "start_location": "Beachcomber",
+      "end_location": "Moby Dick Restaurant, 3225 US-Rte 6",
+      "cumulative_distance_miles": 84.4,
+      "release_time": {
+        "day": 1,
+        "time_24h": "15:05",
+        "original": "3:05pm"
+      },
+      "town": "Wellfleet",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 30,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 2
+      },
+      "distance_miles": 3.54,
+      "start_location": "Moby Dick",
+      "end_location": "Collins Rd & South Pamet Rd",
+      "cumulative_distance_miles": 87.94,
+      "release_time": {
+        "day": 1,
+        "time_24h": "15:38",
+        "original": "3:38pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 31,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 3
+      },
+      "distance_miles": 2.23,
+      "start_location": "Collins & S. Pamet",
+      "end_location": "268 Route 6",
+      "cumulative_distance_miles": 90.17,
+      "release_time": {
+        "day": 1,
+        "time_24h": "16:15",
+        "original": "4:15pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 32,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 4
+      },
+      "distance_miles": 2.01,
+      "start_location": "268 Route 6",
+      "end_location": "South Highland & South Hollow Rd",
+      "cumulative_distance_miles": 92.18,
+      "release_time": {
+        "day": 1,
+        "time_24h": "16:38",
+        "original": "4:38pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 33,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 5
+      },
+      "distance_miles": 2.09,
+      "start_location": "S. Highland & S. Hollow",
+      "end_location": "Prince of Whales, 104 Shore Rd",
+      "cumulative_distance_miles": 94.27,
+      "release_time": {
+        "day": 1,
+        "time_24h": "16:59",
+        "original": "4:59pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "coffee",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 34,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 6
+      },
+      "distance_miles": 3.11,
+      "start_location": "Prince of Whales",
+      "end_location": "Kalmar Village, 674 Shore Rd",
+      "cumulative_distance_miles": 97.38,
+      "release_time": {
+        "day": 1,
+        "time_24h": "17:21",
+        "original": "5:21pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 35,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 7
+      },
+      "distance_miles": 2.7,
+      "start_location": "Kalmar Village",
+      "end_location": "Pilgrim Monument, 1 High Pole Rd",
+      "cumulative_distance_miles": 100.08,
+      "release_time": {
+        "day": 1,
+        "time_24h": "17:53",
+        "original": "5:53pm"
+      },
+      "town": "Provincetown",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": 1
+      }
+    },
+    {
+      "leg_number": 36,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 8
+      },
+      "distance_miles": 2.63,
+      "start_location": "Pilgrim Monument",
+      "end_location": "Kalmar Village, 674 Shore Rd",
+      "cumulative_distance_miles": 102.71,
+      "release_time": {
+        "day": 1,
+        "time_24h": "18:37",
+        "original": "6:37pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 37,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 9
+      },
+      "distance_miles": 3.11,
+      "start_location": "Kalmar Village",
+      "end_location": "Prince of Whales, 104 Shore Rd",
+      "cumulative_distance_miles": 105.82,
+      "release_time": {
+        "day": 1,
+        "time_24h": "19:04",
+        "original": "7:04pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "coffee",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 38,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 10
+      },
+      "distance_miles": 2.09,
+      "start_location": "Prince of Whales",
+      "end_location": "South Highland & South Hollow Rd",
+      "cumulative_distance_miles": 107.91,
+      "release_time": {
+        "day": 1,
+        "time_24h": "19:36",
+        "original": "7:36pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 39,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 11
+      },
+      "distance_miles": 2.02,
+      "start_location": "S. Highland & S. Hollow",
+      "end_location": "268 Route 6",
+      "cumulative_distance_miles": 109.93,
+      "release_time": {
+        "day": 1,
+        "time_24h": "19:58",
+        "original": "7:58pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 40,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 12
+      },
+      "distance_miles": 2.23,
+      "start_location": "268 Route 6",
+      "end_location": "Collins Rd & South Pamet Rd",
+      "cumulative_distance_miles": 112.16,
+      "release_time": {
+        "day": 1,
+        "time_24h": "20:19",
+        "original": "8:19pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 41,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 13
+      },
+      "distance_miles": 3.56,
+      "start_location": "Collins & S. Pamet",
+      "end_location": "Moby Dick's Restaurant, 3225 US-Route 6",
+      "cumulative_distance_miles": 115.72,
+      "release_time": {
+        "day": 1,
+        "time_24h": "20:42",
+        "original": "8:42pm"
+      },
+      "town": "Truro",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 42,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 14
+      },
+      "distance_miles": 3.25,
+      "start_location": "Moby Dick's",
+      "end_location": "Beachcomber, Cahoon Hollow & Ocean View Rd",
+      "cumulative_distance_miles": 118.97,
+      "release_time": {
+        "day": 1,
+        "time_24h": "21:19",
+        "original": "9:19pm"
+      },
+      "town": "Wellfleet",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 43,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 1
+      },
+      "distance_miles": 2.47,
+      "start_location": "Beachcomber",
+      "end_location": "Cape Cod Rail Trail @ 29 Lecount Hollow Rd",
+      "cumulative_distance_miles": 121.44,
+      "release_time": {
+        "day": 1,
+        "time_24h": "21:53",
+        "original": "9:53pm"
+      },
+      "town": "Wellfleet",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "coffee",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 44,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 2
+      },
+      "distance_miles": 3.6,
+      "start_location": "CCRT @ Lecount Hollow Rd",
+      "end_location": "Cape Cod Rail Trail, Nauset Rd & Railroad Ave",
+      "cumulative_distance_miles": 125.04,
+      "release_time": {
+        "day": 1,
+        "time_24h": "22:19",
+        "original": "10:19pm"
+      },
+      "town": "Eastham",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 45,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 3
+      },
+      "distance_miles": 2.86,
+      "start_location": "CCRT @ Nauset & Railroad",
+      "end_location": "Eastham Superette, 2475 US-Route 6",
+      "cumulative_distance_miles": 127.9,
+      "release_time": {
+        "day": 1,
+        "time_24h": "22:57",
+        "original": "10:57pm"
+      },
+      "town": "Eastham",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 46,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 4
+      },
+      "distance_miles": 3.16,
+      "start_location": "Eastham Superette",
+      "end_location": "CCRT @ St. Joan of Arc Church, 61 Canal Rd",
+      "cumulative_distance_miles": 131.06,
+      "release_time": {
+        "day": 1,
+        "time_24h": "23:27",
+        "original": "11:27pm"
+      },
+      "town": "Orleans",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 47,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 5
+      },
+      "distance_miles": 2.95,
+      "start_location": "CCRT @ Joan of Arc",
+      "end_location": "CCRT @ Nickerson State Park, 3499 Route 6A",
+      "cumulative_distance_miles": 134.01,
+      "release_time": {
+        "day": 2,
+        "time_24h": "00:00",
+        "original": "12:00am"
+      },
+      "town": "Brewster",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 48,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 6
+      },
+      "distance_miles": 2.66,
+      "start_location": "CCRT @ Nickerson State Park",
+      "end_location": "CCRT @ 500 Long Pond Rd",
+      "cumulative_distance_miles": 136.67,
+      "release_time": {
+        "day": 2,
+        "time_24h": "00:31",
+        "original": "12:31am"
+      },
+      "town": "Brewster",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 49,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 7
+      },
+      "distance_miles": 3.35,
+      "start_location": "CCRT @ Long Pond Rd",
+      "end_location": "CCRT @ 55 Headwaters Dr",
+      "cumulative_distance_miles": 140.02,
+      "release_time": {
+        "day": 2,
+        "time_24h": "00:59",
+        "original": "12:59am"
+      },
+      "town": "Harwich",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 50,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 8
+      },
+      "distance_miles": 2.33,
+      "start_location": "CCRT @ Headwaters Dr",
+      "end_location": "Old Colony Rail Trail @ 1 Oak St",
+      "cumulative_distance_miles": 142.35,
+      "release_time": {
+        "day": 2,
+        "time_24h": "01:34",
+        "original": "1:34am"
+      },
+      "town": "Harwich",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 51,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 9
+      },
+      "distance_miles": 2.93,
+      "start_location": "OCRT @ Oak St",
+      "end_location": "OCRT @ Meetinghouse Rd",
+      "cumulative_distance_miles": 145.28,
+      "release_time": {
+        "day": 2,
+        "time_24h": "01:58",
+        "original": "1:58am"
+      },
+      "town": "Chatham",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 52,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 10
+      },
+      "distance_miles": 3.25,
+      "start_location": "OCRT @ Meetinghouse Rd",
+      "end_location": "Rear of Monomoy Middle Sch, 135 Stepping Stones Rd",
+      "cumulative_distance_miles": 148.53,
+      "release_time": {
+        "day": 2,
+        "time_24h": "02:29",
+        "original": "2:29am"
+      },
+      "town": "Chatham",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 53,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 11
+      },
+      "distance_miles": 2.61,
+      "start_location": "Stepping Stones Rd",
+      "end_location": "Chatham Lighthouse, 17 Silver Leaf Ln",
+      "cumulative_distance_miles": 151.14,
+      "release_time": {
+        "day": 2,
+        "time_24h": "03:03",
+        "original": "3:03am"
+      },
+      "town": "Chatham",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": 2
+      }
+    },
+    {
+      "leg_number": 54,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 12
+      },
+      "distance_miles": 3.08,
+      "start_location": "Chatham Lighthouse",
+      "end_location": "Ocean State Job Lot, 1674 Route 28",
+      "cumulative_distance_miles": 154.22,
+      "release_time": {
+        "day": 2,
+        "time_24h": "03:51",
+        "original": "3:51am"
+      },
+      "town": "Chatham",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 55,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 13
+      },
+      "distance_miles": 3.72,
+      "start_location": "Ocean State Job Lot",
+      "end_location": "Saquatucket Marina, 715 Route 28",
+      "cumulative_distance_miles": 157.94,
+      "release_time": {
+        "day": 2,
+        "time_24h": "04:23",
+        "original": "4:23am"
+      },
+      "town": "Harwich",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 56,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 14
+      },
+      "distance_miles": 3.36,
+      "start_location": "Saquatucket Marina",
+      "end_location": "Sea View Park, 475 Lower County Rd",
+      "cumulative_distance_miles": 161.3,
+      "release_time": {
+        "day": 2,
+        "time_24h": "05:02",
+        "original": "5:02am"
+      },
+      "town": "Dennis",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 57,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 1
+      },
+      "distance_miles": 2.87,
+      "start_location": "Sea View Park",
+      "end_location": "Good Friends Caf\u00e9, 83 School St",
+      "cumulative_distance_miles": 164.17,
+      "release_time": {
+        "day": 2,
+        "time_24h": "05:37",
+        "original": "5:37am"
+      },
+      "town": "Dennis",
+      "nighttime_overlap": true,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 58,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 2
+      },
+      "distance_miles": 3.68,
+      "start_location": "Good Friends Caf\u00e9",
+      "end_location": "West Yarmouth Post Office, 602 Route 28",
+      "cumulative_distance_miles": 167.85,
+      "release_time": {
+        "day": 2,
+        "time_24h": "06:07",
+        "original": "6:07am"
+      },
+      "town": "Yarmouth",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 59,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 3
+      },
+      "distance_miles": 3.35,
+      "start_location": "W. Yarmouth Post Office",
+      "end_location": "Smith Family Popcorn, 545 Main St",
+      "cumulative_distance_miles": 171.2,
+      "release_time": {
+        "day": 2,
+        "time_24h": "06:45",
+        "original": "6:45am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "coffee",
+          "food",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 60,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 4
+      },
+      "distance_miles": 3.39,
+      "start_location": "Smith Family Popcorn",
+      "end_location": "Barnstable Police Dept, 1200 Phinney's Ln",
+      "cumulative_distance_miles": 174.59,
+      "release_time": {
+        "day": 2,
+        "time_24h": "07:20",
+        "original": "7:20am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 61,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 5
+      },
+      "distance_miles": 2.93,
+      "start_location": "Barnstable PD",
+      "end_location": "Barnstable Land Trust, 1540 Route 6A",
+      "cumulative_distance_miles": 177.52,
+      "release_time": {
+        "day": 2,
+        "time_24h": "07:55",
+        "original": "7:55am"
+      },
+      "town": "Barnstable",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 62,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 6
+      },
+      "distance_miles": 3.12,
+      "start_location": "Barnstable Land Trust",
+      "end_location": "Amari Restaurant, 674 Route 6A",
+      "cumulative_distance_miles": 180.64,
+      "release_time": {
+        "day": 2,
+        "time_24h": "08:26",
+        "original": "8:26am"
+      },
+      "town": "Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 63,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 7
+      },
+      "distance_miles": 3.23,
+      "start_location": "Amari's",
+      "end_location": "Scenic Roots, 349 Route 6A",
+      "cumulative_distance_miles": 183.87,
+      "release_time": {
+        "day": 2,
+        "time_24h": "08:59",
+        "original": "8:59am"
+      },
+      "town": "Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 64,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 8
+      },
+      "distance_miles": 3.87,
+      "start_location": "Scenic Roots",
+      "end_location": "Canal Service Rd/Sandwich Marina, 10 Freezer Rd",
+      "cumulative_distance_miles": 187.74,
+      "release_time": {
+        "day": 2,
+        "time_24h": "09:33",
+        "original": "9:33am"
+      },
+      "town": "Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 65,
+      "runner_slot": {
+        "seven_person": 2,
+        "fourteen_person": 9
+      },
+      "distance_miles": 2.45,
+      "start_location": "Sandwich Marina",
+      "end_location": "American Legion Post 188, 20 Main St/Rte 130",
+      "cumulative_distance_miles": 190.19,
+      "release_time": {
+        "day": 2,
+        "time_24h": "10:13",
+        "original": "10:13am"
+      },
+      "town": "Sandwich / Bourne / Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom",
+          "coffee",
+          "food",
+          "pt"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 66,
+      "runner_slot": {
+        "seven_person": 3,
+        "fourteen_person": 10
+      },
+      "distance_miles": 2.74,
+      "start_location": "American Legion",
+      "end_location": "Sandwich Chamber of Commerce, 520 Rte 130",
+      "cumulative_distance_miles": 192.93,
+      "release_time": {
+        "day": 2,
+        "time_24h": "10:39",
+        "original": "10:39am"
+      },
+      "town": "Sandwich / Bourne / Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 67,
+      "runner_slot": {
+        "seven_person": 4,
+        "fourteen_person": 11
+      },
+      "distance_miles": 2.34,
+      "start_location": "Chamber of Commerce",
+      "end_location": "Fitzie's Barbershop, 355 Cotuit Rd",
+      "cumulative_distance_miles": 195.27,
+      "release_time": {
+        "day": 2,
+        "time_24h": "11:08",
+        "original": "11:08am"
+      },
+      "town": "Sandwich / Bourne / Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 68,
+      "runner_slot": {
+        "seven_person": 5,
+        "fourteen_person": 12
+      },
+      "distance_miles": 2.05,
+      "start_location": "Fitzie's",
+      "end_location": "Forestdale Church, 110 Route 130",
+      "cumulative_distance_miles": 197.32,
+      "release_time": {
+        "day": 2,
+        "time_24h": "11:32",
+        "original": "11:32am"
+      },
+      "town": "Sandwich / Bourne / Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [
+          "bathroom"
+        ],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 69,
+      "runner_slot": {
+        "seven_person": 6,
+        "fourteen_person": 13
+      },
+      "distance_miles": 2.53,
+      "start_location": "Forestdale Church",
+      "end_location": "JBCC, Sandwich Gate @ Snake Pond Rd",
+      "cumulative_distance_miles": 199.85,
+      "release_time": {
+        "day": 2,
+        "time_24h": "11:53",
+        "original": "11:53am"
+      },
+      "town": "Sandwich / Bourne / Sandwich",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 70,
+      "runner_slot": {
+        "seven_person": 7,
+        "fourteen_person": 14
+      },
+      "distance_miles": 3.66,
+      "start_location": "JBCC Sandwich Gate",
+      "end_location": "Exit JBCC, Falmouth Gate - Simpkins Rd & Kittredge Rd",
+      "cumulative_distance_miles": 203.51,
+      "release_time": {
+        "day": 2,
+        "time_24h": "12:19",
+        "original": "12:19pm"
+      },
+      "controlled_start_time": {
+        "day": 2,
+        "time_24h": "06:00",
+        "original": "6:00am"
+      },
+      "town": "Joint Base Cape Cod",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    },
+    {
+      "leg_number": 71,
+      "runner_slot": {
+        "seven_person": 1,
+        "fourteen_person": 1
+      },
+      "distance_miles": 2.21,
+      "start_location": "Kittredge Rd",
+      "end_location": "Cape Cod Fairgrounds on Ashumet Rd",
+      "cumulative_distance_miles": 205.72,
+      "release_time": {
+        "day": 2,
+        "time_24h": "12:57",
+        "original": "12:57pm"
+      },
+      "town": "Mashpee / Falmouth",
+      "nighttime_overlap": false,
+      "notes": {
+        "amenities": [],
+        "challenge": null
+      }
+    }
+  ]
+}
