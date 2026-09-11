@@ -133,18 +133,7 @@ export default function App() {
       </header>
       <main>
         <div className="page-heading">
-          <div>
-            <div className="eyebrow">RACE DIRECTOR’S WORKSPACE</div>
-            <h1>A tighter field. A clearer plan.</h1>
-            <p>
-              Explore starting waves and release paces. See what changes along
-              the course.
-            </p>
-          </div>
-          <span className="badge">
-            <span className="live-dot" />
-            2026 course · Historical field
-          </span>
+          <h1>Ruck4HIT Wave Planner</h1>
         </div>
         <section className="panel" aria-labelledby="configure-title">
           <div className="section-head">
