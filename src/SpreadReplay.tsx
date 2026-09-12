@@ -25,7 +25,7 @@ export function SpreadReplay({
   const [source, setSource] = useState(result);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [interval, setIntervalSeconds] = useState(1);
+  const [interval, setIntervalSeconds] = useState(historical ? 0.25 : 1);
   const [loop, setLoop] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState("");
