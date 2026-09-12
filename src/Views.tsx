@@ -22,7 +22,6 @@ export function HistoricalData() {
 }
 
 export function Summary({result,scenario}:{result:Simulation;scenario:Scenario}) {
-  const late=result.teams.filter(t=>t.finish>scenario.release.targetFinish+1e-7);
   const lastFinish=result.teams.length ? Math.max(...result.teams.map(t=>t.finish)) : null;
   const gates=scenario.timingRules.filter(r=>r.enabled && r.type==="depart-after" && r.time>result.releases[r.exchange]);
   return <div className="live-summary">
@@ -32,7 +31,6 @@ export function Summary({result,scenario}:{result:Simulation;scenario:Scenario})
       <article><span>Last runner off course</span><strong>{clock(result.lastOffCourse)}</strong><small>All outstanding legs complete</small></article>
       <article><span>Exchange coverage</span><strong>{result.exchangeHours.toFixed(1)} hrs</strong><small>{result.releaseCount} releases · peak {result.peakActive} active/team</small></article>
     </div>
-    <p role="status" className={late.length ? "finish-feedback rule-failed":"finish-feedback"}>{!result.teams.length ? "Finish target: Not evaluated" : late.length ? `${late.length} profiles finish after the target · latest overrun ${duration(Math.max(...late.map(t=>t.finish))-scenario.release.targetFinish)}` : "All simulated final-leg finishes meet the target."}</p>
     {!!gates.length && <p className="gate-feedback">{gates.length} gate opening{gates.length===1?"":"s"} later than the planned release time. See timing rules for actual holds.</p>}
   </div>;
 }
