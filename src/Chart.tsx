@@ -272,18 +272,15 @@ export function Chart({
           </button>
         </div>
         <label className="inline-label">
-          Highlight
+          Team
           <select
-            aria-label="Highlight wave or team"
-            value={highlight}
+            aria-label="Highlight team"
+            value={selected}
             onChange={(e) => {
               setSelected(e.target.value);
             }}
           >
-            <option value="">All teams</option>
-            <optgroup label="Waves">
-              {orderedWaveEntries(scenario).map(({ w }) => <option key={w.id} value={'wave:' + w.id}>{w.name}</option>)}
-            </optgroup>
+            <option value="">No individual team</option>
             <optgroup label="Teams">
             {result.teams.map((t) => (
               <option key={t.teamId} value={t.teamId}>
@@ -294,6 +291,15 @@ export function Chart({
             </optgroup>
           </select>
         </label>
+        <div className="wave-highlights" role="group" aria-label="Highlight waves">
+          <span>Waves</span>
+          {orderedWaveEntries(scenario).map(({ w }) => (
+            <button key={w.id} aria-label={'Highlight ' + w.name} aria-pressed={selectedWave === w.id}
+              onClick={() => setSelected(selectedWave === w.id ? '' : 'wave:' + w.id)}>
+              <i aria-hidden="true" style={{ background: w.color }} />{w.name}
+            </button>
+          ))}
+        </div>
         <div className="chart-navigation" role="group" aria-label="Chart navigation">
           <div className="segmented" role="group" aria-label="Chart interaction">
             <button aria-pressed={tool === "inspect"} onClick={() => setTool("inspect")}>Inspect</button>

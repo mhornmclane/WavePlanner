@@ -371,6 +371,11 @@ main {
 .legend .baseline-edge { height:0; width:22px; border-top:2px dashed #526b91; }
 .legend .baseline-edge.latest { border-top-style:dotted; }
 .baseline-note { margin:0; padding:0 var(--panel-gutter) 20px; font-size:12px; color:var(--muted); }
+.wave-highlights { display:flex; flex-wrap:wrap; align-items:center; gap:8px; min-width:0; }
+.wave-highlights > span { color:var(--muted); font-size:11px; }
+.wave-highlights button { display:inline-flex; align-items:center; gap:7px; padding:7px 11px; font-size:12px; white-space:normal; }
+.wave-highlights i { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.wave-highlights button[aria-pressed="true"] { background:var(--ink); color:white; border-color:var(--ink); }
 
 
 

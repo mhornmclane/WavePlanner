@@ -8,10 +8,12 @@ test("wave focus draws in front without changing the baseline envelope or viewpo
   const chart = page.locator(".chart-canvas");
   const view = await chart.getAttribute("data-viewport");
   const band = await page.locator(".baseline-band").getAttribute("d");
-  const focus = page.getByLabel("Highlight wave or team");
-  await focus.selectOption("wave:wave-2");
+  const focus = page.getByLabel("Highlight team");
+  await page.getByRole("button", { name: "Highlight Wave 2", exact: true }).click();
   const trajectories = page.locator(".team-trajectory");
   const originalCount = await trajectories.count();
+  await expect(focus.locator('option[value^="wave:"]')).toHaveCount(0);
+  await expect(focus).toHaveValue("");
   const waves = await trajectories.evaluateAll(nodes => nodes.map(n => n.getAttribute("data-wave-id")));
   expect(waves.slice(waves.indexOf("wave-2")).every(w => w === "wave-2")).toBe(true);
   await expect(trajectories.filter({ has: page.locator('.hit-line') }).first()).toHaveAttribute("data-wave-id", "wave-2");
@@ -22,15 +24,19 @@ test("wave focus draws in front without changing the baseline envelope or viewpo
   }
   await expect(chart).toHaveAttribute("data-viewport", view!);
   await expect(page.locator(".baseline-band")).toHaveAttribute("d", band!);
+  await page.getByRole("button", { name: "Highlight Wave 2", exact: true }).click();
+  await expect(trajectories.first()).toHaveAttribute("opacity", "0.62");
+  await page.getByRole("button", { name: "Highlight Wave 2", exact: true }).click();
   const team = await page.locator('optgroup[label="Teams"] option').first().getAttribute("value");
   await focus.selectOption(team!);
+  await expect(page.getByRole("button", { name: "Highlight Wave 2", exact: true })).toHaveAttribute("aria-pressed", "false");
   await expect(trajectories.last()).toHaveAttribute("data-team-id", team!);
   await focus.selectOption("");
   await expect(trajectories).toHaveCount(originalCount);
   await expect(trajectories.first()).toHaveAttribute("opacity", "0.62");
-  await focus.selectOption("wave:wave-2");
+  await page.getByRole("button", { name: "Highlight Wave 2", exact: true }).click();
   await page.getByLabel("Wave 2 start time", { exact: true }).fill("03:00");
-  await expect(focus).toHaveValue("wave:wave-2");
+  await expect(page.getByRole("button", { name: "Highlight Wave 2", exact: true })).toHaveAttribute("aria-pressed", "true");
   await page.getByLabel("Remove wave 2", { exact: true }).click();
   await expect(focus).toHaveValue("");
   await focus.selectOption(team!);
@@ -56,7 +62,7 @@ test("summary leads both visualizers and baseline fits at desktop, tablet and ph
     await below();
     await page.getByLabel("2026 baseline", { exact: true }).check();
     await expect(page.locator('.baseline-envelope')).toBeAttached();
-    await page.getByLabel("Highlight wave or team").selectOption("wave:wave-2");
+    await page.getByRole("button", { name: "Highlight Wave 2", exact: true }).click();
     await page.locator('.trajectory').screenshot({ path: `artifacts/comparison-${width}.png` });
     await page.getByRole('button', {name:'Zoom in',exact:true}).click();
     await page.locator('.trajectory').screenshot({ path: `artifacts/comparison-zoom-${width}.png` });
