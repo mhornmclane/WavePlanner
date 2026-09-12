@@ -1,3 +1,4 @@
+import { HistoricalReplay } from "./HistoricalReplay";
 import { syncAssignments } from "./waves";
 import { TimingRuleSummary } from "./TimingRuleControls";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -21,7 +22,7 @@ import type { Scenario } from "./model";
 import { createPreset, presets, type PresetId } from "./presets";
 
 export default function App() {
-  const [section, setSection] = useState<"history" | "simulation" | "results">("simulation");
+  const [section, setSection] = useState<"history" | "historical-replay" | "simulation" | "results">("simulation");
   const [scenario, setScenario] = useState(initialScenario);
   const [presetId, setPresetId] = useState<PresetId | "custom">("custom");
   const [configRevision, setConfigRevision] = useState(0);
@@ -140,11 +141,12 @@ export default function App() {
     <main>
       <div className="page-heading"><div><div className="eyebrow">PLAN THE FIELD. BRING EVERYONE TOGETHER.</div><h1>Ruck4HIT Wave Planner</h1></div></div>
       <nav className="section-nav" aria-label="Planner sections">{([
-        ["history", "Historical data"], ["simulation", "Simulation"], ["results", "Results"]
+        ["history", "Historical data"], ["historical-replay", "Historical replay"], ["simulation", "Simulation"], ["results", "Results"]
       ] as const).map(([id,label])=><button key={id} aria-current={section===id ? "page" : undefined} onClick={()=>setSection(id)}>{label}</button>)}</nav>
       {notice && <div className="notice" role="status"><span>{notice}</span><button className="quiet" aria-label="Dismiss notification" onClick={()=>setNotice("")}>×</button></div>}
       {fileError && <div className="error-message" role="alert"><span>{fileError}</span><button className="quiet" aria-label="Dismiss file error" onClick={()=>setFileError("")}>×</button></div>}
       <div hidden={section!=="history"}><HistoricalData/></div>
+      <div hidden={section!=="historical-replay"}><HistoricalReplay active={section==="historical-replay"}/></div>
       <div hidden={section!=="simulation"}>
         <div className="workspace-heading"><div><h2>Shape the race</h2><p className="muted">Choose your field and waves. Watch the course respond.</p></div><button className="primary" onClick={()=>setSection("results")}>View results →</button></div>
         <details className="configuration-files"><summary>Configuration files · {scenario.name} · {dirty ? "Unsaved" : "Saved"}</summary>

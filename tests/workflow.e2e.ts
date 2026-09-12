@@ -131,11 +131,11 @@ test("chart controls and replay work, and leaving replay pauses while preserving
   await page.getByRole("checkbox",{name:"2026 baseline"}).check();await page.getByRole("button",{name:"Exchanges",exact:true}).click();
   await page.getByRole("button",{name:"Zoom in",exact:true}).click();await expect(page.locator(".chart-zoom-level")).toHaveText("2.0×");
   await section(page,"Historical data");await section(page,"Simulation");await expect(page.locator(".chart-zoom-level")).toHaveText("2.0×");
-  await page.getByRole("button",{name:"Spread replay",exact:true}).click();await page.getByLabel("Replay exchange",{exact:true}).fill("35");
-  await expect(page.getByLabel("Replay exchange",{exact:true})).toHaveValue("35");
+  await page.getByRole("button",{name:"Spread replay",exact:true}).click();await page.getByRole("region",{name:"Spread replay",exact:true}).getByLabel("Replay exchange",{exact:true}).fill("35");
+  await expect(page.getByRole("region",{name:"Spread replay",exact:true}).getByLabel("Replay exchange",{exact:true})).toHaveValue("35");
   await page.getByRole("button",{name:"Play",exact:true}).click();await section(page,"Results");await section(page,"Simulation");
-  await expect(page.getByRole("button",{name:"Play",exact:true})).toBeVisible();await expect(page.getByLabel("Replay exchange",{exact:true})).toHaveValue("35");
-  await page.getByLabel("Release pace",{exact:true}).fill("11:00");await expect(page.getByLabel("Replay exchange",{exact:true})).toHaveValue("0");
+  await expect(page.getByRole("button",{name:"Play",exact:true})).toBeVisible();await expect(page.getByRole("region",{name:"Spread replay",exact:true}).getByLabel("Replay exchange",{exact:true})).toHaveValue("35");
+  await page.getByLabel("Release pace",{exact:true}).fill("11:00");await expect(page.getByRole("region",{name:"Spread replay",exact:true}).getByLabel("Replay exchange",{exact:true})).toHaveValue("0");
 });
 
 test("desktop and mobile sections fit the viewport and render without errors",async({page})=>{

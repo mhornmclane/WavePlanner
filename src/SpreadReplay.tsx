@@ -1,5 +1,6 @@
+import { buildHistoricalReplay, yearColors } from "./historicalReplayData";
 import { orderedWaveEntries } from "./waves";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { resolveProfile } from "./data";
 import { clock, duration } from "./format";
 import type { Scenario, Simulation } from "./model";
@@ -10,12 +11,17 @@ export function SpreadReplay({
   result,
   scenario,
   active = true,
+  historical = false,
 }: {
   result: Simulation;
   scenario: Scenario;
   active?: boolean;
+  historical?: boolean;
 }) {
-  const data = useMemo(() => buildReplay(result), [result]);
+  const id = useId();
+  const titleId = `${id}-title`;
+  const detailId = `${id}-detail`;
+  const data = useMemo(() => historical ? buildHistoricalReplay(result) : buildReplay(result), [result, historical]);
   const [source, setSource] = useState(result);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -28,7 +34,7 @@ export function SpreadReplay({
   // Reset before rendering new simulation data, including while a timer is active.
   if (source !== result) {
     setSource(result);
-    setIndex(0);
+    if (!historical) setIndex(0);
     setPlaying(false);
     setInspected("");
     setPinned("");
@@ -75,7 +81,7 @@ export function SpreadReplay({
   return (
     <section
       className="panel spread-replay"
-      aria-labelledby="replay-title"
+      aria-labelledby={titleId}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           setPinned("");
@@ -87,14 +93,14 @@ export function SpreadReplay({
       <div className="section-head">
         <div>
           <div className="eyebrow">02 / VISUALIZE</div>
-          <h2 id="replay-title">Spread replay</h2>
+          <h2 id={titleId}>{historical ? "Historical replay" : "Spread replay"}</h2>
         </div>
         <span className="badge">
-          {result.teams.length} teams · Current scenario
+          {result.teams.length} teams · {historical ? "Published baseline" : "Current scenario"}
         </span>
       </div>
       <p className="replay-caption">
-        The last team stays at zero. The leader moves right as the spread grows.
+        {historical ? "Recorded leg paces replayed using published baseline rules. Each year’s last team stays at zero." : "The last team stays at zero."} The leader moves right as the spread grows.
         Each step compares arrivals at one exchange.
       </p>
       <div className="replay-frame-heading" aria-live="polite">
@@ -102,7 +108,14 @@ export function SpreadReplay({
           <span className="eyebrow">{frameLabel}</span>
           <h3>{frame.name}</h3>
         </div>
-        <dl className="replay-metrics">
+        {historical ? <div className="replay-year-metrics">{frame.years?.map(y => <div key={y.year} data-year={y.year}>
+          <strong style={{ color: yearColors[y.year] }}>{y.year}</strong>
+          <dl className="replay-metrics">
+            <div><dt>{index === 0 ? "First start" : "First arrival"}</dt><dd>{clock(y.first)}</dd></div>
+            <div><dt>{index === 0 ? "Last start" : "Last arrival"}</dt><dd>{clock(y.last)}</dd></div>
+            <div><dt>Spread</dt><dd>{duration(y.spread)}</dd></div>
+          </dl>
+        </div>)}</div> : <dl className="replay-metrics">
           <div>
             <dt>{index === 0 ? "First start" : "First arrival"}</dt>
             <dd data-testid="replay-first">{clock(frame.first)}</dd>
@@ -117,7 +130,7 @@ export function SpreadReplay({
               {empty ? "—" : duration(frame.spread)}
             </dd>
           </div>
-        </dl>
+        </dl>}
       </div>
       <div className="replay-controls">
         <div className="replay-buttons">
@@ -222,16 +235,17 @@ export function SpreadReplay({
         </label>
       </div>
       <div className="replay-legend">
-        {orderedWaveEntries(scenario).map(({ w: wave }) => (
+        {historical ? frame.years?.map(y => <span key={y.year}><i style={{ background: yearColors[y.year] }}/>{y.year}</span>) : orderedWaveEntries(scenario).map(({ w: wave }) => (
           <span key={wave.id}>
             <i style={{ background: wave.color }} />
             {wave.name}
           </span>
         ))}
       </div>
+      {historical && <p className="replay-shape-legend">● Circle: arrival at or before release · ◆ Diamond: arrival after release. Start and Finish use circles.</p>}
       <div
         className="replay-detail"
-        id="replay-detail"
+        id={detailId}
         aria-label="Replay team details"
       >
         {detail && profile ? (
@@ -239,11 +253,16 @@ export function SpreadReplay({
             <strong>
               {profile.team} · {profile.year}
             </strong>
-            <span>{waves.get(detail.waveId)?.name}</span>
+            {!historical && <span>{waves.get(detail.waveId)?.name}</span>}
             <span>
               {index === 0 ? "Start" : "Arrival"}: {clock(detail.time)}
             </span>
-            <span>Ahead of last: {duration(detail.ahead)}</span>
+            <span>Ahead of {historical ? "year’s last" : "last"}: {duration(detail.ahead)}</span>
+            {historical && detail.release !== undefined && <>
+              <span>Published release: {clock(detail.release)}</span>
+              <span>Time late: {duration(detail.late!)}</span>
+              <span>Another runner departed before arrival: {detail.overlaps ? "Yes" : "No"}</span>
+            </>}
             <button
               className="quiet"
               aria-label="Clear replay inspection"
@@ -258,14 +277,14 @@ export function SpreadReplay({
           </>
         ) : (
           <span>
-            Hover, tap, or focus a dot to inspect a team. Overlapping dots share
+            Hover, tap, or focus a marker to inspect a team. Overlapping markers share
             the same line; use team search or Tab to inspect a hidden team.
           </span>
         )}
       </div>
       {empty && (
         <p className="replay-empty" role="status">
-          Select historical teams to replay their spread.
+          {historical ? "Select one or more years to replay their spread." : "Select historical teams to replay their spread."}
         </p>
       )}
       <div className="replay-scroll" tabIndex={0} aria-label="Team spread plot">
@@ -286,18 +305,18 @@ export function SpreadReplay({
               return (
                 <button
                   key={marker.teamId}
-                  className={`replay-marker${selected === marker.teamId || pinned === marker.teamId ? " is-highlighted" : ""}`}
+                  className={`replay-marker${historical && marker.late! > 0 ? " is-diamond" : ""}${selected === marker.teamId || pinned === marker.teamId ? " is-highlighted" : ""}`}
                   data-team-id={marker.teamId}
                   data-ahead={marker.ahead}
                   style={{
                     left: `${(marker.ahead / data.axisSeconds) * 100}%`,
-                    background: wave.color,
+                    background: historical ? yearColors[Number(p.year)] : wave.color,
                     opacity: selected && selected !== marker.teamId ? 0.3 : 1,
                   }}
-                  aria-label={`${p.team}, ${p.year}, ${wave.name}, ${index === 0 ? "start" : "arrival"} ${clock(marker.time)}, ${duration(marker.ahead)} ahead of last`}
+                  aria-label={`${p.team}, ${p.year}, ${historical ? (marker.late! > 0 ? "diamond, arrival after release" : "circle") : wave.name}, ${index === 0 ? "start" : "arrival"} ${clock(marker.time)}, ${duration(marker.ahead)} ahead of ${historical ? "year’s last team" : "last"}`}
                   aria-describedby={
                     detail?.teamId === marker.teamId
-                      ? "replay-detail"
+                      ? detailId
                       : undefined
                   }
                   aria-pressed={pinned === marker.teamId}
@@ -321,7 +340,7 @@ export function SpreadReplay({
           </div>
         </div>
       </div>
-      <div className="replay-axis-label">Time ahead of last team (hours) →</div>
+      <div className="replay-axis-label">Time ahead of {historical ? "each year’s last team" : "last team"} (hours) →</div>
     </section>
   );
 }

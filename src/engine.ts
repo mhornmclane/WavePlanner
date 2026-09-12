@@ -98,7 +98,9 @@ export function exchangeSummaries(
   });
 }
 
-export function simulate(s: Scenario, publishedBaseline = false): Simulation {
+export type LegPaceSource = (teamId: string, leg: number) => number;
+
+export function simulate(s: Scenario, publishedBaseline = false, legPace?: LegPaceSource): Simulation {
   const releases = publishedBaseline ? course.legs.map(l => clockSeconds(l.release_time)) : releaseSchedule(s);
   const assignments = resolveAssignments(s);
   const teams: TeamResult[] = s.selectedTeamIds.map((id) => {
@@ -125,7 +127,10 @@ export function simulate(s: Scenario, publishedBaseline = false): Simulation {
         : wave.start;
       const gate = openingTime(s.timingRules, index);
       const departure = Math.max(eligible, gate);
-      const duration = legDuration(profile, index + 1);
+      const pace = legPace?.(id, index + 1);
+      if (legPace && (!Number.isFinite(pace) || pace! <= 0))
+        throw new Error(`Invalid replay pace for ${id}, leg ${index + 1}.`);
+      const duration = legPace ? courseLeg.distance_miles * pace! : legDuration(profile, index + 1);
       legs.push({
         teamId: id,
         leg: index + 1,

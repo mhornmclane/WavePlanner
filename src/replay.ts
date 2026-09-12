@@ -5,6 +5,9 @@ export interface ReplayMarker {
   waveId: string;
   time: number;
   ahead: number;
+  release?: number;
+  late?: number;
+  overlaps?: boolean;
 }
 export interface ReplayFrame {
   index: number;
@@ -13,6 +16,7 @@ export interface ReplayFrame {
   last: number | null;
   spread: number;
   markers: ReplayMarker[];
+  years?: { year: number; first: number; last: number; spread: number }[];
 }
 export interface SpreadReplayData {
   frames: ReplayFrame[];

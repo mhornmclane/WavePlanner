@@ -233,3 +233,13 @@
     transition: none;
   }
 }
+
+.historical-replay-years { display: flex; flex-wrap: wrap; gap: 20px; border: 0; padding: 12px 0 20px; margin: 0; }
+.historical-replay-years legend { font-weight: 600; }
+.historical-replay-years i { width: 10px; height: 10px; border-radius: 50%; }
+.replay-year-metrics { display: flex; flex-wrap: wrap; gap: 18px 28px; }
+.replay-year-metrics > div { display: grid; gap: 8px; }
+.replay-year-metrics .replay-metrics { gap: 16px; }
+.replay-year-metrics dd { font-size: 16px; }
+.replay-shape-legend { font-size: 13px; color: var(--muted); }
+.replay-marker.is-diamond { border-radius: 0; transform: translate(-50%, -50%) rotate(45deg); width: 13px; height: 13px; min-height: 13px; }

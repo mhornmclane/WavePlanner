@@ -16,9 +16,13 @@ npm run test:browser
 
 Browser tests run the production build at `/PacePlanner/` using installed Chrome. To preview that build, run `npm run preview:pages` and open `http://127.0.0.1:4173/PacePlanner/`.
 
-## Three workspaces
+## Four workspaces
 
 **Historical data** is an independent browser for past performance. Filter by year or team and sort by overall pace. Export the filtered records or all historical records to CSV. Exports include profile ID, team, year, supplied overall pace, and every segment pace in numeric seconds/mile. Historical browsing does not change simulation selection.
+
+**Historical replay** independently replays the 51 supplied team-year records using their unrounded per-leg paces and the fixed published baseline rules. Select one or more years (2025 by default); each year has a stable color and its own last arrival at zero. A common horizontal scale spans all selected years and exchanges. Per-year first/last arrival and spread metrics update at each step. These are recorded leg paces replayed on the bundled 2026 course and baseline, not recorded arrival timestamps. Simulation edits, invalid settings, and historical table filters never affect this replay.
+
+A circle marks arrival at or before the outgoing leg’s published release; a diamond marks a strictly later incoming arrival. Start and Finish remain circles. Inspection gives the release, time late, and whether the next runner actually departed before arrival (respecting gate delays). Each team has one marker. Changing years pauses playback while retaining the exchange; leaving the section pauses and preserves playback preferences.
 
 **Simulation** opens by default. The graph and replay share a Teams selector, defaulting to 2025; choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Configuration and wave cards are stacked above the full-width live chart on desktop and mobile. Wave arrangements provide editable starting points while preserving the selected field, finish target, and other settings. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers are in expandable controls.
 
