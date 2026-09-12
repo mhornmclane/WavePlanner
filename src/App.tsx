@@ -1,6 +1,7 @@
+import { syncAssignments } from "./waves";
 import { TimingRuleSummary } from "./TimingRuleControls";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { baseline, initialScenario } from "./data";
+import { baseline, initialScenario, fieldIds, fieldYears } from "./data";
 import { simulate } from "./engine";
 import { HistoricalData, ResultsView, Summary } from "./Views";
 import { Chart } from "./Chart";
@@ -251,7 +252,12 @@ export default function App() {
           </section>
           <section className="simulation-visual" aria-label="Live simulation">
             {result && comparison ? <>
-              <div className="visualizer-switch" role="group" aria-label="Visualizer view"><button aria-pressed={visualizer==="chart"} onClick={()=>setVisualizer("chart")}>Time / course chart</button><button aria-pressed={visualizer==="replay"} onClick={()=>setVisualizer("replay")}>Spread replay</button></div>
+              <div className="viewer-controls"><label className="inline-label">Teams
+                <select aria-label="Simulation field" value={scenario.fieldYear} onChange={e=>{
+                  const fieldYear=e.target.value === "all" ? "all" : +e.target.value;
+                  editScenario(s=>syncAssignments({...s,fieldYear,selectedTeamIds:[...fieldIds(fieldYear),...s.selectedTeamIds.filter(id=>id.startsWith("synthetic::"))]}));
+                }}><option value="all">All years</option>{fieldYears.map(year=><option key={year} value={year}>{year} teams</option>)}</select>
+              </label><div className="visualizer-switch" role="group" aria-label="Visualizer view"><button aria-pressed={visualizer==="chart"} onClick={()=>setVisualizer("chart")}>Time / course chart</button><button aria-pressed={visualizer==="replay"} onClick={()=>setVisualizer("replay")}>Spread replay</button></div></div>
               {visualizer==="chart" ? <Chart result={result} comparison={comparison} scenario={scenario} overlay={overlay} setOverlay={setOverlay} active={section==="simulation"}/> : <SpreadReplay result={result} scenario={scenario} active={section==="simulation"}/>}
               <Summary result={result} scenario={scenario}/>
               <TimingRuleSummary scenario={scenario} result={result}/>

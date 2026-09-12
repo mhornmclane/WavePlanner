@@ -11,8 +11,7 @@ export function TimeInput({label, value, onChange}: {label: string; value: numbe
   const time = Number.isFinite(value) ? `${String(Math.floor(within / 3600)).padStart(2,"0")}:${String(Math.floor(within % 3600 / 60)).padStart(2,"0")}` : "";
   return <div className="time-input">
     <select aria-label={`${label} weekday`} value={day} onChange={e => { const d=+e.target.value; setDay(d); onChange(d*86400+within); }}>
-      <optgroup label="Event week">{[-1,0,1,2,3,4,5].map(d=><option key={d} value={d}>{weekday(d)}</option>)}</optgroup>
-      <optgroup label="Other weeks">{Array.from({length:60},(_,i)=>i-30).filter(d=>d < -1 || d > 5).map(d=><option key={d} value={d}>{weekday(d)}</option>)}</optgroup>
+      {[-1,0,1,2,3,4,5].map(d=><option key={d} value={d}>{weekday(d)}</option>)}
     </select>
     <input aria-label={`${label} time`} type="time" value={time} aria-invalid={!Number.isFinite(value)} onChange={e=>{
       const [h,m]=e.target.value.split(":").map(Number);

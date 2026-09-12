@@ -1,6 +1,5 @@
 import { TimingRulesEditor } from "./TimingRuleControls";
 import { WorstCaseTeams } from "./WorstCaseTeams";
-import { fieldIds, fieldYears } from "./data";
 import { Waves } from "./WaveControls";
 import { MinutesInput } from "./Inputs";
 import { syncAssignments } from "./waves";
@@ -11,12 +10,6 @@ export function Config({scenario:s, setScenario, result}: {
 }) {
   const update = (fn:(s:Scenario)=>Scenario) => setScenario(c=>syncAssignments(fn(c)));
   return <div className="simulation-controls">
-    <label className="field"><span>Simulation field</span>
-      <select aria-label="Simulation field" value={s.fieldYear} onChange={e=>update(c=>{
-        const fieldYear=e.target.value === "all" ? "all" : +e.target.value;
-        return {...c, fieldYear, selectedTeamIds:[...fieldIds(fieldYear), ...c.selectedTeamIds.filter(id=>id.startsWith("synthetic::"))]};
-      })}><option value="all">All years</option>{fieldYears.map(y=><option key={y} value={y}>{y}</option>)}</select>
-    </label>
     <p className="muted">{s.selectedTeamIds.length} profiles · Each team-year is a separate performance.</p>
     <Waves scenario={s} update={update}/>
     <details className="secondary-control"><summary>Timing rules & fast-wave releases</summary><TimingRulesEditor scenario={s} result={result} update={update}/></details>

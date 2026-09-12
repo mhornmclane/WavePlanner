@@ -20,7 +20,7 @@ Browser tests run the production build at `/PacePlanner/` using installed Chrome
 
 **Historical data** is an independent browser for past performance. Filter by year or team and sort by overall pace. Export the filtered records or all historical records to CSV. Exports include profile ID, team, year, supplied overall pace, and every segment pace in numeric seconds/mile. Historical browsing does not change simulation selection.
 
-**Simulation** opens by default. Choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Configuration and wave cards are stacked above the full-width live chart on desktop and mobile. Wave arrangements provide editable starting points while preserving the selected field, finish target, and other settings. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers are in expandable controls.
+**Simulation** opens by default. The graph and replay share a Teams selector, defaulting to 2025; choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Configuration and wave cards are stacked above the full-width live chart on desktop and mobile. Wave arrangements provide editable starting points while preserving the selected field, finish target, and other settings. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers are in expandable controls.
 
 **Results** always reflects the current valid configuration. It includes summary metrics, team finishes, timing-rule evaluations, all 72 exchange staffing windows, and the 71 release times. Export team results or exchange staffing CSV. Returning to Simulation and editing automatically updates Results. Invalid scenario inputs suspend simulation and result exports until corrected.
 
@@ -47,7 +47,7 @@ Default release pace is 10:25/mile. The initial target is the published final-le
 
 ## Wave and timing rules
 
-Waves are stored in ascending pace order and displayed slowest first. Shared boundaries leave no gaps; an exact-boundary profile belongs to the slower wave. Splitting adds a pace range; removing a wave merges its interval into its adjacent faster range, or the slower neighbor when removing the fastest. Invalid boundary edits retain the last applied assignment until corrected or canceled with Escape.
+Waves are stored in ascending pace order and displayed slowest first. Shared boundaries leave no gaps; an exact-boundary profile belongs to the slower wave. The first split moves teams strictly faster than the entered pace into a new wave, retaining teams at or slower than the pace in the original Wave 1 with its existing start. Later splits add a slower pace range; removing a wave merges its interval into its adjacent faster range, or the slower neighbor when removing the fastest. Invalid boundary edits retain the last applied assignment until corrected or canceled with Escape.
 
 Wave 1 uses release times throughout the course. Every other wave uses the fast-wave activation policy, regardless of weekday or time:
 
@@ -63,7 +63,7 @@ Optional hypothetical fastest/slowest profiles retain flat or individual-bin pac
 
 ## Time, coverage, and comparison
 
-Friday is event Day 1, with a default start of Friday 1:00 AM. Inputs and output use weekdays and clock times. Thursday is the preceding evening; additional weeks have explicit offsets. Internally, times remain seconds relative to Friday midnight, independent of calendar dates, timezones, or daylight-saving changes. The chart's elapsed-hour origin stays Friday 1:00 AM.
+Friday is event Day 1, with a default start of Friday 1:00 AM. Inputs and output use weekdays and clock times. The weekday picker covers Thursday through Wednesday around the event, without additional-week options. Internally, times remain seconds relative to Friday midnight, independent of calendar dates, timezones, or daylight-saving changes. The chart's elapsed-hour origin stays Friday 1:00 AM.
 
 Calculations preserve fractional seconds. Most display times round to minutes. Coverage starts round down and ends round up. Every exchange occurrence has its own window, including repeated physical locations: earliest activity minus setup buffer through latest activity plus closeout buffer. Summed coverage is exchange-hours, not volunteer headcount or volunteer-hours.
 

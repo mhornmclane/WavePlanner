@@ -25,17 +25,18 @@ import {
 } from "../src/storage";
 
 function twoWaves() {
-  const s = initialScenario();
+  const s = baseline();
   s.waves.push({ id: "slower", name: "Slower", color: "#123456", start: 7200 });
   s.waveRules.boundaries = [profiles[0].overall_mean_pace_seconds_per_mile];
   return syncAssignments(s);
 }
 describe("linked pace ranges", () => {
-  it("defaults new scenarios to a range covering all 51 teams", () => {
+  it("defaults new scenarios to 2025 teams", () => {
     const s = initialScenario();
     expect(s.waveRules.mode).toBe("pace");
-    expect(Object.keys(resolveAssignments(s))).toHaveLength(51);
-    expect(simulate(s)).toEqual(simulate(baseline()));
+    expect(Object.keys(resolveAssignments(s))).toHaveLength(profiles.filter(p=>p.year===2025).length);
+    expect(s.fieldYear).toBe(2025);
+    expect(simulate(s)).toEqual(simulate(baseline(s.selectedTeamIds)));
   });
   it("assigns exact-boundary teams to the slower wave, independently of start order", () => {
     const s = twoWaves();
@@ -49,7 +50,7 @@ describe("linked pace ranges", () => {
       );
   });
   it("numbers and displays default waves slowest first after splits and removals", () => {
-    const s = initialScenario();
+    const s = baseline();
     s.waves.push({ id: "middle", name: "Wave 2", color: "#123456", start: 7200 });
     s.waves.push({ id: "slow", name: "Wave 3", color: "#234567", start: 0 });
     s.waveRules.boundaries = [600, 800];
@@ -87,7 +88,7 @@ describe("linked pace ranges", () => {
     expect(() => validateScenario(s)).toThrow("boundaries");
   });
   it("suggests the middle distinct pace gap and merges either outer wave", () => {
-    const s = initialScenario();
+    const s = baseline();
     const paces = [
       ...new Set(profiles.map((p) => p.overall_mean_pace_seconds_per_mile)),
     ].sort((a, b) => a - b);

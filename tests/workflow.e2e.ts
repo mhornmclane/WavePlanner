@@ -14,7 +14,7 @@ test.beforeEach(async({page})=>{await page.goto("./");});
 test("opens visual simulation with separate sections and no legacy release controls",async({page})=>{
   await expect(page.getByRole("button",{name:"Simulation",exact:true})).toHaveAttribute("aria-current","page");
   await expect(page.getByRole("heading",{name:"The field, over time"})).toBeVisible();
-  await expect(page.getByLabel("Simulation field")).toHaveValue("all");
+  await expect(page.getByLabel("Simulation field")).toHaveValue("2025");
   await expect(page.getByLabel("Wave 1 start weekday")).toHaveValue("0");
   await expect(page.getByLabel("Wave 1 start time")).toHaveValue("01:00");
   await expect(page.getByLabel("Release pace",{exact:true})).toHaveValue("10:25");
@@ -155,4 +155,26 @@ test("desktop and mobile sections fit the viewport and render without errors",as
   await expect(page.locator('.start-guidance')).toContainText("Thursday");
   const first=page.locator('[data-release-leg="1"]');expect(Number(await first.getAttribute('cx'))).toBeGreaterThanOrEqual(68);
   await expect(page.locator('.finish-target-marker circle')).toHaveAttribute('aria-label',/Target finish Saturday/);
+});
+
+test("first split moves strictly faster teams into the new wave and retains the original slow wave",async({page})=>{
+  await page.getByLabel("Simulation field").selectOption("all");
+  const cutoff=profiles.find(p=>Number.isInteger(p.overall_mean_pace_seconds_per_mile))!.overall_mean_pace_seconds_per_mile;
+  const input=`${Math.floor(cutoff/60)}:${String(cutoff%60).padStart(2,"0")}`;
+  await page.getByLabel("Wave 1 name",{exact:true}).fill("Original slow wave");
+  await page.getByLabel("Wave 1 start time").fill("00:30");
+  await page.getByRole("button",{name:"+ Add wave",exact:true}).click();
+  await page.getByLabel("Split teams faster than",{exact:true}).fill(input);
+  await expect(page.getByText(/Teams faster than this pace move to the new wave/)).toBeVisible();
+  await page.getByRole("button",{name:"Confirm split"}).click();
+  await expect(page.getByLabel("Wave 1 name",{exact:true})).toHaveValue("Original slow wave");
+  await expect(page.getByLabel("Wave 1 start time")).toHaveValue("00:30");
+  await expect(page.getByLabel("Wave 2 start time")).toHaveValue("01:00");
+  await page.getByText(/^Configuration files ·/).click();
+  const saved=JSON.parse(await downloadText(page,"↓ JSON"));
+  expect(saved.waves[1].id).toBe("wave-1");
+  for(const profile of profiles){
+    const id=`${profile.year}::${profile.team}`;
+    expect(saved.assignments[id]).toBe(profile.overall_mean_pace_seconds_per_mile<cutoff ? saved.waves[0].id : "wave-1");
+  }
 });

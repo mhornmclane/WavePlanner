@@ -77,6 +77,7 @@ export function Waves({
   const [split, setSplit] = useState<{ index: number; text: string } | null>(
     null,
   );
+  const firstSplit = s.waves.length === 1;
   const splitValue = split ? parsePace(split.text) : null;
   const splitValid =
     !!split &&
@@ -175,7 +176,7 @@ export function Waves({
               </button>
             </div>
             {displayIndex === 0 && <div className="finish-target">
-              <h4>Finish-line party target</h4>
+              <h4>Finish</h4>
               <label className="field"><span>Target finish</span><TimeInput label="Target finish" value={s.release.targetFinish} onChange={targetFinish=>update(c=>({...c,release:{...c.release,targetFinish}}))}/></label>
               <label className="field"><span>Release pace · min:sec/mile</span><PaceInput label="Release pace" value={s.release.pace} onChange={pace=>update(c=>({...c,release:{...c.release,pace}}))}/></label>
               <p className="start-guidance" role="status">{Number.isFinite(latestStart(s)) ? `The latest you can start the event is ${clock(latestStart(s), "down")}.` : "Enter a valid finish target, pace, and challenge allowances."}</p>
@@ -242,17 +243,18 @@ export function Waves({
         >
           <h3>Split {s.waves[split.index]?.name}</h3>
           <label className="field">
-            New shared pace boundary
+            {firstSplit ? "Split teams faster than" : "New shared pace boundary"}
             <input
-              aria-label="New shared pace boundary"
+              aria-label={firstSplit ? "Split teams faster than" : "New shared pace boundary"}
               className="pace-input"
               value={split.text}
               onChange={(e) => setSplit({ ...split, text: e.target.value })}
             />
           </label>
           <p className="muted">
-            The new wave receives teams at or slower than this boundary within
-            the original range.
+            {firstSplit
+              ? "Teams faster than this pace move to the new wave. Teams at or slower than this pace stay in Wave 1 with its current start time."
+              : "The new wave receives teams at or slower than this boundary within the original range."}
           </p>
           {!splitValid && (
             <p role="alert">
@@ -265,7 +267,7 @@ export function Waves({
               if (!splitValid || splitValue === null) return;
               update((c) => {
                 const waves = [...c.waves];
-                waves.splice(split.index + 1, 0, {
+                waves.splice(c.waves.length === 1 ? split.index : split.index + 1, 0, {
                   id: crypto.randomUUID(),
                   name: `Wave ${c.waves.length + 1}`,
                   color: colors[c.waves.length % colors.length],

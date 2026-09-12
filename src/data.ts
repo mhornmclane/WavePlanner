@@ -44,7 +44,8 @@ export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
 }
 export function initialScenario(): Scenario {
   return {
-    ...baseline(),
+    ...baseline(fieldIds(2025)),
+    fieldYear: 2025,
     name: "My race configuration",
     waveRules: { mode: "pace", boundaries: [] },
   };
