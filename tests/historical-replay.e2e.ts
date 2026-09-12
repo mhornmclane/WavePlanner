@@ -41,9 +41,9 @@ test("diamonds expose release details and IDs stay unique beside simulator repla
   const diamond = replay.locator('.is-diamond').first();
   await expect(diamond).toBeVisible();
   await diamond.focus();
-  await expect(diamond).toHaveAttribute('aria-label', /diamond, arrival after release/);
+  await expect(diamond).toHaveAttribute('aria-label', /diamond, overlapping runners/);
   await expect(replay.getByLabel("Replay team details")).toContainText("Published release:");
-  await expect(replay.getByLabel("Replay team details")).toContainText("Another runner departed before arrival:");
+  await expect(replay.getByLabel("Replay team details")).toContainText("Another runner departed before arrival: Yes");
   await diamond.press("Enter");
   await expect(diamond).toHaveAttribute('aria-pressed', 'true');
   await diamond.press("Escape");

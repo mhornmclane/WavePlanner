@@ -1,3 +1,4 @@
+import { arrivalEnvelope } from "./chartComparison";
 import { chartTicks, fullViewport, panViewport, regionViewport, zoomViewport, type ChartViewport, type PlotPoint } from "./chartViewport";
 import { exchangeName, ruleTypes, ruleStatus } from "./timingRules";
 import { orderedWaveEntries } from "./waves";
@@ -95,6 +96,13 @@ export function Chart({
   const selected = result.teams.some((t) => t.teamId === selectedId)
     ? selectedId
     : "";
+  const selectedWave = scenario.waves.find(w => 'wave:' + w.id === selectedId)?.id ?? '';
+  const highlight = selectedWave ? 'wave:' + selectedWave : selected;
+  const emphasized = (t: { teamId: string; waveId: string }) => selectedWave ? t.waveId === selectedWave : t.teamId === selected;
+  useEffect(() => {
+    if (selectedId && !highlight) setSelected('');
+  }, [selectedId, highlight]);
+  const envelope = useMemo(() => arrivalEnvelope(comparison), [comparison]);
   const activeRules = scenario.timingRules.filter(r => r.enabled);
   const ruleLabelSpace = activeRules.length * 16;
   const width = canvasWidth,
@@ -266,19 +274,24 @@ export function Chart({
         <label className="inline-label">
           Highlight
           <select
-            aria-label="Highlight team"
-            value={selected}
+            aria-label="Highlight wave or team"
+            value={highlight}
             onChange={(e) => {
               setSelected(e.target.value);
             }}
           >
-            <option value="">All selected teams</option>
+            <option value="">All teams</option>
+            <optgroup label="Waves">
+              {orderedWaveEntries(scenario).map(({ w }) => <option key={w.id} value={'wave:' + w.id}>{w.name}</option>)}
+            </optgroup>
+            <optgroup label="Teams">
             {result.teams.map((t) => (
               <option key={t.teamId} value={t.teamId}>
                 {resolveProfile(scenario, t.teamId).team} ·{" "}
                 {resolveProfile(scenario, t.teamId).year}
               </option>
             ))}
+            </optgroup>
           </select>
         </label>
         <div className="chart-navigation" role="group" aria-label="Chart navigation">
@@ -430,6 +443,15 @@ export function Chart({
                 </text>
               </g>
             ))}
+            {overlay && envelope.length > 0 && (
+              <g className="baseline-envelope" pointerEvents="none" aria-label="2026 baseline arrival spread">
+                <path className="baseline-band" fill="#526b91" fillOpacity="0.1"
+                  d={'M' + [...envelope.map(p => [x(p.earliest), y(p.index)]), ...[...envelope].reverse().map(p => [x(p.latest), y(p.index)])].map(p => p.join(',')).join('L') + 'Z'} />
+                {(['earliest', 'latest'] as const).map(boundary => <path key={boundary}
+                  className={'baseline-' + boundary} fill="none" stroke="#526b91" strokeWidth="2" opacity="0.9" strokeDasharray={boundary === 'earliest' ? '8 4' : '3 4'}
+                  d={envelope.map((p, i) => (i ? 'L' : 'M') + x(p[boundary]) + ',' + y(p.index)).join('')} />)}
+              </g>
+            )}
             {overlay &&
               comparison.teams.map((t) => (
                 <path
@@ -444,9 +466,8 @@ export function Chart({
                   stroke="#87918b"
                   strokeWidth="1"
                   strokeDasharray="4 4"
-                  opacity={
-                    selected ? (t.teamId === selected ? 0.85 : 0.08) : 0.22
-                  }
+                  opacity="0.16"
+                  pointerEvents="none"
                 />
               ))}
             {showRelease && overlay && (
@@ -474,12 +495,15 @@ export function Chart({
             {[...result.teams]
               .sort(
                 (a, b) =>
-                  Number(a.teamId === selected) - Number(b.teamId === selected),
+                  Number(emphasized(a)) - Number(emphasized(b)),
               )
               .map((t) => (
                 <g
                   key={t.teamId}
-                  opacity={selected ? (t.teamId === selected ? 1 : 0.1) : 0.62}
+                  className="team-trajectory"
+                  data-team-id={t.teamId}
+                  data-wave-id={t.waveId}
+                  opacity={highlight ? (emphasized(t) ? 1 : 0.15) : 0.62}
                 >
                   {t.legs.map((l) => (
                     <g key={l.leg}>
@@ -509,9 +533,9 @@ export function Chart({
                         y1={y(l.leg - 1)}
                         y2={y(l.leg)}
                         stroke={colors.get(t.waveId)}
-                        strokeWidth={t.teamId === selected ? 2.5 : 1.35}
+                        strokeWidth={emphasized(t) ? 2.5 : 1.35}
                       />
-                      {(!selected || t.teamId === selected) && (
+                      {(!highlight || emphasized(t)) && (
                         <line
                           x1={x(l.departure)}
                           x2={x(l.arrival)}
@@ -642,12 +666,15 @@ export function Chart({
           Opening wait
         </span>
         {overlay && (
-          <span>
-            <i style={{ background: "#87918b" }} />
-            2026 baseline (dashed)
-          </span>
+          <>
+            <span><i className="baseline-swatch"/>2026 baseline arrival spread</span>
+            <span><i className="baseline-edge earliest"/>Earliest arrival</span>
+            <span><i className="baseline-edge latest"/>Latest arrival</span>
+            {showRelease && <span><i style={{ background: "#87918b" }}/>Baseline release schedule (dashed)</span>}
+          </>
         )}
       </div>
+      {overlay && <p className="baseline-note">Shaded band: earliest to latest arrivals at each exchange across the entire baseline field. Boundary teams may change; Start uses departure times.</p>}
       {popup && active && (
         <ExchangePopup
           scenario={scenario}

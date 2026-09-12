@@ -367,6 +367,10 @@ main {
     transparent 5px 8px
   );
 }
+.legend .baseline-swatch { height:12px; background:#526b911a; border-block:2px dashed #526b91; }
+.legend .baseline-edge { height:0; width:22px; border-top:2px dashed #526b91; }
+.legend .baseline-edge.latest { border-top-style:dotted; }
+.baseline-note { margin:0; padding:0 var(--panel-gutter) 20px; font-size:12px; color:var(--muted); }
 
 
 

@@ -8,7 +8,7 @@ async function drag(page:Page,from:[number,number],to:[number,number]) {
 test.beforeEach(async({page})=>{await page.goto('./');});
 
 test('region zoom, pan, previous view and reset preserve team highlighting',async({page})=>{
-  await page.getByLabel('Highlight team').selectOption({index:1});const selected=await page.getByLabel('Highlight team').inputValue();
+  await page.getByLabel('Highlight wave or team').selectOption(await page.locator('optgroup[label=Teams] option').first().getAttribute('value') as string);const selected=await page.getByLabel('Highlight wave or team').inputValue();
   await page.getByRole('button',{name:'Zoom region',exact:true}).click();await drag(page,[0.2,0.25],[0.7,0.75]);
   const zoomed=await view(page);expect(zoomed.x0).toBeCloseTo(0.2,1);expect(zoomed.x1-zoomed.x0).toBeCloseTo(0.5,1);expect(zoomed.y1-zoomed.y0).toBeCloseTo(0.5,1);expect(zoomed.y0).toBeCloseTo(0.25,1);expect(zoomed.y1).toBeCloseTo(0.75,1);
   await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -16,7 +16,7 @@ test('region zoom, pan, previous view and reset preserve team highlighting',asyn
   const panned=await view(page);expect(panned.x0).toBeLessThan(zoomed.x0);expect(panned.y0).toBeGreaterThan(zoomed.y0);
   await page.getByRole('button',{name:'Previous view',exact:true}).click();expect(await view(page)).toEqual(zoomed);
   await page.getByRole('button',{name:'Reset view',exact:true}).click();expect(await view(page)).toEqual({x0:0,x1:1,y0:0,y1:1});
-  await expect(page.getByLabel('Highlight team')).toHaveValue(selected);
+  await expect(page.getByLabel('Highlight wave or team')).toHaveValue(selected);
 });
 
 test('wheel zoom anchors the pointer and keyboard can navigate and cancel selections',async({page})=>{

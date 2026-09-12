@@ -242,7 +242,7 @@ export function SpreadReplay({
           </span>
         ))}
       </div>
-      <p className="replay-shape-legend">● Circle: arrival at or before release · ◆ Diamond: arrival after release. Start and Finish use circles.</p>
+      <p className="replay-shape-legend">● Circle: no overlapping runners · ◆ Diamond: another runner departed before arrival. Start and Finish use circles.</p>
       <div
         className="replay-detail"
         id={detailId}
@@ -305,7 +305,7 @@ export function SpreadReplay({
               return (
                 <button
                   key={marker.teamId}
-                  className={`replay-marker${marker.late! > 0 ? " is-diamond" : ""}${selected === marker.teamId || pinned === marker.teamId ? " is-highlighted" : ""}`}
+                  className={`replay-marker${marker.overlaps ? " is-diamond" : ""}${selected === marker.teamId || pinned === marker.teamId ? " is-highlighted" : ""}`}
                   data-team-id={marker.teamId}
                   data-ahead={marker.ahead}
                   style={{
@@ -313,7 +313,7 @@ export function SpreadReplay({
                     background: historical ? yearColors[Number(p.year)] : wave.color,
                     opacity: selected && selected !== marker.teamId ? 0.3 : 1,
                   }}
-                  aria-label={`${p.team}, ${p.year}, ${historical ? "" : `${wave.name}, `}${marker.late! > 0 ? "diamond, arrival after release" : "circle"}, ${index === 0 ? "start" : "arrival"} ${clock(marker.time)}, ${duration(marker.ahead)} ahead of ${historical ? "year’s last team" : "last"}`}
+                  aria-label={`${p.team}, ${p.year}, ${historical ? "" : `${wave.name}, `}${marker.overlaps ? "diamond, overlapping runners" : "circle"}, ${index === 0 ? "start" : "arrival"} ${clock(marker.time)}, ${duration(marker.ahead)} ahead of ${historical ? "year’s last team" : "last"}`}
                   aria-describedby={
                     detail?.teamId === marker.teamId
                       ? detailId

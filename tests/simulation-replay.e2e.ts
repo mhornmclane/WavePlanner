@@ -9,15 +9,15 @@ test("simulation retains every team and uses historical release marker shapes", 
   const count = await replay.locator(".replay-marker").count();
   expect(count).toBeGreaterThan(0);
   await expect(replay.locator(".is-diamond")).toHaveCount(0);
-  await expect(replay.locator(".replay-shape-legend")).toContainText("Diamond: arrival after release");
+  await expect(replay.locator(".replay-shape-legend")).toContainText("Diamond: another runner departed before arrival");
   await replay.getByLabel("Replay exchange", { exact: true }).fill("60");
   await expect(replay.locator(".replay-marker")).toHaveCount(count);
   const diamond = replay.locator(".is-diamond").first();
   await expect(diamond).toBeVisible();
   await diamond.focus();
-  await expect(diamond).toHaveAttribute("aria-label", /diamond, arrival after release/);
+  await expect(diamond).toHaveAttribute("aria-label", /diamond, overlapping runners/);
   await expect(replay.getByLabel("Replay team details")).toContainText("Scenario release:");
-  await expect(replay.getByLabel("Replay team details")).toContainText("Another runner departed before arrival:");
+  await expect(replay.getByLabel("Replay team details")).toContainText("Another runner departed before arrival: Yes");
   await replay.getByLabel("Replay exchange", { exact: true }).fill("71");
   await expect(replay.locator(".is-diamond")).toHaveCount(0);
   await expect(replay.locator(".replay-marker")).toHaveCount(count);

@@ -120,7 +120,7 @@ export default function App() {
     const next = applyPreset(id, scenario);
     replace(next);
     setPresetId(id);
-    setNotice(`Loaded ${next.name}. Strategy and standard race rules applied. Your field, hypothetical paces, and staffing buffers are retained.`);
+    setNotice("");
   }
   async function importFile(file: File | undefined) {
     if (!file) return;
@@ -148,7 +148,6 @@ export default function App() {
       <div hidden={section!=="history"}><HistoricalData/></div>
       <div hidden={section!=="historical-replay"}><HistoricalReplay active={section==="historical-replay"}/></div>
       <div hidden={section!=="simulation"}>
-        <div className="workspace-heading"><div><h2>Shape the race</h2><p className="muted">Choose your field and waves. Watch the course respond.</p></div></div>
         <details className="configuration-files"><summary>Configuration files · {scenario.name} · {dirty ? "Unsaved" : "Saved"}</summary>
           <div className="save-toolbar">
             <label className="scenario-name">
@@ -248,7 +247,12 @@ export default function App() {
         {checked.error && <div className="error-message" role="alert">{checked.error} Results will resume when corrected.</div>}
         <div className="simulation-workspace">
           <section className="panel configuration-panel" aria-label="Simulation configuration">
-            <div className="configuration-heading"><h3>Configuration</h3><label className="field"><span>Strategy preset</span><select aria-label="Strategy preset" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label><span className="muted">{scenario.selectedTeamIds.length} profiles</span></div>
+            <div className="configuration-heading"><h3>Configuration</h3><label className="field"><span>Years to include</span>
+                <select aria-label="Simulation field" value={scenario.fieldYear} onChange={e=>{
+                  const fieldYear=e.target.value === "all" ? "all" : +e.target.value;
+                  editScenario(s=>syncAssignments({...s,fieldYear,selectedTeamIds:[...fieldIds(fieldYear),...s.selectedTeamIds.filter(id=>id.startsWith("synthetic::"))]}));
+                }}><option value="all">All years</option>{fieldYears.map(year=><option key={year} value={year}>{year} teams</option>)}</select>
+              </label><label className="field"><span>Strategy preset</span><select aria-label="Strategy preset" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label><span className="muted">{scenario.selectedTeamIds.length} profiles</span></div>
             <div className="preset-description">
               {activePreset && <p>{activePreset.summary}</p>}
               <p className="muted">Presets restore standard race rules. Finish targets guide the release schedule; they do not guarantee all teams finish by that time.</p>
@@ -258,15 +262,10 @@ export default function App() {
           <div className="configuration-results-action"><button className="primary" onClick={()=>setSection("results")}>Tabular results</button></div>
           <section className="simulation-visual" aria-label="Live simulation">
             {result && comparison ? <>
-              <div className="viewer-controls"><label className="inline-label">Teams
-                <select aria-label="Simulation field" value={scenario.fieldYear} onChange={e=>{
-                  const fieldYear=e.target.value === "all" ? "all" : +e.target.value;
-                  editScenario(s=>syncAssignments({...s,fieldYear,selectedTeamIds:[...fieldIds(fieldYear),...s.selectedTeamIds.filter(id=>id.startsWith("synthetic::"))]}));
-                }}><option value="all">All years</option>{fieldYears.map(year=><option key={year} value={year}>{year} teams</option>)}</select>
-              </label><div className="visualizer-switch" role="group" aria-label="Visualizer view"><button aria-pressed={visualizer==="chart"} onClick={()=>setVisualizer("chart")}>Time / course chart</button><button aria-pressed={visualizer==="replay"} onClick={()=>setVisualizer("replay")}>Spread replay</button></div></div>
-              {visualizer==="chart" ? <Chart result={result} comparison={comparison} scenario={scenario} overlay={overlay} setOverlay={setOverlay} active={section==="simulation"}/> : <SpreadReplay result={result} scenario={scenario} active={section==="simulation"}/>}
               <Summary result={result} scenario={scenario}/>
               <TimingRuleSummary scenario={scenario} result={result}/>
+              <div className="viewer-controls"><div className="visualizer-switch" role="group" aria-label="Visualizer view"><button aria-pressed={visualizer==="chart"} onClick={()=>setVisualizer("chart")}>Time / course chart</button><button aria-pressed={visualizer==="replay"} onClick={()=>setVisualizer("replay")}>Spread replay</button></div></div>
+              {visualizer==="chart" ? <Chart result={result} comparison={comparison} scenario={scenario} overlay={overlay} setOverlay={setOverlay} active={section==="simulation"}/> : <SpreadReplay result={result} scenario={scenario} active={section==="simulation"}/>}
             </> : <div className="panel empty-state">Correct the configuration to resume the live simulation.</div>}
           </section>
         </div>

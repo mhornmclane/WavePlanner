@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { baseline, ORIGIN, worstCaseIds } from "../src/data";
 import { challengeBefore, simulate } from "../src/engine";
 import { orderedWaveEntries, removeWave, syncAssignments } from "../src/waves";
+import { buildReplay } from "../src/replay";
 
 function fastWave() {
   const s = baseline([worstCaseIds.fastest]);
@@ -26,6 +27,9 @@ describe("fast-wave release identity",()=>{
     s.timingRules.push({id:"hold",exchange:2,type:"depart-after",time:50000,enabled:true});
     const result=simulate(s),team=result.teams[0];
     expect(result.releaseCount).toBe(0);expect(team.peakActive).toBe(1);
+    const markers = buildReplay(result).frames.flatMap(frame => frame.markers);
+    expect(markers.some(marker => marker.late! > 0)).toBe(true);
+    expect(markers.every(marker => !marker.overlaps)).toBe(true);
     expect(team.legs[2].departure).toBe(50000);
     team.legs.forEach((l,i)=>{expect(l.releaseSuppressed).toBe(true);if(i)expect(l.departure).toBeGreaterThanOrEqual(team.legs[i-1].arrival+challengeBefore(i+1,s));});
   });
