@@ -601,3 +601,18 @@ main { padding-top:26px; }
 .viewer-controls { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-bottom:12px; }
 .viewer-controls .visualizer-switch { margin:0; }
 .viewer-controls .inline-label { display:flex; align-items:center; gap:8px; }
+.chart-navigation { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.chart-navigation > button { padding:7px 11px; }
+.chart-zoom-level { min-width:45px; text-align:center; color:var(--muted); font-variant-numeric:tabular-nums; }
+.chart-navigation-hint { padding:0 25px; margin:0 0 12px; color:var(--muted); font-size:12px; }
+.chart-canvas { user-select:none; }
+.chart-canvas.tool-zoom, .chart-canvas.tool-zoom * { cursor:crosshair; }
+.chart-canvas.tool-pan, .chart-canvas.tool-pan * { cursor:grab; }
+.chart-canvas.tool-pan:active, .chart-canvas.tool-pan:active * { cursor:grabbing; }
+.zoom-selection { fill:#277b7125; stroke:#277b71; stroke-width:1.5; stroke-dasharray:5 3; }
+.chart-scroll .chart-canvas { min-height:0; }
+@media (max-width:600px) {
+  .chart-navigation { gap:6px; }
+  .chart-navigation-hint { padding:0 14px; }
+  .chart-scroll { padding:0 8px; }
+}

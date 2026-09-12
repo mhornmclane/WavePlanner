@@ -26,6 +26,14 @@ Browser tests run the production build at `/PacePlanner/` using installed Chrome
 
 The configuration files toolbar supports named browser saves, loading, duplication, deletion, JSON export, and import. Rejected imports preserve the current working configuration. Historical filters, chart settings, and section state persist while navigating. Leaving spread replay pauses it; changing simulation data resets playback.
 
+## Graph navigation
+
+The course graph includes **Inspect**, **Zoom region**, and **Pan** modes. In Zoom region, drag a rectangle around the time and course area to enlarge. In Pan, drag to move around the enlarged view. Both work with a mouse or a single touch. A tiny drag does not accidentally zoom.
+
+Use **+**, **−**, **Previous view**, or **Reset view** in the toolbar. Reset fits the full course without clearing the highlighted team. In Zoom region or Pan, the mouse wheel zooms around the pointer; trackpad pinch (Ctrl/Meta-wheel) also zooms in Inspect mode. Ordinary scrolling in Inspect mode scrolls the page. Double-click in a navigation mode zooms in; Shift-double-click zooms out.
+
+Focus the graph for keyboard controls: +/− zoom, arrow keys pan, 0/Home fits the course, and Escape cancels an unfinished selection. Navigation is bounded to the full data extent, with up to 100× magnification. Axes and inspection coordinates update with the viewport; lines are clipped to the plot. Changing the course axis or simulation resets the view. Navigation never changes saved race settings or results.
+
 ## Finish target and release schedule
 
 Wave 1 is always the slowest pace range, independently of its start time. Its card contains the target final-leg finish weekday/time and a single release pace in min:sec/mile.

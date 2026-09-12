@@ -1,6 +1,7 @@
+import { chartTicks, fullViewport, panViewport, regionViewport, zoomViewport, type ChartViewport, type PlotPoint } from "./chartViewport";
 import { exchangeName, ruleTypes, ruleStatus } from "./timingRules";
 import { orderedWaveEntries } from "./waves";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { bins, course, ORIGIN, resolveProfile } from "./data";
 import { clock, pace } from "./format";
 import { ExchangePopup, type PopupTarget } from "./ExchangePopup";
@@ -24,7 +25,15 @@ export function Chart({
   active = true,
 }: Props) {
   const [axis, setAxis] = useState<"miles" | "exchanges">("miles");
-  const [zoom, setZoom] = useState(1);
+  const [viewport, setViewport] = useState<ChartViewport>(fullViewport);
+  const [history, setHistory] = useState<ChartViewport[]>([]);
+  const [tool, setTool] = useState<"inspect" | "zoom" | "pan">("inspect");
+  const [selection, setSelection] = useState<{ start: PlotPoint; end: PlotPoint } | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const clipId = useId();
+  const [canvasWidth, setCanvasWidth] = useState(1160);
+  const gesture = useRef<{ id: number; start: PlotPoint; end: PlotPoint; view: ChartViewport; moved: boolean } | null>(null);
+  const zoom = 1 / Math.min(viewport.x1 - viewport.x0, viewport.y1 - viewport.y0);
   const [showRelease, setShowRelease] = useState(true);
   const [selectedId, setSelected] = useState("");
   const [popup, setPopup] = useState<PopupTarget | null>(null);
@@ -47,13 +56,23 @@ export function Chart({
   );
   useEffect(() => {
     setPopup(null);
-  }, [zoom, axis, selectedId, active, result]);
+  }, [viewport, axis, selectedId, active, result, tool]);
+  useEffect(() => {
+    setViewport(fullViewport);
+    setHistory([]);
+    gesture.current = null;
+    setSelection(null);
+  }, [axis, result]);
+  useEffect(() => {
+    gesture.current = null;
+    setSelection(null);
+  }, [active, tool]);
   function inspectPointer(
     e: React.PointerEvent<SVGLineElement>,
     l: LegTiming,
     pinned = false,
   ) {
-    if (popup?.pinned && !pinned) return;
+    if (tool !== "inspect" || (popup?.pinned && !pinned)) return;
     cancelClose();
     const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(
       e.currentTarget.getScreenCTM()!.inverse(),
@@ -78,7 +97,7 @@ export function Chart({
     : "";
   const activeRules = scenario.timingRules.filter(r => r.enabled);
   const ruleLabelSpace = activeRules.length * 16;
-  const width = 1160 * zoom,
+  const width = canvasWidth,
     height = 550 + ruleLabelSpace,
     left = 68,
     right = width - 28,
@@ -99,27 +118,110 @@ export function Chart({
       max: Math.max(4, Math.ceil((Math.max(ORIGIN, ...times) - ORIGIN) / 3600)),
     };
   }, [result, comparison, scenario.waves, scenario.timingRules, scenario.release.targetFinish, overlay, showRelease]);
+  const visibleMin = extent.min + viewport.x0 * (extent.max - extent.min);
+  const visibleMax = extent.min + viewport.x1 * (extent.max - extent.min);
+  const courseMax = axis === "miles" ? 205.72 : 71;
+  const yValue = (value: number) => bottom - ((value / courseMax - viewport.y0) / (viewport.y1 - viewport.y0)) * (bottom - top);
   const x = (seconds: number) =>
     left +
-    (((seconds - ORIGIN) / 3600 - extent.min) / (extent.max - extent.min)) *
+    (((seconds - ORIGIN) / 3600 - visibleMin) / (visibleMax - visibleMin)) *
       (right - left);
-  const y = (exchange: number) =>
-    bottom -
-    (axis === "miles"
-      ? (exchange ? course.legs[exchange - 1].cumulative_distance_miles : 0) /
-        205.72
-      : exchange / 71) *
-      (bottom - top);
+  const y = (exchange: number) => yValue(axis === "miles" ? (exchange ? course.legs[exchange - 1].cumulative_distance_miles : 0) : exchange);
   const colors = new Map(scenario.waves.map((w) => [w.id, w.color]));
-  const step = Math.max(1, Math.ceil((extent.max - extent.min) / (12 * zoom)));
-  const ticks: number[] = [];
-  for (let h = Math.ceil(extent.min / step) * step; h <= extent.max; h += step)
-    ticks.push(h);
-  if (ticks[0] !== extent.min) ticks.unshift(extent.min);
-  const yTicks =
-    axis === "miles"
-      ? [0, 25, 50, 75, 100, 125, 150, 175, 200, 205.72]
-      : [0, 10, 20, 30, 40, 50, 60, 71];
+  const ticks = chartTicks(visibleMin, visibleMax, Math.max(3, Math.floor((right-left)/85)));
+  const yTicks = chartTicks(viewport.y0 * courseMax, viewport.y1 * courseMax, 8);
+  if (viewport.y1 === 1 && !yTicks.includes(courseMax)) {
+    if (courseMax - yTicks.at(-1)! < courseMax * (viewport.y1 - viewport.y0) / 25) yTicks.pop();
+    yTicks.push(courseMax);
+  }
+  function changeView(next: ChartViewport, previous = viewport) {
+    if (Object.keys(next).every(k => next[k as keyof ChartViewport] === previous[k as keyof ChartViewport])) return;
+    setHistory(values => [...values.slice(-29), previous]);
+    setViewport(next);
+    setPopup(null);
+  }
+  function plotPoint(clientX: number, clientY: number): PlotPoint {
+    const point = new DOMPoint(clientX, clientY).matrixTransform(svgRef.current!.getScreenCTM()!.inverse());
+    return { x: Math.max(0, Math.min(1, (point.x - left) / (right - left))), y: Math.max(0, Math.min(1, (bottom - point.y) / (bottom - top))) };
+  }
+  function insidePlot(clientX: number, clientY: number) {
+    const point = new DOMPoint(clientX, clientY).matrixTransform(svgRef.current!.getScreenCTM()!.inverse());
+    return point.x >= left && point.x <= right && point.y >= top && point.y <= bottom;
+  }
+  function beginGesture(e: React.PointerEvent<SVGSVGElement>) {
+    if (tool === "inspect" || e.button !== 0 || !insidePlot(e.clientX, e.clientY) || gesture.current) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.focus({ preventScroll: true });
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const start = plotPoint(e.clientX, e.clientY);
+    gesture.current = { id: e.pointerId, start, end: start, view: viewport, moved: false };
+    setPopup(null);
+    if (tool === "zoom") setSelection({ start, end: start });
+  }
+  function moveGesture(e: React.PointerEvent<SVGSVGElement>) {
+    const drag = gesture.current;
+    if (!drag || drag.id !== e.pointerId) return;
+    e.preventDefault();
+    const end = plotPoint(e.clientX, e.clientY);
+    drag.end = end;
+    drag.moved ||= Math.hypot(end.x - drag.start.x, end.y - drag.start.y) > 0.005;
+    if (tool === "zoom") setSelection({ start: drag.start, end });
+    else setViewport(panViewport(drag.view, end.x - drag.start.x, end.y - drag.start.y));
+  }
+  function finishGesture(e: React.PointerEvent<SVGSVGElement>, cancel = false) {
+    const drag = gesture.current;
+    if (!drag || drag.id !== e.pointerId) return;
+    gesture.current = null;
+    setSelection(null);
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+    if (cancel) { setViewport(drag.view); return; }
+    if (tool === "zoom") {
+      if (Math.abs(drag.end.x - drag.start.x) > 0.01 && Math.abs(drag.end.y - drag.start.y) > 0.01)
+        changeView(regionViewport(drag.view, drag.start, drag.end), drag.view);
+    } else if (drag.moved) changeView(panViewport(drag.view, drag.end.x - drag.start.x, drag.end.y - drag.start.y), drag.view);
+  }
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const observer = new ResizeObserver(entries => {
+      const width = entries[0].contentRect.width;
+      if (width > 0) setCanvasWidth(Math.max(280, width));
+      gesture.current = null;
+      setSelection(null);
+      setPopup(null);
+    });
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, [result.teams.length]);
+  function chartKey(e: React.KeyboardEvent<SVGSVGElement>) {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Escape") {
+      if (gesture.current) setViewport(gesture.current.view);
+      gesture.current = null;
+      setSelection(null);
+      setPopup(null);
+      return;
+    }
+    const moves: Record<string, [number, number]> = { ArrowLeft: [0.15, 0], ArrowRight: [-0.15, 0], ArrowUp: [0, -0.15], ArrowDown: [0, 0.15] };
+    if (moves[e.key]) { e.preventDefault(); changeView(panViewport(viewport, ...moves[e.key])); }
+    if (["+", "=", "-", "0", "Home"].includes(e.key)) {
+      e.preventDefault();
+      changeView(e.key === "0" || e.key === "Home" ? fullViewport : zoomViewport(viewport, e.key === "-" ? 0.5 : 2));
+    }
+  }
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg || !active) return;
+    function wheel(e: WheelEvent) {
+      if ((tool === "inspect" && !e.ctrlKey && !e.metaKey) || gesture.current || !insidePlot(e.clientX, e.clientY)) return;
+      e.preventDefault();
+      const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1);
+      changeView(zoomViewport(viewport, Math.exp(-Math.max(-200, Math.min(200, delta)) * 0.005), plotPoint(e.clientX, e.clientY)));
+    }
+    svg.addEventListener("wheel", wheel, { passive: false });
+    return () => svg.removeEventListener("wheel", wheel);
+  }, [viewport, tool, active, result]);
   return (
     <section className="panel trajectory" aria-labelledby="trajectory-title">
       <div className="section-head">
@@ -179,29 +281,23 @@ export function Chart({
             ))}
           </select>
         </label>
-        <label className="inline-label zoom">
-          Zoom
-          <input
-            aria-label="Chart zoom"
-            type="range"
-            min="1"
-            max="4"
-            step="0.5"
-            value={zoom}
-            onChange={(e) => setZoom(+e.target.value)}
-          />
-          <span>{zoom}×</span>
-        </label>
-        <button
-          className="quiet"
-          onClick={() => {
-            setZoom(1);
-            setSelected("");
-          }}
-        >
-          Reset view
-        </button>
+        <div className="chart-navigation" role="group" aria-label="Chart navigation">
+          <div className="segmented" role="group" aria-label="Chart interaction">
+            <button aria-pressed={tool === "inspect"} onClick={() => setTool("inspect")}>Inspect</button>
+            <button aria-pressed={tool === "zoom"} onClick={() => setTool("zoom")}>Zoom region</button>
+            <button aria-pressed={tool === "pan"} onClick={() => setTool("pan")}>Pan</button>
+          </div>
+          <button aria-label="Zoom in" title="Zoom in (+)" disabled={viewport.x1 - viewport.x0 <= 0.01000001 && viewport.y1 - viewport.y0 <= 0.01000001} onClick={() => changeView(zoomViewport(viewport, 2))}>+</button>
+          <button aria-label="Zoom out" title="Zoom out (-)" disabled={zoom <= 1 + 1e-7} onClick={() => changeView(zoomViewport(viewport, 0.5))}>−</button>
+          <span className="chart-zoom-level">{zoom.toFixed(1)}×</span>
+          <button disabled={!history.length} onClick={() => { setViewport(history.at(-1)!); setHistory(values => values.slice(0, -1)); }}>Previous view</button>
+          <button onClick={() => changeView(fullViewport)}>Reset view</button>
+        </div>
       </div>
+      <p className="chart-navigation-hint" id={clipId + "-hint"}>
+        {tool === "inspect" ? "Hover or tap a line to inspect. Choose Zoom region to drag a box around an area." : tool === "zoom" ? "Drag a box to zoom into that region. Scroll or trackpad-pinch to zoom at the pointer." : "Drag to pan the chart. Scroll or pinch to zoom at the pointer."}
+        {" "}Keyboard: + / − zoom, arrow keys pan, 0 resets, Escape cancels.
+      </p>
       {!result.teams.length ? (
         <div className="empty">
           Select at least one team to see its course timeline.
@@ -209,16 +305,29 @@ export function Chart({
       ) : (
         <div
           className="chart-scroll"
-          tabIndex={0}
-          aria-label="Course timeline. Scroll horizontally when zoomed."
+          aria-label="Course timeline"
         >
           <svg
+            ref={svgRef}
             viewBox={`0 0 ${width} ${height}`}
-            style={{ width: `${zoom * 100}%`, minWidth: 800 }}
+            style={{ width: "100%", touchAction: tool === "inspect" ? "pan-y" : "none" }}
+            className={`chart-canvas tool-${tool}`}
+            tabIndex={0}
+            aria-describedby={clipId + "-hint"}
+            data-viewport={JSON.stringify(viewport)}
+            onPointerDownCapture={beginGesture}
+            onPointerMove={moveGesture}
+            onPointerUp={e => finishGesture(e)}
+            onPointerCancel={e => finishGesture(e, true)}
+            onLostPointerCapture={e => finishGesture(e, true)}
+            onKeyDown={chartKey}
+            onDoubleClick={e => { if (tool !== "inspect" && insidePlot(e.clientX, e.clientY)) changeView(zoomViewport(viewport, e.shiftKey ? 0.5 : 2, plotPoint(e.clientX, e.clientY))); }}
             role="group"
             aria-label={`Course timeline for ${result.teams.length} teams. ${result.releaseCount} time releases. Last runner off course ${clock(result.lastOffCourse)}.`}
           >
+            <defs><clipPath id={clipId}><rect x={left} y={top} width={right-left} height={bottom-top}/></clipPath></defs>
             <rect
+              data-testid="chart-plot"
               x={left}
               y={top}
               width={right - left}
@@ -245,9 +354,7 @@ export function Chart({
               </g>
             ))}
             {yTicks.map((v) => {
-              const pos =
-                bottom -
-                (v / (axis === "miles" ? 205.72 : 71)) * (bottom - top);
+              const pos = yValue(v);
               return (
                 <g key={v}>
                   <line
@@ -279,6 +386,7 @@ export function Chart({
             >
               ELAPSED HOURS FROM FRIDAY, 1:00 AM
             </text>
+            <g clipPath={`url(#${clipId})`}>
             {bins.slice(1).map((bin) => (
               <g key={bin.bin_id} pointerEvents="none">
                 <line
@@ -436,7 +544,7 @@ export function Chart({
                   className="release-point"
                   data-release-leg={i + 1}
                   onPointerMove={(e) => {
-                    if (popup?.pinned) return;
+                    if (tool !== "inspect" || popup?.pinned) return;
                     cancelClose();
                     setPopup({
                       index: i,
@@ -449,6 +557,7 @@ export function Chart({
                   }}
                   onPointerLeave={leavePopup}
                   onPointerDown={(e) => {
+                    if (tool !== "inspect") return;
                     cancelClose();
                     setPopup({
                       index: i,
@@ -487,7 +596,7 @@ export function Chart({
               return <g key={rule.id} className="chart-timing-rule" data-rule-id={rule.id}>
                 <line x1={x(rule.time)} x2={x(rule.time)} y1={top} y2={bottom} stroke={color}
                   strokeWidth="1.5" strokeDasharray={rule.type === "depart-after" ? "3 5" : "8 4"} pointerEvents="none" />
-                <text x={Math.min(x(rule.time), right - 100)} y={32 + index * 16} fill={color} fontSize="11">
+                <text x={Math.min(x(rule.time), right - 100)} y={top + 14 + index * 16} fill={color} fontSize="11">
                   {index + 1}. {clock(rule.time)}
                 </text>
                 <circle cx={x(rule.time)} cy={y(rule.exchange)} r="5" fill="white" stroke={color} strokeWidth="2"
@@ -500,6 +609,12 @@ export function Chart({
                 </circle>)}
               </g>;
             })}
+            </g>
+            {selection && <rect className="zoom-selection" pointerEvents="none"
+              x={left + Math.min(selection.start.x, selection.end.x) * (right-left)}
+              y={bottom - Math.max(selection.start.y, selection.end.y) * (bottom-top)}
+              width={Math.abs(selection.end.x-selection.start.x) * (right-left)}
+              height={Math.abs(selection.end.y-selection.start.y) * (bottom-top)}/>}
           </svg>
         </div>
       )}
