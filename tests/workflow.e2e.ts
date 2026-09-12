@@ -74,10 +74,10 @@ test("invalid configuration prevents stale results and exports, then recovers",a
   await section(page,"Results");await expect(page.getByRole("button",{name:"Export team results CSV"})).toBeVisible();
 });
 
-test("presets keep finish settings and field; wave boundaries, split and removal work",async({page})=>{
+test("presets apply finish settings and retain field; wave boundaries, split and removal work",async({page})=>{
   await page.getByLabel("Release pace",{exact:true}).fill("11:30");await page.getByLabel("Simulation field").selectOption("2025");
-  await page.getByLabel("Wave arrangement").selectOption("three-waves");
-  await expect(page.locator('.wave-card')).toHaveCount(3);await expect(page.getByLabel("Release pace",{exact:true})).toHaveValue("11:30");
+  await page.getByLabel("Strategy preset").selectOption("three-waves");
+  await expect(page.locator('.wave-card')).toHaveCount(3);await expect(page.getByLabel("Release pace",{exact:true})).toHaveValue("10:25");
   await expect(page.getByLabel("Simulation field")).toHaveValue("2025");
   await expect(page.locator('.finish-target').getByLabel("Target finish time")).toBeVisible();
   const boundary=page.getByLabel("Wave 1 minimum pace (inclusive)");await boundary.fill("10:30");await boundary.press("Enter");
@@ -85,7 +85,7 @@ test("presets keep finish settings and field; wave boundaries, split and removal
   await boundary.fill("1:00");await boundary.press("Enter");await expect(boundary).toHaveAttribute("aria-invalid","true");await boundary.press("Escape");
   await page.getByRole("button",{name:"+ Add wave",exact:true}).click();await page.getByRole("button",{name:"Confirm split"}).click();
   await expect(page.locator('.wave-card')).toHaveCount(4);await page.getByLabel("Remove wave 1",{exact:true}).click();
-  await expect(page.locator('.wave-card')).toHaveCount(3);await expect(page.getByLabel("Release pace",{exact:true})).toHaveValue("11:30");
+  await expect(page.locator('.wave-card')).toHaveCount(3);await expect(page.getByLabel("Release pace",{exact:true})).toHaveValue("10:25");
 });
 
 test("results tables and CSV reflect current field and configuration",async({page})=>{
@@ -151,12 +151,14 @@ test("desktop and mobile sections fit the viewport and render without errors",as
 });
 
 test("compact configuration keeps rows aligned and exposes rosters and settings at every width",async({page})=>{
-  await page.getByLabel("Wave arrangement").selectOption("three-waves");
+  await page.getByLabel("Strategy preset").selectOption("three-waves");
   const config=page.locator('.configuration-panel');
   const summaries=config.locator('.compact-settings summary');
   const boxes=await summaries.evaluateAll(elements=>elements.map(el=>el.getBoundingClientRect().y));
   expect(Math.max(...boxes)-Math.min(...boxes)).toBeLessThan(2);
-  expect((await config.boundingBox())!.height).toBeLessThan(530);
+  const descriptionHeight = (await config.locator('.preset-description').boundingBox())!.height;
+  expect((await config.boundingBox())!.height - descriptionHeight).toBeLessThan(530);
+  expect((await config.boundingBox())!.height).toBeLessThan(600);
   await config.getByRole('button',{name:/included teams for wave 1/}).click();
   await expect(config.locator('.wave-members').first()).toBeVisible();
   await expect(config.locator('.wave-members').first().getByRole('button',{name:'Split this range'})).toBeVisible();
@@ -207,4 +209,39 @@ test("first split moves strictly faster teams into the new wave and retains the 
     const id=`${profile.year}::${profile.team}`;
     expect(saved.assignments[id]).toBe(profile.overall_mean_pace_seconds_per_mile<cutoff ? saved.waves[0].id : "wave-1");
   }
+});
+
+test("complete presets switch atomically, restore rules, and retain field and buffers", async ({page}) => {
+  await page.getByLabel("Simulation field").selectOption("2026");
+  await page.getByText("Challenge allowances", {exact:true}).click();
+  await page.getByLabel("Monument challenge", {exact:true}).fill("30");
+  await page.getByText("Timing rules & fast-wave releases", {exact:true}).click();
+  await page.getByLabel("Enable releases for fast waves").uncheck();
+  await page.getByText("Staffing buffers", {exact:true}).click();
+  await page.getByLabel("Before first activity", {exact:true}).fill("10");
+  await page.getByLabel("Strategy preset").selectOption("eleven-am");
+  await expect(page.getByLabel("Target finish time")).toHaveValue("11:00");
+  await expect(page.getByLabel("Release pace", {exact:true})).toHaveValue("9:40");
+  await expect(page.getByLabel("Wave 3 start time")).toHaveValue("03:30");
+  await expect(page.locator('.preset-description')).toContainText("11:10 AM");
+  await page.getByText(/^Configuration files ·/).click();
+  const s = JSON.parse(await downloadText(page,"↓ JSON"));
+  expect(s.fieldYear).toBe(2026);
+  expect(s.buffers.before).toBe(600);
+  expect(s.challenges).toEqual({monument:960,lighthouse:1260});
+  expect(s.fastWaveReleases).toEqual({enabled:true,fromExchange:35});
+  expect(s.timingRules).toEqual(baseline().timingRules);
+  expect(await page.evaluate(() => localStorage.length)).toBe(0);
+  await page.getByLabel("Strategy preset").selectOption("earlier-launch");
+  await expect(page.getByLabel("Wave 1 start weekday")).toHaveValue("-1");
+  await expect(page.getByLabel("Wave 1 start time")).toHaveValue("23:00");
+  await expect(page.getByLabel("Release pace", {exact:true})).toHaveValue("11:00");
+  await page.getByLabel("Strategy preset").selectOption("two-waves");
+  await expect(page.locator('.wave-card')).toHaveCount(2);
+  await expect(page.getByLabel("Target finish time")).toHaveValue("13:20");
+  await page.getByLabel("Wave 1 start time").fill("00:30");
+  await expect(page.getByLabel("Strategy preset")).toHaveValue("custom");
+  await page.setViewportSize({width:320,height:900});
+  await page.getByLabel("Strategy preset").selectOption("earlier-launch");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });

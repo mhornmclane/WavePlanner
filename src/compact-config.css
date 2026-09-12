@@ -3,6 +3,11 @@
 .configuration-results-action { display:flex; justify-content:flex-end; }
 .configuration-heading { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; padding:14px 18px; border-bottom:1px solid var(--border); }
 .configuration-heading h3 { margin:0; font-size:15px; }
+.preset-description { padding:8px 18px; font-size:12px; line-height:1.4; border-bottom:1px solid var(--border); }
+.preset-description p { margin:0; }
+.preset-description p + p { margin-top:4px; }
+.configuration-heading .field { min-width:0; max-width:100%; }
+.configuration-heading .field select { min-width:0; max-width:100%; }
 .configuration-heading .field { flex-direction:row; align-items:center; margin-left:auto; }
 .configuration-heading .muted { margin:0; font-size:12px; }
 .configuration-panel input, .configuration-panel select, .configuration-panel button { min-height:32px; padding:5px 8px; font-size:12px; }

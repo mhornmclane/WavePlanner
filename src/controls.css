@@ -94,6 +94,7 @@
   font-size: inherit;
   color: inherit;
 }
+.configuration-panel input[type="checkbox"] { min-height:16px; padding:0; flex-shrink:0; }
 .calculated-wave {
   font-size: 12px;
   font-weight: 600;
@@ -451,7 +452,9 @@ input[aria-invalid="true"] {
 }
 .table-scroll {
   overflow: auto;
+  overscroll-behavior-x: contain;
 }
+.table-scroll:focus-visible { outline-offset: -3px; }
 .team-table {
   max-height: 370px;
   border: 1px solid var(--border);
@@ -462,7 +465,7 @@ table {
   border-spacing: 0;
   width: 100%;
   text-align: left;
-  font-size: 11px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 thead th {
@@ -475,11 +478,11 @@ thead th {
   font-weight: 650;
   color: #677a60;
   white-space: nowrap;
-  padding: 13px 12px;
+  padding: 14px 16px;
 }
 tbody td,
 tbody th {
-  padding: 11px 12px;
+  padding: 12px 16px;
   border-bottom: 1px solid #e8ede4;
   white-space: nowrap;
 }
@@ -525,11 +528,16 @@ tbody tr:last-child th {
   border-right: 3px solid white;
 }
 .table-note {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin: 13px 0 0;
   line-height: 1.7;
 }
+.table-note.panel-note { margin:0; }
+.panel > .table-scroll > table tr > :first-child { padding-left:var(--panel-gutter); }
+.panel > .table-scroll > table tr > :last-child { padding-right:var(--panel-gutter); }
+.history-panel .sort-button { padding:3px 5px; margin:-3px -5px; border-radius:4px; }
+.history-panel tbody tr:nth-child(even) { background:#fafcf9; }
 .release-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

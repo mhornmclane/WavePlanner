@@ -99,8 +99,27 @@ describe("exchange spread replay", () => {
       (m) => m.teamId === late.l.teamId,
     )!;
     expect(marker.time).toBe(late.incoming.arrival);
+    expect(marker.release).toBe(result.releases[late.l.leg - 1]);
+    expect(marker.late).toBeGreaterThan(0);
+    expect(marker.overlaps).toBe(true);
     s.buffers = { before: 7200, after: 3600 };
     expect(buildReplay(simulate(s))).toEqual(expected);
+  });
+  it("uses scenario releases and keeps start and finish free of release indicators", () => {
+    const result = simulate(baseline(profiles.slice(0, 3).map(teamId)));
+    const release = result.releases[1] + 600;
+    result.releases[1] = release;
+    [-60, 0, 60].forEach((offset, i) => {
+      result.teams[i].legs[0].arrival = release + offset;
+      result.teams[i].legs[1].departure = release;
+    });
+    const { frames } = buildReplay(result);
+    expect(frames[1].markers.map(m => [m.release, m.late, m.overlaps])).toEqual([
+      [release, 0, false], [release, 0, false], [release, 60, true],
+    ]);
+    for (const frame of [frames[0], frames[71]]) {
+      expect(frame.markers.every(m => m.release === undefined && m.late === undefined && m.overlaps === undefined)).toBe(true);
+    }
   });
   it("keeps exchange order when arrivals occur out of chronological order", () => {
     const result = simulate(baseline([teamId(profiles[0])]));

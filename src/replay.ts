@@ -34,6 +34,11 @@ export function buildReplay(result: Simulation): SpreadReplayData {
         exchange.index === 0
           ? team.legs[0].departure
           : team.legs[exchange.index - 1].arrival,
+      ...(exchange.index > 0 && exchange.index < result.releases.length ? {
+        release: result.releases[exchange.index],
+        late: Math.max(0, team.legs[exchange.index - 1].arrival - result.releases[exchange.index]),
+        overlaps: team.legs[exchange.index].departure < team.legs[exchange.index - 1].arrival,
+      } : {}),
     }));
     const first = times.length ? Math.min(...times.map((t) => t.time)) : null;
     const last = times.length ? Math.max(...times.map((t) => t.time)) : null;

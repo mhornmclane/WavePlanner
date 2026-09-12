@@ -2,57 +2,51 @@ import { baseline, colors } from "./data";
 import { syncAssignments } from "./waves";
 import type { Scenario } from "./model";
 
+// Preserve the exact analyzed reference, including fractional seconds.
+const referenceFinish = 134401.25;
 export const presets = [
-  {
-    id: "status-quo",
-    name: "Status quo",
-    summary: "Everyone starts at 1am.",
-    boundaries: [],
-    starts: [3600],
-  },
-  {
-    id: "three-waves",
-    name: "3 waves · 1–3am",
-    summary: "10:15 and slower: 1am · 9:30–under 10:15: 2am · Faster than 9:30: 3am.",
-    boundaries: [570, 615],
-    starts: [10800, 7200, 3600],
-  },
-  {
-    id: "midnight-waves",
-    name: "3 waves · midnight–2am",
-    summary: "10:30 and slower: midnight · 9:30–under 10:30: 1am · Faster than 9:30: 2am.",
-    boundaries: [570, 630],
-    starts: [7200, 3600, 0],
-  },
-  {
-    id: "two-waves",
-    name: "2 waves · 1am / 3am",
-    summary: "9:15 and slower: 1am · Faster than 9:15: 3am.",
-    boundaries: [555],
-    starts: [10800, 3600],
-  },
+  { id: "status-quo", name: "Editable baseline", boundaries: [], starts: [3600],
+    targetFinish: referenceFinish, releasePace: 625,
+    summary: "One start at 1 AM with generated releases. The exact published timetable remains available in the baseline comparison." },
+  { id: "two-waves", name: "Simple two waves", boundaries: [585], starts: [10800, 3600],
+    targetFinish: referenceFinish, releasePace: 625,
+    summary: "Two starts capture most of the three-wave coverage savings with fewer launches to operate." },
+  { id: "three-waves", name: "Efficient three waves", boundaries: [555, 600], starts: [12600, 9000, 3600],
+    targetFinish: referenceFinish, releasePace: 625,
+    summary: "Separate the fastest teams to reduce exchange coverage. Smaller fields may have very small later waves." },
+  { id: "tight-finish", name: "Tighter group finish", boundaries: [555, 600], starts: [14400, 9000, 3600],
+    targetFinish: referenceFinish, releasePace: 625,
+    summary: "A later fastest-wave start narrows the finish window, with slightly more exchange coverage than efficient three waves." },
+  { id: "earlier-finish", name: "Earlier group finish", boundaries: [555, 600], starts: [12600, 7200, 3600],
+    targetFinish: referenceFinish - 3600, releasePace: 600,
+    summary: "Target 12:20 PM with less exchange coverage and more release-assisted departures." },
+  { id: "eleven-am", name: "11 AM finish target", boundaries: [555, 600], starts: [12600, 7200, 3600],
+    targetFinish: 35 * 3600, releasePace: 580,
+    summary: "Target 11 AM with greater release dependence. The last historical modeled finish is approximately 11:10 AM." },
+  { id: "earlier-launch", name: "Earlier launch, fewer releases", boundaries: [585, 630], starts: [7200, 0, -3600],
+    targetFinish: referenceFinish, releasePace: 660,
+    summary: "Start the slowest wave Thursday at 11 PM to use fewer releases, with a wider finish window." },
 ] as const;
-
 export type PresetId = (typeof presets)[number]["id"];
 
-export function createPreset(id: PresetId, selectedTeamIds: string[], worstCaseTeams?: Scenario["worstCaseTeams"], timingRules?: Scenario["timingRules"], fastWaveReleases?: Scenario["fastWaveReleases"]): Scenario {
-  const preset = presets.find((p) => p.id === id)!;
+export function applyPreset(id: PresetId, currentScenario: Scenario): Scenario {
+  const preset = presets.find(p => p.id === id)!;
+  const defaults = baseline(currentScenario.selectedTeamIds);
   return syncAssignments({
-    ...baseline(selectedTeamIds),
-    ...(worstCaseTeams ? { worstCaseTeams: structuredClone(worstCaseTeams) } : {}),
-    ...(timingRules ? { timingRules: structuredClone(timingRules) } : {}),
-    ...(fastWaveReleases ? { fastWaveReleases: { ...fastWaveReleases } } : {}),
+    ...structuredClone(currentScenario),
     name: preset.name,
+    release: { targetFinish: preset.targetFinish, pace: preset.releasePace },
+    timingRules: defaults.timingRules,
+    challenges: defaults.challenges,
+    fastWaveReleases: defaults.fastWaveReleases,
     // Pace ranges are stored fastest first, displayed slowest first.
     waves: preset.starts.map((start, index) => {
       const number = preset.starts.length - index;
-      return {
-        id: `wave-${number}`,
-        name: `Wave ${number}`,
-        color: colors[number - 1],
-        start,
-      };
+      return { id: `wave-${number}`, name: `Wave ${number}`, color: colors[number - 1], start };
     }),
     waveRules: { mode: "pace", boundaries: [...preset.boundaries] },
   });
+}
+export function createPreset(id: PresetId, selectedTeamIds: string[], worstCaseTeams?: Scenario["worstCaseTeams"]): Scenario {
+  return applyPreset(id, { ...baseline(selectedTeamIds), ...(worstCaseTeams ? { worstCaseTeams } : {}) });
 }

@@ -24,7 +24,7 @@ Browser tests run the production build at `/PacePlanner/` using installed Chrome
 
 A circle marks arrival at or before the outgoing leg’s published release; a diamond marks a strictly later incoming arrival. Start and Finish remain circles. Inspection gives the release, time late, and whether the next runner actually departed before arrival (respecting gate delays). Each team has one marker. Changing years pauses playback while retaining the exchange; leaving the section pauses and preserves playback preferences.
 
-**Simulation** opens by default. The graph and replay share a Teams selector, defaulting to 2025; choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Compact wave rows sit above the full-width live chart, with a shared finish-target strip and responsive layouts for smaller screens. Select a wave's team count to view its roster and split its range. Wave arrangements provide editable starting points while preserving the selected field, finish target, and other settings. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers show current values in an expandable settings bar.
+**Simulation** opens by default. The graph and replay share a Teams selector, defaulting to 2025; choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Compact wave rows sit above the full-width live chart, with a shared finish-target strip and responsive layouts for smaller screens. Select a wave's team count to view its roster and split its range. Strategy presets apply complete editable starting points: wave splits and starts, finish target, release pace, and standard race rules. They preserve the selected field, hypothetical-team paces, and staffing buffers. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers show current values in an expandable settings bar.
 
 **Results** always reflects the current valid configuration. It includes summary metrics, team finishes, timing-rule evaluations, all 72 exchange staffing windows, and the 71 release times. Export team results or exchange staffing CSV. Returning to Simulation and editing automatically updates Results. Invalid scenario inputs suspend simulation and result exports until corrected.
 
@@ -94,3 +94,22 @@ Browser storage uses `ruck4hit-scenarios-v6`. Earlier schemas and alternate rele
 The static production output is `dist/`. Vite uses relative asset URLs, so it supports a repository subpath or domain root. Serve it over HTTP(S); opening `index.html` through `file://` is not supported.
 
 The existing GitHub Pages workflow runs checks and publishes when changes are pushed to `main`. Local edits do not publish automatically. No server secrets or environment variables are needed.
+
+
+### Strategy presets
+
+| Preset | Splits (min/mi) | Starts, slowest to fastest | Saturday target | Release pace |
+|---|---|---|---|---|
+| Editable baseline | None | Friday 1 AM | 1:20 PM | 10:25 |
+| Simple two waves | 9:45 | Friday 1 / 3 AM | 1:20 PM | 10:25 |
+| Efficient three waves | 9:15, 10:00 | Friday 1 / 2:30 / 3:30 AM | 1:20 PM | 10:25 |
+| Tighter group finish | 9:15, 10:00 | Friday 1 / 2:30 / 4 AM | 1:20 PM | 10:25 |
+| Earlier group finish | 9:15, 10:00 | Friday 1 / 2 / 3:30 AM | 12:20 PM | 10:00 |
+| 11 AM finish target | 9:15, 10:00 | Friday 1 / 2 / 3:30 AM | 11 AM | 9:40 |
+| Earlier launch, fewer releases | 9:45, 10:30 | Thursday 11 PM / Friday midnight / 2 AM | 1:20 PM | 11:00 |
+
+Exact split paces belong to the slower wave. Presets restore Friday 7 PM monument clearance, Saturday 6 AM JBCC opening, 16/21-minute challenges, and faster-wave releases after arrival at exchange 35, replacing customized race rules. The 1:20 PM reference retains its exact analyzed value of 1:20:01.25 PM; the 12:20 PM option is exactly one hour earlier.
+
+Targets guide the release schedule, rather than guaranteeing every team finishes by that time. Under the pooled historical five-section model, the 11 AM preset produces about 124.02 exchange-hours and an 11:10 AM last finish, using 2,013 release-assisted departures. Results depend on the selected field and settings; runner and vehicle availability are not modeled. Smaller individual-year fields may have very small later waves.
+
+The editable baseline uses generated releases. The existing baseline comparison retains the exact published timetable. Selecting a preset does not save it or overwrite a saved configuration; edit and save or export it as usual. Existing saved configurations retain their stored settings.

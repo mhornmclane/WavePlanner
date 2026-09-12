@@ -242,7 +242,7 @@ export function SpreadReplay({
           </span>
         ))}
       </div>
-      {historical && <p className="replay-shape-legend">● Circle: arrival at or before release · ◆ Diamond: arrival after release. Start and Finish use circles.</p>}
+      <p className="replay-shape-legend">● Circle: arrival at or before release · ◆ Diamond: arrival after release. Start and Finish use circles.</p>
       <div
         className="replay-detail"
         id={detailId}
@@ -258,8 +258,8 @@ export function SpreadReplay({
               {index === 0 ? "Start" : "Arrival"}: {clock(detail.time)}
             </span>
             <span>Ahead of {historical ? "year’s last" : "last"}: {duration(detail.ahead)}</span>
-            {historical && detail.release !== undefined && <>
-              <span>Published release: {clock(detail.release)}</span>
+            {detail.release !== undefined && <>
+              <span>{historical ? "Published release" : "Scenario release"}: {clock(detail.release)}</span>
               <span>Time late: {duration(detail.late!)}</span>
               <span>Another runner departed before arrival: {detail.overlaps ? "Yes" : "No"}</span>
             </>}
@@ -305,7 +305,7 @@ export function SpreadReplay({
               return (
                 <button
                   key={marker.teamId}
-                  className={`replay-marker${historical && marker.late! > 0 ? " is-diamond" : ""}${selected === marker.teamId || pinned === marker.teamId ? " is-highlighted" : ""}`}
+                  className={`replay-marker${marker.late! > 0 ? " is-diamond" : ""}${selected === marker.teamId || pinned === marker.teamId ? " is-highlighted" : ""}`}
                   data-team-id={marker.teamId}
                   data-ahead={marker.ahead}
                   style={{
@@ -313,7 +313,7 @@ export function SpreadReplay({
                     background: historical ? yearColors[Number(p.year)] : wave.color,
                     opacity: selected && selected !== marker.teamId ? 0.3 : 1,
                   }}
-                  aria-label={`${p.team}, ${p.year}, ${historical ? (marker.late! > 0 ? "diamond, arrival after release" : "circle") : wave.name}, ${index === 0 ? "start" : "arrival"} ${clock(marker.time)}, ${duration(marker.ahead)} ahead of ${historical ? "year’s last team" : "last"}`}
+                  aria-label={`${p.team}, ${p.year}, ${historical ? "" : `${wave.name}, `}${marker.late! > 0 ? "diamond, arrival after release" : "circle"}, ${index === 0 ? "start" : "arrival"} ${clock(marker.time)}, ${duration(marker.ahead)} ahead of ${historical ? "year’s last team" : "last"}`}
                   aria-describedby={
                     detail?.teamId === marker.teamId
                       ? detailId

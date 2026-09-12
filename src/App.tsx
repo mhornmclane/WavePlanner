@@ -19,7 +19,7 @@ import {
   type SavedScenario,
 } from "./storage";
 import type { Scenario } from "./model";
-import { createPreset, presets, type PresetId } from "./presets";
+import { applyPreset, presets, type PresetId } from "./presets";
 
 export default function App() {
   const [section, setSection] = useState<"history" | "historical-replay" | "simulation" | "results">("simulation");
@@ -117,10 +117,10 @@ export default function App() {
       setPresetId("custom");
       return;
     }
-    const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams, scenario.timingRules, scenario.fastWaveReleases);
-    replace({ ...scenario, waves: next.waves, waveRules: next.waveRules, assignments: next.assignments });
+    const next = applyPreset(id, scenario);
+    replace(next);
     setPresetId(id);
-    setNotice(`Loaded ${next.name}. Starting-wave arrangement applied. Your field, finish target, and other settings are retained.`);
+    setNotice(`Loaded ${next.name}. Strategy and standard race rules applied. Your field, hypothetical paces, and staffing buffers are retained.`);
   }
   async function importFile(file: File | undefined) {
     if (!file) return;
@@ -248,8 +248,11 @@ export default function App() {
         {checked.error && <div className="error-message" role="alert">{checked.error} Results will resume when corrected.</div>}
         <div className="simulation-workspace">
           <section className="panel configuration-panel" aria-label="Simulation configuration">
-            <div className="configuration-heading"><h3>Configuration</h3><label className="field"><span>Wave arrangement</span><select aria-label="Wave arrangement" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label><span className="muted">{scenario.selectedTeamIds.length} profiles</span></div>
-            {activePreset && <p className="sr-only">{activePreset.summary} Friday starts.</p>}
+            <div className="configuration-heading"><h3>Configuration</h3><label className="field"><span>Strategy preset</span><select aria-label="Strategy preset" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label><span className="muted">{scenario.selectedTeamIds.length} profiles</span></div>
+            <div className="preset-description">
+              {activePreset && <p>{activePreset.summary}</p>}
+              <p className="muted">Presets restore standard race rules. Finish targets guide the release schedule; they do not guarantee all teams finish by that time.</p>
+            </div>
             <Config key={configRevision} scenario={scenario} setScenario={editScenario} result={result}/>
           </section>
           <div className="configuration-results-action"><button className="primary" onClick={()=>setSection("results")}>Tabular results</button></div>

@@ -3,7 +3,7 @@ import { baseline, course, worstCaseIds } from "../src/data";
 import { simulate } from "../src/engine";
 import { evaluateTimingRules, openingTime, supportsRule } from "../src/timingRules";
 import { validateScenario, serializeScenario, parseScenario } from "../src/storage";
-import { createPreset } from "../src/presets";
+import { applyPreset } from "../src/presets";
 import type { TimingRule } from "../src/model";
 
 const rule = (patch: Partial<TimingRule> = {}): TimingRule => ({ id: "test", enabled: true, exchange: 35, type: "clear-by", time: 68400, ...patch });
@@ -75,12 +75,12 @@ describe("timing rules", () => {
   it("reports an empty field as not evaluated", () => {
     expect(simulate(baseline([])).timingRules.every(r => r.status === "not-evaluated")).toBe(true);
   });
-  it("round trips and preserves independent rules through presets and copies", () => {
+  it("round trips custom rules and restores independent standard rules through presets", () => {
     const s = baseline();
     s.timingRules = [rule({ exchange: 10, time: 40000 })];
     expect(parseScenario(serializeScenario(s))).toEqual(s);
-    const preset = createPreset("three-waves", s.selectedTeamIds, s.worstCaseTeams, s.timingRules);
-    expect(preset.timingRules).toEqual(s.timingRules);
+    const preset = applyPreset("three-waves", s);
+    expect(preset.timingRules).toEqual(baseline().timingRules);
     preset.timingRules[0].time++;
     expect(s.timingRules[0].time).toBe(40000);
   });

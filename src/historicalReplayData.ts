@@ -35,7 +35,6 @@ export const historicalResult = simulate(historicalScenario, true, (id, leg) => 
 
 export function buildHistoricalReplay(result: Simulation): SpreadReplayData {
   const data = buildReplay(result);
-  const teamById = new Map(result.teams.map(t => [t.teamId, t]));
   for (const frame of data.frames) {
     const years = [...new Set(frame.markers.map(m => Number(m.teamId.split("::")[0])))].sort();
     frame.years = years.map(year => {
@@ -44,11 +43,6 @@ export function buildHistoricalReplay(result: Simulation): SpreadReplayData {
       const last = Math.max(...markers.map(m => m.time));
       for (const marker of markers) {
         marker.ahead = last - marker.time;
-        if (frame.index > 0 && frame.index < result.releases.length) {
-          marker.release = result.releases[frame.index];
-          marker.late = Math.max(0, marker.time - marker.release);
-          marker.overlaps = teamById.get(marker.teamId)!.legs[frame.index].departure < marker.time;
-        }
       }
       return { year, first, last, spread: last - first };
     });

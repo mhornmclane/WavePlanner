@@ -6,16 +6,19 @@
   font-weight: 400;
   font-size: 14px;
   --ink: #172c2b;
-  --muted: #687871;
+  --muted: #596c63;
   --border: #dce3d9;
   --accent: #277b71;
   --lime: #d2ef85;
+  --panel-gutter: 24px;
+  --page-gutter: clamp(16px, 3vw, 40px);
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+  line-height: 1.45;
 }
 button,
 input,
@@ -109,7 +112,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 38px;
+  padding: 0 var(--page-gutter);
 }
 .brand {
   display: flex;
@@ -147,7 +150,7 @@ h3 {
 main {
   max-width: 1536px;
   margin: auto;
-  padding: 36px 38px;
+  padding: 32px var(--page-gutter);
 }
 .page-heading {
   display: flex;
@@ -183,18 +186,22 @@ main {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 2px 3px #23352603;
+  box-shadow: 0 3px 12px #23352606;
   margin-bottom: 24px;
   overflow: hidden;
 }
 .section-head {
-  padding: 23px 25px;
+  padding: 20px var(--panel-gutter);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 18px;
   border-bottom: 1px solid #e7ece3;
 }
+.section-head h2 + p { margin-top: 6px; }
+.section-head > div { min-width: 0; }
+.panel-note { margin: 0; padding: 16px var(--panel-gutter); border-top: 1px solid var(--border); }
+.panel .empty-state { margin: 0; }
 .config-intro {
   padding: 20px 25px;
   display: flex;
@@ -386,7 +393,7 @@ footer {
 }
 @media (max-width: 1000px) {
   main {
-    padding: 25px 20px;
+    padding: 28px var(--page-gutter);
   }
   .app-header {
     padding: 0 20px;
@@ -412,6 +419,7 @@ footer {
   }
 }
 @media (max-width: 600px) {
+  :root { --panel-gutter: 16px; }
   h1 {
     font-size: 27px;
   }
@@ -431,7 +439,7 @@ footer {
     margin: 0 3px;
   }
   main {
-    padding: 25px 12px;
+    padding: 24px var(--page-gutter);
   }
   .section-head,
   .chart-toolbar {
@@ -478,6 +486,7 @@ footer {
 .worst-case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1rem; }
 .worst-case-grid fieldset { min-width: 0; border: 1px solid #cbd5d1; border-radius: 10px; padding: 1rem; }
 .worst-case-grid legend { font-weight: 700; padding: 0 .4rem; }
+.worst-case-grid button { max-width:100%; white-space:normal; text-align:left; }
 .worst-case-bins { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
 .worst-case-grid .field { margin: .6rem 0; }
 .worst-case-grid [role="alert"] { color: #a02b21; font-size: .85rem; max-width: 24rem; }
@@ -505,7 +514,7 @@ footer {
 .fast-wave-releases > label { display: block; margin-top: 12px; }
 /* Three independent workspaces */
 [hidden] { display: none !important; }
-.section-nav { display:flex; gap:6px; padding:6px; background:#e7ece3; border-radius:10px; width:fit-content; margin:0 0 28px; }
+.section-nav { display:flex; flex-wrap:wrap; gap:6px; padding:6px; background:#e7ece3; border:1px solid var(--border); border-radius:10px; width:fit-content; max-width:100%; margin:0 0 28px; }
 .section-nav button { border:0; background:transparent; padding:11px 22px; }
 .section-nav button[aria-current] { background:var(--ink); color:white; box-shadow:0 2px 4px #172c2b20; }
 .workspace-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; }
@@ -553,8 +562,11 @@ footer {
 .secondary-control fieldset { min-width:0; }
 .configuration-panel .table-note { font-size:11px; line-height:1.5; margin-top:12px; }
 .export-actions, .history-filters { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
-.history-filters { margin:20px 0; }
-.history-filters .field { min-width:150px; }
+.history-filters { margin:0; padding:20px var(--panel-gutter); gap:16px; align-items:flex-end; border-bottom:1px solid var(--border); background:#fbfcfa; }
+.history-filters .field { min-width:0; flex:0 1 180px; font-size:12px; }
+.history-filters .field:nth-child(2) { flex:1 1 260px; max-width:420px; }
+.history-filters input, .history-filters select { width:100%; min-height:40px; }
+.history-filters > span { margin-left:auto; padding-bottom:10px; font-size:12px; color:var(--muted); }
 .empty-state { padding:50px 25px; color:var(--muted); }
 @media (max-width:1100px) {
   .simulation-workspace { gap:14px; }
@@ -567,21 +579,25 @@ footer {
   .live-summary .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (max-width:500px) {
-  .section-nav { width:100%; gap:2px; }
-  .section-nav button { padding:10px 8px; flex:1; font-size:12px; }
+  .section-nav { width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; }
+  .section-nav button { padding:10px 8px; font-size:12px; min-height:40px; }
   .workspace-heading { align-items:flex-start; flex-direction:column; }
   .configuration-panel { padding:14px; }
   .configuration-panel .wave-list { display:block; }
   .live-summary .metrics strong { font-size:17px; }
   .export-actions { margin-top:12px; }
   .configuration-files summary { overflow-wrap:anywhere; }
+  .history-filters .field, .history-filters .field:nth-child(2) { flex:1 1 100%; max-width:none; }
+  .history-filters > span { margin-left:0; padding:0; }
+  .export-actions { width:100%; gap:8px; margin-top:0; }
+  .export-actions button { flex:1 1 auto; font-size:12px; }
 }
 /* Full-width configuration followed by the live simulation. */
 main { padding-top:26px; }
-.page-heading { margin-bottom:16px; }
+.page-heading { margin-bottom:20px; }
 .page-heading .eyebrow { display:none; }
 .page-heading h1 { font-size:28px; margin-bottom:0; }
-.section-nav { margin-bottom:20px; }
+.section-nav { margin-bottom:28px; }
 .simulation-visual .visualizer-switch { margin-top:0; }
 .live-summary .metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }
 .simulation-visual .metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }
@@ -599,6 +615,10 @@ main { padding-top:26px; }
   .simulation-visual .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 .viewer-controls { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-bottom:12px; }
+.viewer-controls .visualizer-switch { flex-wrap:wrap; }
+.simulation-workspace > .configuration-panel { margin-bottom:0; }
+.simulation-workspace { gap:16px; }
+.simulation-visual { margin-top:8px; }
 .viewer-controls .visualizer-switch { margin:0; }
 .viewer-controls .inline-label { display:flex; align-items:center; gap:8px; }
 .chart-navigation { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
