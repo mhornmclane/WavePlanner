@@ -2,7 +2,6 @@ import { resolveProfile } from "./data";
 import type { Scenario } from "./model";
 
 export function resolveAssignments(s: Scenario): Record<string, string> {
-  if (s.waveRules.mode === "manual") return { ...s.assignments };
   return Object.fromEntries(
     s.selectedTeamIds.map((id) => {
       const pace = resolveProfile(s, id).overall_mean_pace_seconds_per_mile;
@@ -19,17 +18,17 @@ export function syncAssignments(s: Scenario): Scenario {
     waves: s.waves.map((w, i) => ({
       ...w,
       name: /^(Wave \d+|Main start)$/.test(w.name)
-        ? `Wave ${s.waveRules.mode === "pace" ? s.waves.length - i : i + 1}`
+        ? `Wave ${s.waves.length - i}`
         : w.name,
     })),
     assignments: resolveAssignments(s),
   };
 }
-// Stored pace ranges remain ascending for compatibility with saved scenarios.
+// Store pace ranges in ascending order, with the slowest wave last.
 // Present them slowest first, retaining their original indices for boundary edits.
 export function orderedWaveEntries(s: Scenario) {
   const entries = s.waves.map((w, i) => ({ w, i }));
-  return s.waveRules.mode === "pace" ? entries.reverse() : entries;
+  return entries.reverse();
 }
 export function validBoundary(
   boundaries: number[],
@@ -87,26 +86,4 @@ export function removeWave(s: Scenario, index: number): Scenario {
       ]),
     ),
   });
-}
-export function conversionPreview(s: Scenario): Scenario {
-  const paces = [
-    ...new Set(
-      s.selectedTeamIds.map(
-        (id) => resolveProfile(s, id).overall_mean_pace_seconds_per_mile,
-      ),
-    ),
-  ].sort((a, b) => a - b);
-  const boundaries = Array.from({ length: s.waves.length - 1 }, (_, i) => {
-    const pos = Math.floor(((i + 1) * paces.length) / s.waves.length);
-    return paces.length > 1
-      ? Math.ceil(
-          (paces[Math.max(0, pos - 1)] +
-            paces[Math.min(pos, paces.length - 1)]) /
-            2,
-        )
-      : 625 + i;
-  });
-  for (let i = 0; i < boundaries.length; i++)
-    boundaries[i] = Math.max(boundaries[i], (boundaries[i - 1] ?? 0) + 1);
-  return syncAssignments({ ...s, waveRules: { mode: "pace", boundaries } });
 }

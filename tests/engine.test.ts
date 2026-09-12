@@ -68,163 +68,10 @@ describe("source integrity and pace calculation", () => {
     );
   });
 });
-describe("late-wave release activation at the monument", () => {
-  it.each([-1, 0, 0.1])(
-    "applies only to a strictly positive start offset (%s seconds)",
-    (offset) =>
-      synthetic(900, (s) => {
-        s.waves[0].start = 3600 + offset;
-        s.release.mode = "generated";
-        s.release.segments = [{ startLeg: 1, pace: 400 }];
-        const t = simulate(s).teams[0];
-        expect(t.legs[1].releaseSuppressed).toBe(offset > 0);
-        expect(t.legs[1].releaseUsed).toBe(offset <= 0);
-        expect(t.legs[1].departure).toBe(
-          offset > 0 ? t.legs[0].arrival : 3600 + 2.72 * 400,
-        );
-      }),
-  );
-
-  it.each(["published", "generated", "visual"] as const)(
-    "runs all 35 legs before resuming expired %s releases",
-    (mode) =>
-      synthetic(900, (s) => {
-        const original = simulate(s).teams[0];
-        s.waves[0].start = 7200;
-        s.release.mode = mode;
-        s.release.segments = [{ startLeg: 1, pace: 400 }];
-        s.release.visualPaces.fill(400);
-        const schedule = releaseSchedule(s);
-        const result = simulate(s),
-          t = result.teams[0];
-        expect(result.releases).toEqual(schedule);
-        const before = t.legs.slice(0, 35),
-          after = t.legs.slice(35);
-        before.forEach((leg, i) => {
-          expect(leg.departure).toBe(
-            i ? before[i - 1].arrival : s.waves[0].start,
-          );
-          expect(leg.releaseSuppressed).toBe(true);
-          expect(leg.releaseUsed).toBe(false);
-        });
-        expect(peakConcurrency(before)).toBe(1);
-        const monument = t.legs[34].arrival;
-        expect(monument).toBeCloseTo(7200 + 100.08 * 900, 8);
-        expect(monument).toBeGreaterThan(86400);
-        expect(schedule[35]).toBeLessThan(monument);
-        expect(t.legs[35].departure).toBe(monument);
-        expect(t.legs[35].challengeWait).toBe(0);
-        expect(t.legs[35].releaseUsed).toBe(true);
-        after.forEach((leg, i) => {
-          expect(leg.releaseSuppressed).toBe(false);
-          expect(leg.departure).toBeGreaterThanOrEqual(monument);
-          expect(leg.departure).toBeGreaterThanOrEqual(
-            t.legs[i + 34].departure,
-          );
-        });
-        expect(t.legs[69].departure).toBeGreaterThanOrEqual(86400 + 6 * 3600);
-        expect(t.movingTime).toBe(original.movingTime);
-        expect(result.releaseCount).toBe(
-          after.filter((l) => l.releaseUsed).length,
-        );
-        expect(t.allComplete).toBe(Math.max(...t.legs.map((l) => l.arrival)));
-        t.legs.forEach((l) => {
-          const start = result.exchanges[l.leg - 1],
-            end = result.exchanges[l.leg];
-          expect(start.coverageStart!).toBeLessThanOrEqual(l.departure);
-          expect(start.coverageEnd!).toBeGreaterThanOrEqual(l.departure);
-          expect(end.coverageStart!).toBeLessThanOrEqual(l.arrival);
-          expect(end.coverageEnd!).toBeGreaterThanOrEqual(l.arrival);
-        });
-      }),
-  );
-
-  it("allows normal challenge completion and JBCC waiting when releases are still in the future", () =>
-    synthetic(300, (s) => {
-      s.waves[0].start = 7200;
-      const { legs } = simulate(s).teams[0];
-      expect(legs[35].departure).toBe(legs[34].arrival + 960);
-      expect(legs[35].challengeWait).toBe(960);
-      expect(legs[35].releaseUsed).toBe(false);
-      expect(legs[69].departure).toBe(86400 + 6 * 3600);
-      expect(legs[69].gateWait).toBeGreaterThan(0);
-    }));
-
-  it("activates independently for mixed waves and preserves the nominal baseline", () => {
-    const b = baseline(),
-      original = simulate(b);
-    expect(original.releaseCount).toBe(1024);
-    expect(original.exchangeHours.toFixed(1)).toBe("274.6");
-    expect(clock(original.lastOffCourse)).toBe("D2 13:28");
-    const s = baseline();
-    s.waves.push({ id: "late", name: "Late", color: "#445566", start: 7200 });
-    s.selectedTeamIds.slice(0, 25).forEach((id) => {
-      s.assignments[id] = "late";
-    });
-    const result = simulate(s);
-    result.teams.forEach((t, i) => {
-      if (t.waveId === "wave-1") expect(t).toEqual(original.teams[i]);
-      else {
-        expect(t.legs[34].arrival).toBeCloseTo(
-          7200 + t.legs.slice(0, 35).reduce((sum, l) => sum + l.duration, 0),
-          8,
-        );
-        expect(t.legs[35].departure).toBeGreaterThanOrEqual(t.legs[34].arrival);
-        expect(t.movingTime).toBe(original.teams[i].movingTime);
-      }
-    });
-    expect(
-      new Set(
-        result.teams
-          .filter((t) => t.waveId === "late")
-          .map((t) => t.legs[34].arrival),
-      ).size,
-    ).toBeGreaterThan(1);
-    expect(result.releases).toEqual(original.releases);
-  });
-});
-describe("release schedules", () => {
-  it("preserves exact published times including midnight and challenge allowances", () => {
-    const r = releaseSchedule(baseline());
-    expect(r[0]).toBe(3600);
-    expect(r[35]).toBe(18 * 3600 + 37 * 60);
-    expect(r[46]).toBe(86400);
-    expect(r[53]).toBe(86400 + 3 * 3600 + 51 * 60);
-    expect(r[70]).toBe(86400 + 12 * 3600 + 57 * 60);
-    expect(r).toEqual(course.legs.map((l) => clockSeconds(l.release_time)));
-    expect(clock(86400)).toBe("D2 00:00");
-    const s = baseline();
-    s.challenges.monument = 12000;
-    expect(releaseSchedule(s)).toEqual(r);
-  });
-  it("accumulates generated segments from the traversed leg without rounding", () => {
-    const s = baseline();
-    s.release = {
-      visualPaces: [625, 625, 625, 625, 625],
-      mode: "generated",
-      anchor: 3600,
-      segments: [
-        { startLeg: 15, pace: 700 },
-        { startLeg: 1, pace: 600 },
-      ],
-    };
-    const r = releaseSchedule(s);
-    expect(r[1]).toBe(3600 + 2.72 * 600);
-    expect(r[14]).toBeCloseTo(3600 + 37.21 * 600, 8);
-    expect(r[15]).toBeCloseTo(r[14] + 3.19 * 700, 8);
-    expect(r[35] - r[34]).toBeCloseTo(2.7 * 700 + 960, 8);
-    expect(r[53] - r[52]).toBeCloseTo(2.61 * 700 + 1260, 8);
-  });
-});
 describe("race simulation", () => {
   it("matches hand-calculated early releases and overlapping legs", () =>
     synthetic(900, (s) => {
-      s.release = {
-        visualPaces: [625, 625, 625, 625, 625],
-        mode: "generated",
-        anchor: 3600,
-        segments: [{ startLeg: 1, pace: 600 }],
-      };
+      s.release = { pace: 600, targetFinish: 3600 + 205.72 * 600 + s.challenges.monument + s.challenges.lighthouse };
       const t = simulate(s).teams[0];
       expect(t.legs[0].departure).toBe(3600);
       expect(t.legs[0].arrival).toBe(6048);
@@ -235,12 +82,7 @@ describe("race simulation", () => {
     }));
   it("allows a challenge release before incoming arrival and adds no fictitious wait", () =>
     synthetic(900, (s) => {
-      s.release = {
-        visualPaces: [625, 625, 625, 625, 625],
-        mode: "generated",
-        anchor: 3600,
-        segments: [{ startLeg: 1, pace: 600 }],
-      };
+      s.release = { pace: 600, targetFinish: 3600 + 205.72 * 600 + s.challenges.monument + s.challenges.lighthouse };
       const { legs } = simulate(s).teams[0];
       // Prior runner: 2.7 * 900 = 2430 sec. Release gap: 2.7 * 600 + 960 = 2580 sec.
       expect(legs[35].departure - legs[34].departure).toBeCloseTo(2580, 8);
@@ -279,12 +121,7 @@ describe("race simulation", () => {
     }));
   it("distinguishes final-leg arrival from outstanding runner completion", () =>
     synthetic(2400, (s) => {
-      s.release = {
-        visualPaces: [625, 625, 625, 625, 625],
-        mode: "generated",
-        anchor: 3600,
-        segments: [{ startLeg: 1, pace: 60 }],
-      };
+      s.release = { pace: 60, targetFinish: 3600 + 205.72 * 60 + s.challenges.monument + s.challenges.lighthouse };
       const r = simulate(s),
         t = r.teams[0];
       expect(t.allComplete).toBeGreaterThan(t.finish);
@@ -296,15 +133,7 @@ describe("race simulation", () => {
       original = simulate(s);
     s.waves[0].start += 7200;
     s.challenges.monument = 5400;
-    s.release = {
-      visualPaces: [625, 625, 625, 625, 625],
-      mode: "generated",
-      anchor: 1000,
-      segments: [
-        { startLeg: 1, pace: 450 },
-        { startLeg: 36, pace: 750 },
-      ],
-    };
+    s.release = { pace: 450, targetFinish: 3600 + 205.72 * 450 + s.challenges.monument + s.challenges.lighthouse };
     const changed = simulate(s);
     expect(changed.teams.map((t) => t.movingTime)).toEqual(
       original.teams.map((t) => t.movingTime),
@@ -318,9 +147,9 @@ describe("race simulation", () => {
 });
 describe("exchange coverage", () => {
   it("rounds staffing boundaries outward across midnight", () => {
-    expect(clock(86399, "down")).toBe("D1 23:59");
-    expect(clock(86399, "up")).toBe("D2 00:00");
-    expect(clock(86400, "up")).toBe("D2 00:00");
+    expect(clock(86399, "down")).toBe("Friday 11:59 PM");
+    expect(clock(86399, "up")).toBe("Saturday 12:00 AM");
+    expect(clock(86400, "up")).toBe("Saturday 12:00 AM");
     expect(clock(null, "down")).toBe("—");
   });
   it("covers every event including early departures, late arrivals, and the gate", () => {

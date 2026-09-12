@@ -7,7 +7,7 @@ import { parseScenario, serializeScenario, readSaves, writeSaves } from "../src/
 
 describe("configuration presets", () => {
   it.each(presets)("creates an editable, isolated $name with baseline settings", (preset) => {
-    const ids = profiles.slice(0, 4).map(teamId);
+    const ids = profiles.map(teamId);
     const s = createPreset(preset.id, ids);
     const b = baseline(ids);
     expect(s.selectedTeamIds).toEqual(ids);
@@ -18,7 +18,7 @@ describe("configuration presets", () => {
     expect(parseScenario(serializeScenario(s))).toEqual(s);
     const original = structuredClone(s);
     s.waves[0].start += 3600;
-    s.release.visualPaces[0] = 700;
+    s.release.pace = 700;
     s.selectedTeamIds.pop();
     expect(createPreset(preset.id, ids)).toEqual(original);
     expect(createPreset(preset.id, []).assignments).toEqual({});

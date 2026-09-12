@@ -9,9 +9,11 @@ import "./replay.css";
 export function SpreadReplay({
   result,
   scenario,
+  active = true,
 }: {
   result: Simulation;
   scenario: Scenario;
+  active?: boolean;
 }) {
   const data = useMemo(() => buildReplay(result), [result]);
   const [source, setSource] = useState(result);
@@ -35,8 +37,9 @@ export function SpreadReplay({
   const lastIndex = data.frames.length - 1;
   const frame = data.frames[index];
   const empty = !result.teams.length;
+  useEffect(() => { if (!active) setPlaying(false); }, [active]);
   useEffect(() => {
-    if (!playing || empty) return;
+    if (!active || !playing || empty) return;
     if (index === lastIndex && !loop) {
       setPlaying(false);
       return;
@@ -46,7 +49,7 @@ export function SpreadReplay({
       interval * 1000,
     );
     return () => window.clearTimeout(timer);
-  }, [playing, empty, index, lastIndex, loop, interval, result]);
+  }, [active, playing, empty, index, lastIndex, loop, interval, result]);
   const waves = new Map(scenario.waves.map((wave) => [wave.id, wave]));
   const detail = frame.markers.find(
     (m) => m.teamId === (inspected || pinned || selected),

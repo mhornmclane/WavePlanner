@@ -75,16 +75,8 @@ describe("timing rules", () => {
   it("reports an empty field as not evaluated", () => {
     expect(simulate(baseline([])).timingRules.every(r => r.status === "not-evaluated")).toBe(true);
   });
-  it.each([1, 2, 3])("migrates schema %s while preserving race timings", schemaVersion => {
-    const s = baseline();
-    const old = { ...s, schemaVersion } as Record<string, unknown>;
-    delete old.timingRules;
-    const migrated = validateScenario(old);
-    expect(migrated.schemaVersion).toBe(5);
-    expect(simulate(migrated).teams).toEqual(simulate(s).teams);
-  });
   it("round trips and preserves independent rules through presets and copies", () => {
-    const s = fastScenario();
+    const s = baseline();
     s.timingRules = [rule({ exchange: 10, time: 40000 })];
     expect(parseScenario(serializeScenario(s))).toEqual(s);
     const preset = createPreset("three-waves", s.selectedTeamIds, s.worstCaseTeams, s.timingRules);
@@ -92,7 +84,7 @@ describe("timing rules", () => {
     preset.timingRules[0].time++;
     expect(s.timingRules[0].time).toBe(40000);
   });
-  it.each([{ exchange: 0 }, { exchange: 71, type: "depart-after" }, { exchange: 72 }, { exchange: 1.5 }, { time: NaN }, { time: -1 }, { time: 30 * 86400 }, { type: "unknown" }])("rejects malformed rules %j", patch => {
+  it.each([{ exchange: 0 }, { exchange: 71, type: "depart-after" }, { exchange: 72 }, { exchange: 1.5 }, { time: NaN }, { time: -30 * 86400 - 1 }, { time: 30 * 86400 }, { type: "unknown" }])("rejects malformed rules %j", patch => {
     expect(() => validateScenario({ ...baseline(), timingRules: [{ ...rule(), ...patch }] })).toThrow("Timing rules");
   });
   it("rejects duplicate IDs", () => {

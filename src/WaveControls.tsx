@@ -1,9 +1,9 @@
-import { exchangeName } from "./timingRules";
+import { latestStart } from "./engine";
+import { TimeInput, PaceInput } from "./Inputs";
 import { useState } from "react";
-import { colors, ORIGIN, resolveProfile } from "./data";
+import { colors, resolveProfile } from "./data";
 import { clock, pace, parsePace } from "./format";
 import {
-  conversionPreview,
   orderedWaveEntries,
   removeWave,
   splitSuggestion,
@@ -11,56 +11,6 @@ import {
   validBoundary,
 } from "./waves";
 import type { Scenario } from "./model";
-
-function WaveStartOffset({
-  value,
-  label,
-  onChange,
-}: {
-  value: number;
-  label: string;
-  onChange: (start: number) => void;
-}) {
-  const hours = (start: number) =>
-    Number.isFinite(start) ? String((start - ORIGIN) / 3600) : "";
-  const [text, setText] = useState(hours(value));
-  const [previous, setPrevious] = useState(value);
-  if (!Object.is(value, previous)) {
-    setPrevious(value);
-    setText(hours(value));
-  }
-  return (
-    <label className="wave-start-offset">
-      <span>Start offset · hours</span>
-      <input
-        aria-label={label}
-        type="text"
-        inputMode="decimal"
-        value={text}
-        aria-invalid={
-          !Number.isFinite(value) ||
-          value < -30 * 86400 ||
-          value > 30 * 86400 - 1
-        }
-        onChange={(e) => {
-          const raw = e.target.value;
-          const offset = /^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(raw.trim())
-            ? Number(raw)
-            : NaN;
-          const start = ORIGIN + offset * 3600;
-          setText(raw);
-          setPrevious(start);
-          onChange(start);
-        }}
-      />
-      <output>
-        {Number.isFinite(value)
-          ? `${clock(value).replace(/^D/, "Day ")}${value < 0 && value >= -86400 ? " (previous day)" : ""}`
-          : "Enter an hour offset"}
-      </output>
-    </label>
-  );
-}
 
 function Boundary({
   value,
@@ -127,9 +77,6 @@ export function Waves({
   const [split, setSplit] = useState<{ index: number; text: string } | null>(
     null,
   );
-  const [preview, setPreview] = useState(false);
-  const automatic = s.waveRules.mode === "pace";
-  const proposed = preview ? conversionPreview(s) : null;
   const splitValue = split ? parsePace(split.text) : null;
   const splitValid =
     !!split &&
@@ -165,79 +112,7 @@ export function Waves({
       );
   return (
     <>
-      <div className="subsection-head">
-        <div>
-          <h3>Set the field in motion</h3>
-          <p className="muted">
-            {automatic
-              ? "Waves are numbered slowest to fastest. Start times remain independent."
-              : "This saved configuration uses manual assignments. Convert to linked pace ranges when ready."}
-          </p>
-        </div>
-        {automatic ? (
-          <button
-            disabled={s.waves.length >= 51}
-            onClick={() => beginSplit(s.waves.length - 1)}
-          >
-            + Add wave
-          </button>
-        ) : (
-          <button onClick={() => setPreview(true)}>Preview pace ranges</button>
-        )}
-      </div>
-      <p className="table-note">
-        Start offsets are relative to Day 1, 01:00. Use negative hours for
-        earlier starts or positive hours for later starts; decimals are allowed.
-        −3 = Day 0, 22:00; +3 = Day 1, 04:00.{" "}
-        {!s.fastWaveReleases.enabled
-          ? "Waves starting after 01:00 run sequentially for the whole course; releases are off."
-          : s.fastWaveReleases.fromExchange === 0
-            ? "Waves starting after 01:00 use release times from the start."
-            : `Waves starting after 01:00 run sequentially to EX ${s.fastWaveReleases.fromExchange} (${exchangeName(s.fastWaveReleases.fromExchange)}). Releases resume when each team arrives there.`}{" "}
-        Configure this in Timing rules.
-      </p>
-      {proposed && (
-        <div className="range-preview">
-          <h3>Preview automatic assignment</h3>
-          <p>Applying these ranges replaces manual assignments.</p>
-          {orderedWaveEntries(proposed).map(({ w, i }) => (
-            <details key={w.id}>
-              <summary>
-                {w.name}:{" "}
-                {i
-                  ? pace(proposed.waveRules.boundaries[i - 1])
-                  : "Any faster pace"}{" "}
-                to{" "}
-                {i < proposed.waves.length - 1
-                  ? `< ${pace(proposed.waveRules.boundaries[i])}`
-                  : "any slower pace"}{" "}
-                · {roster(proposed, w.id).length} teams
-              </summary>
-              <ul className="wave-roster">
-                {roster(proposed, w.id).map((p) => (
-                  <li key={`${p.year}-${p.team}`}>
-                    {p.team} · {p.year}{" "}
-                    <strong>
-                      {pace(p.overall_mean_pace_seconds_per_mile)}
-                    </strong>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          ))}
-          <button
-            onClick={() => {
-              update(() => proposed);
-              setPreview(false);
-            }}
-          >
-            Apply pace ranges
-          </button>{" "}
-          <button className="quiet" onClick={() => setPreview(false)}>
-            Cancel conversion
-          </button>
-        </div>
-      )}
+      <div className="subsection-head"><h3>Starting waves</h3><button disabled={s.waves.length >= 51} onClick={() => beginSplit(s.waves.length - 1)}>+ Add wave</button></div>
       <div className="wave-list">
         {orderedWaveEntries(s).map(({ w, i }, displayIndex) => (
           <div className="wave-card" key={w.id}>
@@ -274,8 +149,8 @@ export function Waves({
                   }))
                 }
               />
-              <WaveStartOffset
-                label={`Wave ${displayIndex + 1} start offset (hours)`}
+              <TimeInput
+                label={`Wave ${displayIndex + 1} start`}
                 value={w.start}
                 onChange={(start) =>
                   update((c) => ({
@@ -299,7 +174,15 @@ export function Waves({
                 Remove
               </button>
             </div>
-            {automatic && (
+            {displayIndex === 0 && <div className="finish-target">
+              <h4>Finish-line party target</h4>
+              <label className="field"><span>Target finish</span><TimeInput label="Target finish" value={s.release.targetFinish} onChange={targetFinish=>update(c=>({...c,release:{...c.release,targetFinish}}))}/></label>
+              <label className="field"><span>Release pace · min:sec/mile</span><PaceInput label="Release pace" value={s.release.pace} onChange={pace=>update(c=>({...c,release:{...c.release,pace}}))}/></label>
+              <p className="start-guidance" role="status">{Number.isFinite(latestStart(s)) ? `The latest you can start the event is ${clock(latestStart(s), "down")}.` : "Enter a valid finish target, pace, and challenge allowances."}</p>
+              {w.start > latestStart(s) && <p className="rule-failed">Wave 1 starts after the calculated latest start.</p>}
+              <small>Includes challenge allowances. Gate openings and historical paces may produce later finishes. Your chosen start stays unchanged.</small>
+            </div>}
+            {(
               <div className="wave-range">
                 {i === 0 ? (
                   <span>No lower pace limit</span>
@@ -407,9 +290,7 @@ export function Waves({
         </div>
       )}
       <p className="table-note">
-        {automatic
-          ? "Pace is min:sec per mile; lower is faster. Ranges share boundaries with no gaps. An exact-boundary team belongs to the slower range. Press Enter or leave a field to apply. Removing a wave merges into the adjacent faster range (or the slower range when removing the fastest wave)."
-          : "Assign teams in Historical field. Your saved assignment remains unchanged until conversion."}
+        Waves run slowest to fastest. Shared pace boundaries leave no gaps; exact-boundary teams join the slower wave.
       </p>
     </>
   );

@@ -13,6 +13,7 @@ interface Props {
   scenario: Scenario;
   overlay: boolean;
   setOverlay: (v: boolean) => void;
+  active?: boolean;
 }
 export function Chart({
   result,
@@ -20,6 +21,7 @@ export function Chart({
   scenario,
   overlay,
   setOverlay,
+  active = true,
 }: Props) {
   const [axis, setAxis] = useState<"miles" | "exchanges">("miles");
   const [zoom, setZoom] = useState(1);
@@ -45,7 +47,7 @@ export function Chart({
   );
   useEffect(() => {
     setPopup(null);
-  }, [zoom, axis, selectedId]);
+  }, [zoom, axis, selectedId, active, result]);
   function inspectPointer(
     e: React.PointerEvent<SVGLineElement>,
     l: LegTiming,
@@ -90,13 +92,13 @@ export function Chart({
     if (showRelease)
       times.push(...result.releases, ...(overlay ? comparison.releases : []));
     const ruleTimes = scenario.timingRules.filter(r => r.enabled).map(r => r.time);
-    times.push(...ruleTimes);
-    const earliest = Math.min(ORIGIN, ...scenario.waves.map((w) => w.start), ...ruleTimes);
+    times.push(...ruleTimes, scenario.release.targetFinish);
+    const earliest = Math.min(ORIGIN, ...scenario.waves.map((w) => w.start), ...times);
     return {
       min: Math.floor((earliest - ORIGIN) / 3600),
       max: Math.max(4, Math.ceil((Math.max(ORIGIN, ...times) - ORIGIN) / 3600)),
     };
-  }, [result, comparison, scenario.waves, scenario.timingRules, overlay, showRelease]);
+  }, [result, comparison, scenario.waves, scenario.timingRules, scenario.release.targetFinish, overlay, showRelease]);
   const x = (seconds: number) =>
     left +
     (((seconds - ORIGIN) / 3600 - extent.min) / (extent.max - extent.min)) *
@@ -275,7 +277,7 @@ export function Chart({
               textAnchor="middle"
               className="chart-caption"
             >
-              ELAPSED HOURS FROM DAY 1, 01:00
+              ELAPSED HOURS FROM FRIDAY, 1:00 AM
             </text>
             {bins.slice(1).map((bin) => (
               <g key={bin.bin_id} pointerEvents="none">
@@ -427,12 +429,7 @@ export function Chart({
                   key={`release-${i}`}
                   cx={x(r)}
                   cy={y(i)}
-                  r={
-                    scenario.release.mode === "visual" &&
-                    bins.some((b) => b.first_leg === i + 1)
-                      ? 5
-                      : 3
-                  }
+                  r={3}
                   fill="#102e45"
                   stroke="white"
                   strokeWidth="1"
@@ -465,7 +462,6 @@ export function Chart({
                 />
               ))}
             {showRelease &&
-              scenario.release.mode === "visual" &&
               bins.map((b) => (
                 <text
                   key={`pace-${b.bin_id}`}
@@ -480,6 +476,10 @@ export function Chart({
                   {pace(releasePace(scenario, b.first_leg))}/mi
                 </text>
               ))}
+            <g className="finish-target-marker">
+              <line x1={x(scenario.release.targetFinish)} x2={x(scenario.release.targetFinish)} y1={top} y2={bottom} stroke="#aa6230" strokeDasharray="5 5" />
+              <circle cx={x(scenario.release.targetFinish)} cy={y(71)} r="6" fill="#aa6230" stroke="white" tabIndex={0} aria-label={`Target finish ${clock(scenario.release.targetFinish)}`}><title>Target finish {clock(scenario.release.targetFinish)}</title></circle>
+            </g>
             {activeRules.map((rule, index) => {
               const evaluation = result.timingRules.find(r => r.ruleId === rule.id);
               const color = evaluation?.status === "failed" ? "#b42318" : rule.type === "depart-after" ? "#285d98" : "#a66b16";
@@ -507,6 +507,7 @@ export function Chart({
         {i + 1}. EX {r.exchange} · {exchangeName(r.exchange)} — {ruleTypes[r.type]} {clock(r.time)}
       </li>)}</ul>}
       <div className="legend">
+        <span><i style={{background:"#aa6230"}}/>Target finish · {clock(scenario.release.targetFinish)}</span>
         {orderedWaveEntries(scenario).map(({ w }) => (
           <span key={w.id}>
             <i style={{ background: w.color }} />
@@ -532,7 +533,7 @@ export function Chart({
           </span>
         )}
       </div>
-      {popup && (
+      {popup && active && (
         <ExchangePopup
           scenario={scenario}
           target={popup}

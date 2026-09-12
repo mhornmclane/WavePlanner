@@ -503,3 +503,98 @@ footer {
 
 .fast-wave-releases { margin-bottom: 24px; }
 .fast-wave-releases > label { display: block; margin-top: 12px; }
+/* Three independent workspaces */
+[hidden] { display: none !important; }
+.section-nav { display:flex; gap:6px; padding:6px; background:#e7ece3; border-radius:10px; width:fit-content; margin:0 0 28px; }
+.section-nav button { border:0; background:transparent; padding:11px 22px; }
+.section-nav button[aria-current] { background:var(--ink); color:white; box-shadow:0 2px 4px #172c2b20; }
+.workspace-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; }
+.workspace-heading h2 { font-size:25px; margin-bottom:6px; }
+.workspace-heading p { margin-bottom:0; }
+.configuration-files { margin-bottom:18px; border:1px solid var(--border); border-radius:8px; background:#fff; }
+.configuration-files > summary { padding:14px 18px; cursor:pointer; font-weight:600; }
+.configuration-files .save-toolbar { margin:0; padding:18px; border-top:1px solid var(--border); }
+.simulation-workspace { display:grid; grid-template-columns:minmax(0,1fr); gap:22px; align-items:start; }
+.configuration-panel { padding:20px; }
+.simulation-controls { margin-top:18px; }
+.simulation-visual { min-width:0; position:static; }
+.simulation-visual .panel { margin-bottom:16px; }
+.simulation-visual .metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.live-summary .metrics { margin-top:0; margin-bottom:10px; }
+.live-summary .metrics strong { font-size:20px; line-height:1.4; }
+.live-summary .metrics article { min-width:0; padding:15px; }
+.live-summary .metrics small { display:block; margin-top:5px; }
+.finish-feedback, .gate-feedback { font-size:13px; padding:10px 14px; background:#e8efe3; border-radius:6px; margin-bottom:12px; }
+.finish-feedback.rule-failed, .gate-feedback { background:#fff1e6; }
+.configuration-panel .subsection-head { align-items:center; gap:10px; }
+.configuration-panel .subsection-head h3 { margin:0; }
+.configuration-panel .subsection-head .muted { display:none; }
+.configuration-panel .wave-list { display:block; }
+.configuration-panel .wave-card { margin-top:14px; padding:14px; }
+.configuration-panel .wave-row { display:flex; flex-wrap:wrap; gap:9px; }
+.configuration-panel .wave-row .wave-name { flex:1; min-width:95px; }
+.configuration-panel .wave-row .wave-name input { width:100%; }
+.configuration-panel .wave-row > .time-input { flex-basis:100%; }
+.configuration-panel .wave-row > .time-input::before { content:"Start"; font-size:12px; }
+.configuration-panel .wave-range { flex-wrap:wrap; gap:10px; }
+.configuration-panel .wave-range .field { min-width:0; flex:1 1 100px; }
+.configuration-panel .wave-range span { white-space:normal; }
+.configuration-panel .time-input { display:flex; align-items:center; gap:6px; width:100%; }
+.configuration-panel .time-input select { flex:1; min-width:0; width:120px; }
+.configuration-panel .time-input input[type=time] { width:123px; min-width:0; }
+.finish-target { border-top:1px solid var(--border); margin-top:14px; padding-top:4px; }
+.finish-target h4 { margin:12px 0; }
+.finish-target .field { margin-bottom:12px; }
+.start-guidance { color:#215b45; background:#eaf2de; padding:12px; border-radius:6px; font-weight:650; }
+.finish-target small { color:var(--muted); line-height:1.5; display:block; }
+.secondary-control { border-top:1px solid var(--border); margin-top:15px; padding-top:15px; }
+.secondary-control > summary { font-weight:650; cursor:pointer; padding-bottom:10px; }
+.secondary-control .worst-case-grid, .secondary-control .worst-case-bins { grid-template-columns:1fr; }
+.secondary-control fieldset { min-width:0; }
+.configuration-panel .table-note { font-size:11px; line-height:1.5; margin-top:12px; }
+.export-actions, .history-filters { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+.history-filters { margin:20px 0; }
+.history-filters .field { min-width:150px; }
+.empty-state { padding:50px 25px; color:var(--muted); }
+@media (max-width:1100px) {
+  .simulation-workspace { gap:14px; }
+  .simulation-visual .chart-toolbar { flex-wrap:wrap; }
+}
+@media (max-width:850px) {
+  .simulation-workspace { grid-template-columns:1fr; }
+  .simulation-visual { position:static; }
+  .configuration-panel .wave-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+  .live-summary .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:500px) {
+  .section-nav { width:100%; gap:2px; }
+  .section-nav button { padding:10px 8px; flex:1; font-size:12px; }
+  .workspace-heading { align-items:flex-start; flex-direction:column; }
+  .configuration-panel { padding:14px; }
+  .configuration-panel .wave-list { display:block; }
+  .live-summary .metrics strong { font-size:17px; }
+  .export-actions { margin-top:12px; }
+  .configuration-files summary { overflow-wrap:anywhere; }
+}
+/* Full-width configuration followed by the live simulation. */
+main { padding-top:26px; }
+.page-heading { margin-bottom:16px; }
+.page-heading .eyebrow { display:none; }
+.page-heading h1 { font-size:28px; margin-bottom:0; }
+.section-nav { margin-bottom:20px; }
+.simulation-visual .visualizer-switch { margin-top:0; }
+.live-summary .metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.simulation-visual .metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.live-summary .metrics article { gap:4px; }
+@media (max-width:850px) { .live-summary .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+.configuration-panel > .field, .simulation-controls > .field { max-width:360px; }
+.configuration-panel .wave-row > .time-input { flex:0 1 320px; }
+.finish-target { display:grid; grid-template-columns:minmax(240px,320px) minmax(140px,200px) minmax(220px,1fr); gap:12px 20px; align-items:start; }
+.finish-target h4, .finish-target > small, .finish-target > .rule-failed { grid-column:1 / -1; }
+.finish-target .start-guidance { margin:0; }
+@media (max-width:850px) {
+  .finish-target { display:block; }
+  .finish-target .start-guidance { margin-bottom:12px; }
+  .simulation-visual .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}

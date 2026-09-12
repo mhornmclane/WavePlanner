@@ -1,6 +1,6 @@
 import { openingTime, evaluateTimingRules } from "./timingRules";
-import { bins, course, ORIGIN, resolveProfile } from "./data";
-import { resolveAssignments } from "./waves";
+import { bins, course, resolveProfile } from "./data";
+import { orderedWaveEntries, resolveAssignments } from "./waves";
 import type {
   ClockTime,
   ExchangeSummary,
@@ -32,40 +32,19 @@ export function challengeBefore(leg: number, s: Scenario): number {
       ? s.challenges.lighthouse
       : 0;
 }
-export function releaseSegments(s: Scenario) {
-  return s.release.mode === "visual"
-    ? bins.map((b, i) => ({
-        startLeg: b.first_leg,
-        pace: s.release.visualPaces[i],
-      }))
-    : s.release.mode === "published"
-      ? [{ startLeg: 1, pace: course.event.minimum_pace_seconds_per_mile }]
-      : [...s.release.segments];
+export function latestStart(s: Scenario): number {
+  return s.release.targetFinish - course.event.total_distance_miles * s.release.pace
+    - s.challenges.monument - s.challenges.lighthouse;
 }
-export function releasePace(s: Scenario, leg: number): number {
-  return releaseSegments(s)
-    .sort((a, b) => a.startLeg - b.startLeg)
-    .filter((p) => p.startLeg <= leg)
-    .at(-1)!.pace;
-}
+export function releasePace(s: Scenario, _leg?: number): number { return s.release.pace; }
 export function releaseSchedule(s: Scenario): number[] {
-  if (s.release.mode === "published")
-    return course.legs.map((l) => clockSeconds(l.release_time));
-  const segments = releaseSegments(s).sort((a, b) => a.startLeg - b.startLeg);
-  const result = [s.release.anchor];
+  const result = [latestStart(s)];
   for (let i = 1; i < course.legs.length; i++) {
-    const traversedLeg = i;
-    const pace = segments
-      .filter((p) => p.startLeg <= traversedLeg)
-      .at(-1)!.pace;
-    result.push(
-      result[i - 1] +
-        course.legs[i - 1].distance_miles * pace +
-        challengeBefore(i + 1, s),
-    );
+    result.push(result[i - 1] + course.legs[i - 1].distance_miles * s.release.pace + challengeBefore(i + 1, s));
   }
   return result;
 }
+
 export function peakConcurrency(legs: LegTiming[]): number {
   const events = legs.flatMap((l) => [
     { time: l.departure, delta: 1 },
@@ -119,22 +98,22 @@ export function exchangeSummaries(
   });
 }
 
-export function simulate(s: Scenario): Simulation {
-  const releases = releaseSchedule(s);
+export function simulate(s: Scenario, publishedBaseline = false): Simulation {
+  const releases = publishedBaseline ? course.legs.map(l => clockSeconds(l.release_time)) : releaseSchedule(s);
   const assignments = resolveAssignments(s);
   const teams: TeamResult[] = s.selectedTeamIds.map((id) => {
     const profile = resolveProfile(s, id);
     const wave = s.waves.find((w) => w.id === assignments[id])!;
-    const lateStart = wave.start > ORIGIN;
+    const fastWave = wave.id !== orderedWaveEntries(s)[0].w.id;
     const legs: LegTiming[] = [];
     for (const [index, courseLeg] of course.legs.entries()) {
       const prev = legs[index - 1];
       const challenge = challengeBefore(index + 1, s);
       const ready = prev ? prev.arrival + challenge : wave.start;
       const { enabled, fromExchange } = s.fastWaveReleases;
-      const releaseSuppressed = lateStart && (!enabled || index < fromExchange);
-      // A later wave must reach its selected exchange before releases can start subsequent legs.
-      const activationArrival = lateStart && enabled && fromExchange > 0 && index >= fromExchange
+      const releaseSuppressed = fastWave && (!enabled || index < fromExchange);
+      // A fast wave must reach its selected exchange before releases can start subsequent legs.
+      const activationArrival = fastWave && enabled && fromExchange > 0 && index >= fromExchange
         ? legs[fromExchange - 1].arrival : -Infinity;
       const eligible = prev
         ? Math.max(

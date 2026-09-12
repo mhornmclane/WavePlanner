@@ -2,11 +2,11 @@ import { TimingRuleSummary } from "./TimingRuleControls";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { baseline, initialScenario } from "./data";
 import { simulate } from "./engine";
-import { clock, delta, duration } from "./format";
+import { HistoricalData, ResultsView, Summary } from "./Views";
 import { Chart } from "./Chart";
 import { SpreadReplay } from "./SpreadReplay";
 import { Config } from "./Config";
-import { Staffing } from "./Staffing";
+
 import {
   download,
   parseScenario,
@@ -20,6 +20,7 @@ import type { Scenario } from "./model";
 import { createPreset, presets, type PresetId } from "./presets";
 
 export default function App() {
+  const [section, setSection] = useState<"history" | "simulation" | "results">("simulation");
   const [scenario, setScenario] = useState(initialScenario);
   const [presetId, setPresetId] = useState<PresetId | "custom">("custom");
   const [configRevision, setConfigRevision] = useState(0);
@@ -63,8 +64,8 @@ export default function App() {
     const b = baseline(scenario.selectedTeamIds);
     b.worstCaseTeams = structuredClone(scenario.worstCaseTeams);
     b.buffers = { ...scenario.buffers };
-    return checked.scenario ? simulate(b) : null;
-  }, [scenario.selectedTeamIds, scenario.buffers, checked.scenario]);
+    return checked.scenario ? simulate(b, true) : null;
+  }, [scenario.selectedTeamIds, scenario.buffers, scenario.worstCaseTeams, checked.scenario]);
   const dirty = JSON.stringify(scenario) !== savedText;
   function replace(s: Scenario, id = "") {
     setScenario(s);
@@ -115,9 +116,9 @@ export default function App() {
       return;
     }
     const next = createPreset(id, scenario.selectedTeamIds, scenario.worstCaseTeams, scenario.timingRules, scenario.fastWaveReleases);
-    replace(next);
+    replace({ ...scenario, waves: next.waves, waveRules: next.waveRules, assignments: next.assignments });
     setPresetId(id);
-    setNotice(`Loaded ${next.name}. All parameters are editable. Selected teams, timing rules, and fast-wave release settings retained; release, challenge, and staffing settings reset to baseline.`);
+    setNotice(`Loaded ${next.name}. Starting-wave arrangement applied. Your field, finish target, and other settings are retained.`);
   }
   async function importFile(file: File | undefined) {
     if (!file) return;
@@ -133,48 +134,19 @@ export default function App() {
       );
     }
   }
-  return (
-    <>
-      <header className="app-header">
-        <div className="brand">
-          <span className="brand-mark">R4H</span>
-          <span>
-            RUCK4HIT <span className="brand-divider">/</span>{" "}
-            <span className="brand-sub">PACE PLANNER</span>
-          </span>
-        </div>
-        <span className="header-meta">CAPE COD · 71 LEGS · 205.72 MI</span>
-      </header>
-      <main>
-        <div className="page-heading">
-          <h1>Ruck4HIT Wave Planner</h1>
-        </div>
-        <section className="panel" aria-labelledby="configure-title">
-          <div className="section-head">
-            <div>
-              <div className="eyebrow">01 / CONFIGURE</div>
-              <h2 id="configure-title">Race configuration</h2>
-            </div>
-            <span className="config-status">
-              <i className={dirty ? "unsaved-dot" : "saved-dot"} />
-              {dirty ? "Unsaved configuration" : "Saved in this browser"}
-            </span>
-          </div>
-          <div className="preset-toolbar">
-            <label className="field">
-              <span>Configuration preset</span>
-              <select value={presetId} onChange={(e) => loadPreset(e.target.value as PresetId | "custom")}>
-                <option value="custom">Custom</option>
-                {presets.map((preset) => (
-                  <option key={preset.id} value={preset.id}>{preset.name}</option>
-                ))}
-              </select>
-            </label>
-            <div className="preset-summary">
-              <p>{activePreset?.summary ?? "Adjust the controls below, or load a saved configuration."}</p>
-              <small>All times are Day 1. Pace is average min:sec per mile. Presets are fully editable.</small>
-            </div>
-          </div>
+  return <>
+    <header className="app-header"><div className="brand"><span className="brand-mark">R4H</span><span>RUCK4HIT / PACE PLANNER</span></div><span className="header-meta">CAPE COD · 71 LEGS · 205.72 MI</span></header>
+    <main>
+      <div className="page-heading"><div><div className="eyebrow">PLAN THE FIELD. BRING EVERYONE TOGETHER.</div><h1>Ruck4HIT Wave Planner</h1></div></div>
+      <nav className="section-nav" aria-label="Planner sections">{([
+        ["history", "Historical data"], ["simulation", "Simulation"], ["results", "Results"]
+      ] as const).map(([id,label])=><button key={id} aria-current={section===id ? "page" : undefined} onClick={()=>setSection(id)}>{label}</button>)}</nav>
+      {notice && <div className="notice" role="status"><span>{notice}</span><button className="quiet" aria-label="Dismiss notification" onClick={()=>setNotice("")}>×</button></div>}
+      {fileError && <div className="error-message" role="alert"><span>{fileError}</span><button className="quiet" aria-label="Dismiss file error" onClick={()=>setFileError("")}>×</button></div>}
+      <div hidden={section!=="history"}><HistoricalData/></div>
+      <div hidden={section!=="simulation"}>
+        <div className="workspace-heading"><div><h2>Shape the race</h2><p className="muted">Choose your field and waves. Watch the course respond.</p></div><button className="primary" onClick={()=>setSection("results")}>View results →</button></div>
+        <details className="configuration-files"><summary>Configuration files · {scenario.name} · {dirty ? "Unsaved" : "Saved"}</summary>
           <div className="save-toolbar">
             <label className="scenario-name">
               <span className="sr-only">Configuration name</span>
@@ -268,156 +240,30 @@ export default function App() {
               />
             </div>
           </div>
-          <Config
-            key={configRevision}
-            scenario={scenario}
-            setScenario={editScenario}
-            result={result}
-          />
-        </section>
-        {notice && (
-          <div className="notice" role="status">
-            <span>{notice}</span>
-            <button
-              className="quiet"
-              aria-label="Dismiss notification"
-              onClick={() => setNotice("")}
-            >
-              ×
-            </button>
-          </div>
-        )}
-        {fileError && (
-          <div className="error-message" role="alert">
-            <span>{fileError}</span>
-            <button
-              className="quiet"
-              aria-label="Dismiss file error"
-              onClick={() => setFileError("")}
-            >
-              ×
-            </button>
-          </div>
-        )}
-        {checked.error && (
-          <div className="error-message" role="alert">
-            <strong>Check your configuration</strong>
-            <span>{checked.error} Results will resume when corrected.</span>
-          </div>
-        )}
-        {result && comparison && (
-          <>
-            <div className="results-label">
-              <span>
-                {result.teams.length} SELECTED TEAMS · {scenario.waves.length}{" "}
-                STARTING {scenario.waves.length === 1 ? "WAVE" : "WAVES"}
-              </span>
-              <span>Updates as you configure</span>
-            </div>
-            <div className="metrics">
-              <article>
-                <span>Finish spread</span>
-                <strong>
-                  {result.teams.length ? duration(result.finishSpread) : "—"}
-                </strong>
-                <small className="metric-delta">
-                  {overlay
-                    ? `${delta(result.finishSpread - comparison.finishSpread)} vs 2026`
-                    : "First to last final-leg arrival"}
-                </small>
-              </article>
-              <article>
-                <span>Last runner off course</span>
-                <strong>{clock(result.lastOffCourse)}</strong>
-                <small className="metric-delta">
-                  {overlay &&
-                  result.lastOffCourse !== null &&
-                  comparison.lastOffCourse !== null
-                    ? `${delta(result.lastOffCourse - comparison.lastOffCourse)} vs 2026`
-                    : "All outstanding legs complete"}
-                </small>
-              </article>
-              <article>
-                <span>Exchange coverage</span>
-                <strong>
-                  {result.exchangeHours.toFixed(1)} <small>hrs</small>
-                </strong>
-                <small className="metric-delta">
-                  {overlay
-                    ? `${delta((result.exchangeHours - comparison.exchangeHours) * 3600)} vs 2026`
-                    : "Sum of exchange coverage windows"}
-                </small>
-              </article>
-              <article>
-                <span>Time releases</span>
-                <strong>{result.releaseCount}</strong>
-                <small className="metric-delta">
-                  {overlay
-                    ? `${result.releaseCount - comparison.releaseCount >= 0 ? "+" : ""}${result.releaseCount - comparison.releaseCount} vs 2026`
-                    : "Departures before arrival + challenge"}
-                </small>
-              </article>
-              <article>
-                <span>Peak active / team</span>
-                <strong>
-                  {result.peakActive} <small>runners</small>
-                </strong>
-                <small className="metric-delta">
-                  {overlay
-                    ? `${result.peakActive - comparison.peakActive >= 0 ? "+" : ""}${result.peakActive - comparison.peakActive} vs 2026`
-                    : "Maximum simultaneous active legs"}
-                </small>
-              </article>
-            </div>
-            <TimingRuleSummary scenario={scenario} result={result} />
-            <div
-              className="visualizer-switch"
-              role="group"
-              aria-label="Visualizer view"
-            >
-              <button
-                aria-pressed={visualizer === "chart"}
-                onClick={() => setVisualizer("chart")}
-              >
-                Time / course chart
-              </button>
-              <button
-                aria-pressed={visualizer === "replay"}
-                onClick={() => setVisualizer("replay")}
-              >
-                Spread replay
-              </button>
-            </div>
-            {visualizer === "chart" ? (
-              <Chart
-                result={result}
-                comparison={comparison}
-                scenario={scenario}
-                overlay={overlay}
-                setOverlay={setOverlay}
-              />
-            ) : (
-              <SpreadReplay result={result} scenario={scenario} />
-            )}
-            <Staffing
-              result={result}
-              comparison={comparison}
-              overlay={overlay}
-            />
-          </>
-        )}
-        <footer>
-          <strong>Planning estimates, not an exact replay.</strong> Travel uses
-          historical or configured hypothetical paces. Baseline: all selected teams
-          start Day 1 at 01:00, with the published 2026 releases, assumed
-          16/21-minute challenges, and the fixed JBCC gate. Moving time excludes
-          challenge and gate waits. Times use event Day/time, independent of
-          calendar dates.
-          <br />
-          Configurations are saved only in this browser. Export JSON to share or
-          keep a portable copy. No data leaves this app.
-        </footer>
-      </main>
-    </>
-  );
+
+        </details>
+        {checked.error && <div className="error-message" role="alert">{checked.error} Results will resume when corrected.</div>}
+        <div className="simulation-workspace">
+          <section className="panel configuration-panel" aria-label="Simulation configuration">
+            <label className="field"><span>Wave arrangement</span><select aria-label="Wave arrangement" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
+            {activePreset && <p className="muted">{activePreset.summary} Friday starts.</p>}
+            <Config key={configRevision} scenario={scenario} setScenario={editScenario} result={result}/>
+          </section>
+          <section className="simulation-visual" aria-label="Live simulation">
+            {result && comparison ? <>
+              <div className="visualizer-switch" role="group" aria-label="Visualizer view"><button aria-pressed={visualizer==="chart"} onClick={()=>setVisualizer("chart")}>Time / course chart</button><button aria-pressed={visualizer==="replay"} onClick={()=>setVisualizer("replay")}>Spread replay</button></div>
+              {visualizer==="chart" ? <Chart result={result} comparison={comparison} scenario={scenario} overlay={overlay} setOverlay={setOverlay} active={section==="simulation"}/> : <SpreadReplay result={result} scenario={scenario} active={section==="simulation"}/>}
+              <Summary result={result} scenario={scenario}/>
+              <TimingRuleSummary scenario={scenario} result={result}/>
+            </> : <div className="panel empty-state">Correct the configuration to resume the live simulation.</div>}
+          </section>
+        </div>
+      </div>
+      <div hidden={section!=="results"}>
+        <div className="workspace-heading"><div><h2>Results</h2><p className="muted">Always current with your simulation configuration.</p></div><button onClick={()=>setSection("simulation")}>← Adjust simulation</button></div>
+        {result && comparison ? <ResultsView scenario={scenario} result={result} comparison={comparison} overlay={overlay}/> : <div className="error-message" role="alert">{checked.error} Correct the configuration before viewing or exporting results.</div>}
+      </div>
+      <footer><strong>Planning estimates.</strong> Historical segment paces determine travel. Released legs may overlap; final-leg finish and all runners off course are separate measures. Times are relative to event Friday, independent of calendar dates. Configurations stay in this browser; export JSON to share or back up.</footer>
+    </main>
+  </>;
 }

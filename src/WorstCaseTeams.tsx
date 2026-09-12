@@ -66,12 +66,6 @@ export function WorstCaseTeams({ scenario: s, update, select }: {
               commit={v => change(kind, { ...t, binPaces: { ...t.binPaces, [b.bin_id]: v } })} />)}</div>
           </>}
         </div>
-        {s.selectedTeamIds.includes(id) && s.waveRules.mode === "manual" &&
-          <label className="field"><span>Starting wave</span><select aria-label={`Wave for ${name}`}
-            value={s.assignments[id]} onChange={e => update(current => ({ ...current,
-              assignments: { ...current.assignments, [id]: e.target.value } }))}>
-            {s.waves.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
-          </select></label>}
         <button onClick={() => { change(kind, defaultWorstCaseTeam(kind));
           setRevision(r => ({ ...r, [kind]: r[kind] + 1 })); }}>Reset {name} to historical defaults</button>
       </fieldset>;

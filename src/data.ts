@@ -7,7 +7,7 @@ export const profiles: Profile[] = historicalJson.records;
 export const bins: PaceBin[] = historicalJson.course.bins;
 export const teamId = (p: Profile) => `${p.year}::${p.team}`;
 export const profileById = new Map(profiles.map((p) => [teamId(p), p]));
-export const ORIGIN = 3600; // Day 1, 01:00, shared by every scenario.
+export const ORIGIN = 3600; // Friday 1:00 AM: shared elapsed-chart origin.
 export const sources = {
   course: `course-matrix:${courseJson._meta.version}`,
   historical: `pace-bins:${historicalJson.source.sha256}`,
@@ -22,7 +22,8 @@ export const colors = [
 ];
 export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
   return {
-    schemaVersion: 5,
+    schemaVersion: 6,
+    fieldYear: "all",
     fastWaveReleases: { enabled: true, fromExchange: 35 },
     timingRules: defaultTimingRules(),
     worstCaseTeams: defaultWorstCaseTeams(),
@@ -35,13 +36,8 @@ export function baseline(selectedTeamIds = profiles.map(teamId)): Scenario {
     assignments: Object.fromEntries(
       selectedTeamIds.map((id) => [id, "wave-1"]),
     ),
-    waveRules: { mode: "manual", boundaries: [] },
-    release: {
-      mode: "published",
-      anchor: ORIGIN,
-      segments: [{ startLeg: 1, pace: 625 }],
-      visualPaces: [625, 625, 625, 625, 625],
-    },
+    waveRules: { mode: "pace", boundaries: [] },
+    release: { targetFinish: defaultFinishTarget(), pace: 625 },
     challenges: { monument: 960, lighthouse: 1260 },
     buffers: { before: 0, after: 0 },
   };
@@ -106,4 +102,14 @@ export function defaultTimingRules(): Scenario["timingRules"] {
     { id: "monument-deadline", enabled: true, exchange: 35, type: "clear-by", time: 19 * 3600 },
     { id: "jbcc-opening", enabled: true, exchange: 69, type: "depart-after", time: 86400 + 6 * 3600 },
   ];
+}
+
+export function defaultFinishTarget(): number {
+  const last = course.legs.at(-1)!;
+  const [h, m] = last.release_time.time_24h.split(":").map(Number);
+  return (last.release_time.day - 1) * 86400 + h * 3600 + m * 60 + last.distance_miles * 625;
+}
+export const fieldYears = [...new Set(profiles.map(p => p.year))].sort();
+export function fieldIds(year: Scenario["fieldYear"]): string[] {
+  return profiles.filter(p => year === "all" || p.year === year).map(teamId);
 }

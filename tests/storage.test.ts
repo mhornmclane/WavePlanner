@@ -1,3 +1,4 @@
+import { resolveAssignments } from "../src/waves";
 import { describe, expect, it } from "vitest";
 import { baseline } from "../src/data";
 import { simulate } from "../src/engine";
@@ -13,10 +14,10 @@ import {
 
 describe("configuration serialization and browser storage", () => {
   it.each([
-    [-3, "D0 22:00"],
-    [3, "D1 04:00"],
-    [0.5, "D1 01:30"],
-    [-1, "D1 00:00"],
+    [-3, "Thursday 10:00 PM"],
+    [3, "Friday 4:00 AM"],
+    [0.5, "Friday 1:30 AM"],
+    [-1, "Friday 12:00 AM"],
   ])(
     "preserves a %s hour wave offset across midnight and JSON round trips",
     (hours, expected) => {
@@ -44,10 +45,11 @@ describe("configuration serialization and browser storage", () => {
       color: "#445566",
       start: 7200,
     });
-    s.assignments[s.selectedTeamIds[0]] = "second";
-    s.release.mode = "generated";
-    s.release.segments.push({ startLeg: 36, pace: 710 });
+    s.waveRules.boundaries = [600];
+    s.assignments = resolveAssignments(s);
+    s.release.pace = 710;
     s.buffers.before = 600;
+    s.waves[0].name = "Wave 2";
     const parsed = parseScenario(serializeScenario(s));
     expect(parsed).toEqual(s);
     expect(simulate(parsed)).toEqual(simulate(s));
@@ -70,23 +72,12 @@ describe("configuration serialization and browser storage", () => {
   it("rejects wrong versions, source data, malformed JSON and oversized input", () => {
     expect(() => parseScenario("{bad")).toThrow("JSON");
     expect(() => parseScenario(" ".repeat(1_000_001))).toThrow("large");
-    expect(() => validateScenario({ ...baseline(), schemaVersion: 6 })).toThrow(
+    expect(() => validateScenario({ ...baseline(), schemaVersion: 5 })).toThrow(
       "version",
     );
     expect(() => validateScenario({ ...baseline(), sources: {} })).toThrow(
       "different",
     );
-  });
-  it("normalizes imported segment order for the editor without changing its schedule", () => {
-    const s = baseline();
-    s.release.mode = "generated";
-    s.release.segments = [
-      { startLeg: 36, pace: 750 },
-      { startLeg: 1, pace: 625 },
-    ];
-    const imported = parseScenario(JSON.stringify(s));
-    expect(imported.release.segments.map((p) => p.startLeg)).toEqual([1, 36]);
-    expect(simulate(imported)).toEqual(simulate(s));
   });
   it.each([
     [
@@ -107,19 +98,12 @@ describe("configuration serialization and browser storage", () => {
     ["empty waves", (s: any) => (s.waves = [])],
     ["invalid color", (s: any) => (s.waves[0].color = "url(bad)")],
     ["start too early", (s: any) => (s.waves[0].start = -30 * 86400 - 1)],
-    ["nonfinite number", (s: any) => (s.release.anchor = Infinity)],
-    ["zero pace", (s: any) => (s.release.segments[0].pace = 0)],
-    [
-      "duplicate segments",
-      (s: any) => s.release.segments.push({ startLeg: 1, pace: 500 }),
-    ],
-    ["missing first segment", (s: any) => (s.release.segments[0].startLeg = 2)],
-    ["noninteger leg", (s: any) => (s.release.segments[0].startLeg = 1.5)],
+    ["nonfinite number", (s: any) => (s.release.targetFinish = Infinity)],
+    ["zero pace", (s: any) => (s.release.pace = 0)],
     ["negative buffer", (s: any) => (s.buffers.after = -1)],
     ["oversized challenge", (s: any) => (s.challenges.monument = 86401)],
   ])("rejects %s", (_, change) => {
     const s = baseline();
-    s.release.mode = "generated";
     change(s);
     expect(() => validateScenario(s)).toThrow();
   });

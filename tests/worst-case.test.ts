@@ -44,18 +44,8 @@ describe("worst-case team profiles", () => {
     expect(next.assignments[worstCaseIds.fastest]).toBe(next.waves[2].id);
     simulate(next).teams[0].legs.forEach((l, i) => expect(l.duration).toBe(course.legs[i].distance_miles * 700));
   });
-  it.each([1, 2])("migrates version %s without changing historical results", version => {
-    const original = baseline();
-    const old = { ...original, schemaVersion: version } as Record<string, unknown>;
-    delete old.worstCaseTeams;
-    if (version === 1) delete old.waveRules;
-    const migrated = validateScenario(old);
-    expect(migrated.schemaVersion).toBe(5);
-    expect(migrated.selectedTeamIds).toEqual(original.selectedTeamIds);
-    expect(simulate(migrated)).toEqual(simulate(original));
-  });
   it("preserves edits through JSON, presets and independent copies", () => {
-    const s = baseline(Object.values(worstCaseIds));
+    const s = baseline([...baseline().selectedTeamIds, ...Object.values(worstCaseIds)]);
     s.worstCaseTeams.fastest.binPaces[bins[0].bin_id] = 400;
     s.worstCaseTeams.slowest.mode = "flat";
     s.worstCaseTeams.slowest.flatPace = 900;

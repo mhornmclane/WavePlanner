@@ -1,3 +1,4 @@
+import { TimeInput } from "./Inputs";
 import { course, resolveProfile } from "./data";
 import { clock, duration } from "./format";
 import { exchangeName, ruleStatus, ruleTypes, supportsRule } from "./timingRules";
@@ -12,7 +13,7 @@ export function TimingRulesEditor({ scenario, result, update }: {
   return <section aria-label="Timing rules editor">
     <fieldset className="timing-rule-editor fast-wave-releases">
       <legend>Fast-wave releases</legend>
-      <p className="muted">Applies to waves starting after Day 1, 01:00. Before the selected exchange, each outgoing runner waits for the incoming runner and any challenge. Releases can apply once the team reaches that exchange.</p>
+      <p className="muted">Applies to every wave except Wave 1 (the slowest), regardless of start time. Before the selected exchange, each outgoing runner waits for the incoming runner and any challenge. Releases can apply once the team reaches that exchange.</p>
       <label><input type="checkbox" aria-label="Enable releases for fast waves" checked={scenario.fastWaveReleases.enabled}
         onChange={e => update(s => ({ ...s, fastWaveReleases: { ...s.fastWaveReleases, enabled: e.target.checked } }))} /> Apply release times to fast waves</label>
       <label className="field"><span>Apply releases starting at exchange</span>
@@ -32,8 +33,6 @@ export function TimingRulesEditor({ scenario, result, update }: {
     <p className="muted">Deadlines flag late teams. Opening times hold outgoing runners until the location opens. Clearance checks the later of incoming arrival and outgoing departure.</p>
     <div className="timing-rule-list">{scenario.timingRules.map((r, index) => {
       const evaluation = result?.timingRules.find(v => v.ruleId === r.id);
-      const day = Number.isFinite(r.time) ? Math.floor(r.time / 86400) + 1 : 1;
-      const time = Number.isFinite(r.time) ? clock(r.time).split(" ")[1] : "";
       return <fieldset key={r.id} className="timing-rule-editor"><legend>Rule {index + 1}</legend>
         <label><input type="checkbox" aria-label={`Enable timing rule ${index + 1}`} checked={r.enabled}
           onChange={e => change(r.id, { enabled: e.target.checked })} /> Enabled</label>
@@ -49,13 +48,7 @@ export function TimingRulesEditor({ scenario, result, update }: {
           {(Object.keys(ruleTypes) as TimingRuleType[]).filter(t => supportsRule(r.exchange, t)).map(t =>
             <option key={t} value={t}>{ruleTypes[t]}</option>)}
         </select></label>
-        <div className="timing-rule-clock">
-          <label className="field"><span>Day</span><input aria-label={`Rule ${index + 1} day`} type="number" min="1" max="30" step="1" value={day}
-            onChange={e => change(r.id, { time: e.target.value && Number.isInteger(+e.target.value) ? (+e.target.value - 1) * 86400 + (Number.isFinite(r.time) ? r.time % 86400 : 0) : NaN })} /></label>
-          <label className="field"><span>Time</span><input aria-label={`Rule ${index + 1} time`} type="time" value={time}
-            onChange={e => { const [h, m] = e.target.value.split(":").map(Number);
-              change(r.id, { time: e.target.value ? (day - 1) * 86400 + h * 3600 + m * 60 : NaN }); }} /></label>
-        </div>
+        <TimeInput label={`Rule ${index+1}`} value={r.time} onChange={time=>change(r.id,{time})}/>
         <p className={evaluation?.status === "failed" ? "rule-failed" : "rule-status"} role="status">{ruleStatus(r, evaluation)}</p>
         <button className="quiet" aria-label={`Remove timing rule ${index + 1}`} onClick={() => update(s => ({ ...s,
           timingRules: s.timingRules.filter(v => v.id !== r.id) }))}>Remove rule</button>

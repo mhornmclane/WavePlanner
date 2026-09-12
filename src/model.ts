@@ -37,12 +37,9 @@ export interface Wave {
   color: string;
   start: number;
 }
-export interface PaceSegment {
-  startLeg: number;
-  pace: number;
-}
 export interface Scenario {
-  schemaVersion: 5;
+  schemaVersion: 6;
+  fieldYear: "all" | number;
   fastWaveReleases: { enabled: boolean; fromExchange: number };
   timingRules: TimingRule[];
   worstCaseTeams: Record<"fastest" | "slowest", WorstCaseTeam>;
@@ -51,13 +48,8 @@ export interface Scenario {
   selectedTeamIds: string[];
   waves: Wave[];
   assignments: Record<string, string>;
-  waveRules: { mode: "manual" | "pace"; boundaries: number[] };
-  release: {
-    mode: "published" | "generated" | "visual";
-    anchor: number;
-    segments: PaceSegment[];
-    visualPaces: number[];
-  };
+  waveRules: { mode: "pace"; boundaries: number[] };
+  release: { targetFinish: number; pace: number };
   challenges: { monument: number; lighthouse: number };
   buffers: { before: number; after: number };
 }
