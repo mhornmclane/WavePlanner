@@ -77,6 +77,7 @@ export function Waves({
   const [split, setSplit] = useState<{ index: number; text: string } | null>(
     null,
   );
+  const [openRoster, setOpenRoster] = useState<string | null>(null);
   const firstSplit = s.waves.length === 1;
   const splitValue = split ? parsePace(split.text) : null;
   const splitValid =
@@ -114,6 +115,7 @@ export function Waves({
   return (
     <>
       <div className="subsection-head"><h3>Starting waves</h3><button disabled={s.waves.length >= 51} onClick={() => beginSplit(s.waves.length - 1)}>+ Add wave</button></div>
+      <div className="wave-column-headings" aria-hidden="true"><span>Wave</span><span>Pace range · / mi</span><span>Start</span><span>Teams</span><span></span></div>
       <div className="wave-list">
         {orderedWaveEntries(s).map(({ w, i }, displayIndex) => (
           <div className="wave-card" key={w.id}>
@@ -150,6 +152,30 @@ export function Waves({
                   }))
                 }
               />
+              <div className="wave-range">
+                {i === 0 ? (
+                  s.waves.length === 1 ? <span>All paces</span> : null
+                ) : (
+                  <><span aria-hidden="true">≥</span><Boundary
+                    label={`Wave ${displayIndex + 1} minimum pace (inclusive)`}
+                    value={s.waveRules.boundaries[i - 1]}
+                    valid={(v) =>
+                      validBoundary(s.waveRules.boundaries, i - 1, v)
+                    }
+                    commit={(v) => boundary(i - 1, v)}
+                  /></>
+                )}
+                {i === s.waves.length - 1 ? (
+                  null
+                ) : (
+                  <><span aria-hidden="true">&lt;</span><Boundary
+                    label={`Wave ${displayIndex + 1} maximum pace (exclusive)`}
+                    value={s.waveRules.boundaries[i]}
+                    valid={(v) => validBoundary(s.waveRules.boundaries, i, v)}
+                    commit={(v) => boundary(i, v)}
+                  /></>
+                )}
+              </div>
               <TimeInput
                 label={`Wave ${displayIndex + 1} start`}
                 value={w.start}
@@ -162,7 +188,7 @@ export function Waves({
                   }))
                 }
               />
-              <span className="wave-count">{roster(s, w.id).length} teams</span>
+              <button className="wave-count quiet" aria-label={`View ${roster(s, w.id).length} included teams for wave ${displayIndex + 1}`} aria-expanded={openRoster === w.id} aria-controls={`roster-${w.id}`} onClick={()=>setOpenRoster(openRoster === w.id ? null : w.id)}>{roster(s, w.id).length} teams <span aria-hidden="true">{openRoster === w.id ? "⌃" : "⌄"}</span></button>
               <button
                 className="quiet"
                 aria-label={`Remove wave ${displayIndex + 1}`}
@@ -172,52 +198,12 @@ export function Waves({
                   update((c) => removeWave(c, i));
                 }}
               >
-                Remove
+                <span aria-hidden="true">×</span>
               </button>
             </div>
-            {displayIndex === 0 && <div className="finish-target">
-              <h4>Finish</h4>
-              <label className="field"><span>Target finish</span><TimeInput label="Target finish" value={s.release.targetFinish} onChange={targetFinish=>update(c=>({...c,release:{...c.release,targetFinish}}))}/></label>
-              <label className="field"><span>Release pace · min:sec/mile</span><PaceInput label="Release pace" value={s.release.pace} onChange={pace=>update(c=>({...c,release:{...c.release,pace}}))}/></label>
-              <p className="start-guidance" role="status">{Number.isFinite(latestStart(s)) ? `The latest you can start the event is ${clock(latestStart(s), "down")}.` : "Enter a valid finish target, pace, and challenge allowances."}</p>
-              {w.start > latestStart(s) && <p className="rule-failed">Wave 1 starts after the calculated latest start.</p>}
-              <small>Includes challenge allowances. Gate openings and historical paces may produce later finishes. Your chosen start stays unchanged.</small>
-            </div>}
-            {(
-              <div className="wave-range">
-                {i === 0 ? (
-                  <span>No lower pace limit</span>
-                ) : (
-                  <Boundary
-                    label={`Wave ${displayIndex + 1} minimum pace (inclusive)`}
-                    value={s.waveRules.boundaries[i - 1]}
-                    valid={(v) =>
-                      validBoundary(s.waveRules.boundaries, i - 1, v)
-                    }
-                    commit={(v) => boundary(i - 1, v)}
-                  />
-                )}
-                {i === s.waves.length - 1 ? (
-                  <span>No upper pace limit</span>
-                ) : (
-                  <Boundary
-                    label={`Wave ${displayIndex + 1} maximum pace (exclusive)`}
-                    value={s.waveRules.boundaries[i]}
-                    valid={(v) => validBoundary(s.waveRules.boundaries, i, v)}
-                    commit={(v) => boundary(i, v)}
-                  />
-                )}
-                <button
-                  className="small quiet"
-                  disabled={s.waves.length >= 51}
-                  onClick={() => beginSplit(i)}
-                >
-                  Split this range
-                </button>
-              </div>
-            )}
-            <details className="wave-members">
-              <summary>View {roster(s, w.id).length} included teams</summary>
+
+            <div className="wave-members" id={`roster-${w.id}`} hidden={openRoster !== w.id}>
+              <button className="small quiet" disabled={s.waves.length >= 51} onClick={() => beginSplit(i)}>Split this range</button>
               <ul className="wave-roster">
                 {roster(s, w.id).map((p) => (
                   <li key={`${p.year}-${p.team}`}>
@@ -231,9 +217,17 @@ export function Waves({
               {!roster(s, w.id).length && (
                 <p className="muted">No selected teams in this wave.</p>
               )}
-            </details>
+            </div>
           </div>
         ))}
+      </div>
+      <p className="table-note">Waves run slowest to fastest. Exact-boundary teams join the slower wave. Select a team count for its roster and range actions.</p>
+      <div className="finish-target">
+              <div className="field"><span>Target finish</span><TimeInput label="Target finish" value={s.release.targetFinish} onChange={targetFinish=>update(c=>({...c,release:{...c.release,targetFinish}}))}/></div>
+              <label className="field"><span>Release pace · min:sec/mile</span><PaceInput label="Release pace" value={s.release.pace} onChange={pace=>update(c=>({...c,release:{...c.release,pace}}))}/></label>
+              <div className="finish-guidance"><span className="field-label">Latest Wave 1 start</span><p className="start-guidance" role="status">{Number.isFinite(latestStart(s)) ? clock(latestStart(s), "down") : "Enter a valid finish target, pace, and challenge allowances."}</p><span className="muted">Includes challenge allowances</span></div>
+              {orderedWaveEntries(s)[0].w.start > latestStart(s) && <p className="rule-failed">Wave 1 starts after the calculated latest start.</p>}
+              <small>Planning estimate only. Gate openings and historical paces may produce later finishes. Your chosen start stays unchanged.</small>
       </div>
       {split && (
         <div
@@ -291,9 +285,6 @@ export function Waves({
           </button>
         </div>
       )}
-      <p className="table-note">
-        Waves run slowest to fastest. Shared pace boundaries leave no gaps; exact-boundary teams join the slower wave.
-      </p>
     </>
   );
 }

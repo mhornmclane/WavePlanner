@@ -24,7 +24,7 @@ Browser tests run the production build at `/PacePlanner/` using installed Chrome
 
 A circle marks arrival at or before the outgoing leg’s published release; a diamond marks a strictly later incoming arrival. Start and Finish remain circles. Inspection gives the release, time late, and whether the next runner actually departed before arrival (respecting gate delays). Each team has one marker. Changing years pauses playback while retaining the exchange; leaving the section pauses and preserves playback preferences.
 
-**Simulation** opens by default. The graph and replay share a Teams selector, defaulting to 2025; choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Configuration and wave cards are stacked above the full-width live chart on desktop and mobile. Wave arrangements provide editable starting points while preserving the selected field, finish target, and other settings. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers are in expandable controls.
+**Simulation** opens by default. The graph and replay share a Teams selector, defaulting to 2025; choose all years or a specific year; a team appearing in multiple years remains a separate profile for each performance. Compact wave rows sit above the full-width live chart, with a shared finish-target strip and responsive layouts for smaller screens. Select a wave's team count to view its roster and split its range. Wave arrangements provide editable starting points while preserving the selected field, finish target, and other settings. Optional hypothetical teams, timing rules, challenge allowances, and staffing buffers show current values in an expandable settings bar.
 
 **Results** always reflects the current valid configuration. It includes summary metrics, team finishes, timing-rule evaluations, all 72 exchange staffing windows, and the 71 release times. Export team results or exchange staffing CSV. Returning to Simulation and editing automatically updates Results. Invalid scenario inputs suspend simulation and result exports until corrected.
 
@@ -40,7 +40,7 @@ Focus the graph for keyboard controls: +/− zoom, arrow keys pan, 0/Home fits t
 
 ## Finish target and release schedule
 
-Wave 1 is always the slowest pace range, independently of its start time. Its card contains the target final-leg finish weekday/time and a single release pace in min:sec/mile.
+Wave 1 is always the slowest pace range, independently of its start time. The shared finish strip contains the target final-leg finish weekday/time, a single release pace in min:sec/mile, and the latest-start estimate for Wave 1.
 
 ```text
 latest start = target finish

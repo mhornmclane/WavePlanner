@@ -248,8 +248,8 @@ export default function App() {
         {checked.error && <div className="error-message" role="alert">{checked.error} Results will resume when corrected.</div>}
         <div className="simulation-workspace">
           <section className="panel configuration-panel" aria-label="Simulation configuration">
-            <label className="field"><span>Wave arrangement</span><select aria-label="Wave arrangement" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-            {activePreset && <p className="muted">{activePreset.summary} Friday starts.</p>}
+            <div className="configuration-heading"><h3>Configuration</h3><label className="field"><span>Wave arrangement</span><select aria-label="Wave arrangement" value={presetId} onChange={e=>loadPreset(e.target.value as PresetId | "custom")}><option value="custom">Custom</option>{presets.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label><span className="muted">{scenario.selectedTeamIds.length} profiles</span></div>
+            {activePreset && <p className="sr-only">{activePreset.summary} Friday starts.</p>}
             <Config key={configRevision} scenario={scenario} setScenario={editScenario} result={result}/>
           </section>
           <section className="simulation-visual" aria-label="Live simulation">
