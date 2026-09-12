@@ -148,7 +148,7 @@ export default function App() {
       <div hidden={section!=="history"}><HistoricalData/></div>
       <div hidden={section!=="historical-replay"}><HistoricalReplay active={section==="historical-replay"}/></div>
       <div hidden={section!=="simulation"}>
-        <div className="workspace-heading"><div><h2>Shape the race</h2><p className="muted">Choose your field and waves. Watch the course respond.</p></div><button className="primary" onClick={()=>setSection("results")}>View results →</button></div>
+        <div className="workspace-heading"><div><h2>Shape the race</h2><p className="muted">Choose your field and waves. Watch the course respond.</p></div></div>
         <details className="configuration-files"><summary>Configuration files · {scenario.name} · {dirty ? "Unsaved" : "Saved"}</summary>
           <div className="save-toolbar">
             <label className="scenario-name">
@@ -252,6 +252,7 @@ export default function App() {
             {activePreset && <p className="sr-only">{activePreset.summary} Friday starts.</p>}
             <Config key={configRevision} scenario={scenario} setScenario={editScenario} result={result}/>
           </section>
+          <div className="configuration-results-action"><button className="primary" onClick={()=>setSection("results")}>Tabular results</button></div>
           <section className="simulation-visual" aria-label="Live simulation">
             {result && comparison ? <>
               <div className="viewer-controls"><label className="inline-label">Teams

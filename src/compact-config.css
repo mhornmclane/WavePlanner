@@ -1,5 +1,6 @@
 /* Configuration keeps the wave field, its finish target, and optional rules together. */
 .configuration-panel { padding:0; overflow:visible; }
+.configuration-results-action { display:flex; justify-content:flex-end; }
 .configuration-heading { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; padding:14px 18px; border-bottom:1px solid var(--border); }
 .configuration-heading h3 { margin:0; font-size:15px; }
 .configuration-heading .field { flex-direction:row; align-items:center; margin-left:auto; }

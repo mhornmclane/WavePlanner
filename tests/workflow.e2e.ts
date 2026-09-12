@@ -90,7 +90,7 @@ test("presets keep finish settings and field; wave boundaries, split and removal
 
 test("results tables and CSV reflect current field and configuration",async({page})=>{
   await page.getByLabel("Simulation field").selectOption("2026");
-  await page.getByRole("button",{name:"View results →"}).click();
+  await page.getByRole("button",{name:"Tabular results",exact:true}).click();
   const csv=await downloadText(page,"Export team results CSV");expect(csv.split("\r\n")).toHaveLength(fieldIds(2026).length+1);
   expect(csv).toContain("All legs complete");expect(csv).toContain("Saturday");
   expect((await downloadText(page,"↓ Export all CSV")).split("\r\n")).toHaveLength(73);
