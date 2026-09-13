@@ -28,6 +28,8 @@ In both replays, a diamond marks overlapping runners: the next runner departed b
 
 **Results** always reflects the current valid configuration. It includes summary metrics, team finishes, timing-rule evaluations, all 72 exchange staffing windows, and the 71 release times. Export team results or exchange staffing CSV. Returning to Simulation and editing automatically updates Results. Invalid scenario inputs suspend simulation and result exports until corrected.
 
+Simulation replay includes a shaded 2026 baseline spread with first/last endpoint caps and arrival metrics. Each field is anchored independently at zero, comparing spread rather than clock-time shifts. The replay's baseline checkbox defaults on and is independent of the graph toggle; it retains its value when switching views during the session. The axis covers both fields across all exchanges and stays fixed when the overlay is hidden. Highlighting a team does not narrow the baseline field.
+
 The configuration files toolbar supports named browser saves, loading, duplication, deletion, JSON export, and import. Rejected imports preserve the current working configuration. Historical filters, chart settings, and section state persist while navigating. Leaving spread replay pauses it; changing simulation data resets playback.
 
 ## Graph navigation

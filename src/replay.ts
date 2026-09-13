@@ -20,12 +20,13 @@ export interface ReplayFrame {
 }
 export interface SpreadReplayData {
   frames: ReplayFrame[];
+  baselineFrames?: ReplayFrame[];
   maxSpread: number;
   axisSeconds: number;
 }
 
 /** Exchange comparisons, not samples of a shared race clock. */
-export function buildReplay(result: Simulation): SpreadReplayData {
+export function buildReplay(result: Simulation, comparison?: Simulation): SpreadReplayData {
   const frames = result.exchanges.map((exchange): ReplayFrame => {
     const times = result.teams.map((team) => ({
       teamId: team.teamId,
@@ -52,5 +53,7 @@ export function buildReplay(result: Simulation): SpreadReplayData {
     };
   });
   const maxSpread = Math.max(0, ...frames.map((f) => f.spread));
-  return { frames, maxSpread, axisSeconds: maxSpread || 3600 };
+  const baseline = comparison ? buildReplay(comparison) : undefined;
+  return { frames, ...(baseline ? { baselineFrames: baseline.frames } : {}), maxSpread,
+    axisSeconds: Math.max(maxSpread, baseline?.maxSpread ?? 0) || 3600 };
 }

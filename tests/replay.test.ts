@@ -4,6 +4,25 @@ import { simulate } from "../src/engine";
 import { buildReplay } from "../src/replay";
 
 describe("exchange spread replay", () => {
+  it.each([600, 1200, 1800, 0])("compares a %s-second baseline on one fixed scale", baselineSpread => {
+    const result = simulate(baseline(profiles.slice(0, 2).map(teamId)));
+    const comparison = structuredClone(result);
+    for (const [field, spread] of [[result, 1200], [comparison, baselineSpread]] as const) {
+      field.teams.forEach((team, i) => team.legs.forEach(leg => {
+        leg.departure = 10000 + i * spread;
+        leg.arrival = 20000 + i * spread;
+      }));
+    }
+    const data = buildReplay(result, comparison);
+    expect(data.axisSeconds).toBe(Math.max(1200, baselineSpread));
+    expect(data.frames.every(f => f.spread === 1200)).toBe(true);
+    expect(data.baselineFrames!.every(f => f.spread === baselineSpread && f.markers[1].ahead === 0)).toBe(true);
+    expect(data.baselineFrames![0].first).toBe(10000);
+    expect(data.baselineFrames![71].first).toBe(20000);
+    const empty = buildReplay(simulate(baseline([])), simulate(baseline([])));
+    expect(empty.axisSeconds).toBe(3600);
+    expect(empty.baselineFrames!.every(f => f.markers.length === 0)).toBe(true);
+  });
   it("matches all 72 exchange arrival summaries for the full field", () => {
     const result = simulate(baseline());
     const data = buildReplay(result);

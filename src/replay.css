@@ -243,3 +243,16 @@
 .replay-year-metrics dd { font-size: 16px; }
 .replay-shape-legend { font-size: 13px; color: var(--muted); }
 .replay-marker.is-diamond { border-radius: 0; transform: translate(-50%, -50%) rotate(45deg); width: 13px; height: 13px; min-height: 13px; }
+
+.replay-comparison-metrics { display: grid; gap: 8px; color: #526b91; }
+.replay-comparison-legend { color: var(--muted); font-size: 13px; }
+.replay-comparison-legend i { display: inline-block; width: 22px; height: 12px; margin-right: 8px; background: #526b911a; border-inline: 2px solid #526b91; }
+.replay-track.has-comparison { height: 110px; }
+.has-comparison .replay-marker, .has-comparison .replay-baseline { top: 76px; }
+.replay-comparison { position: absolute; inset: 0; pointer-events: none; }
+.replay-comparison-band { position: absolute; left: 0; top: 60px; height: 32px; background: #526b911a; }
+.replay-comparison-cap { position: absolute; top: 60px; height: 32px; width: 8px; border: 2px solid #526b91; border-right: 0; transform: translateX(-1px); }
+.replay-comparison-cap.first { border-right: 2px solid #526b91; border-left: 0; transform: translateX(-7px); }
+.replay-comparison-cap span { position: absolute; top: -25px; left: 0; white-space: nowrap; font-size: 11px; font-weight: 600; color: #405777; }
+.replay-comparison-cap.first span { top: -48px; left: auto; right: 0; }
+.replay-comparison-cap.first.near-start span { left: 0; right: auto; }

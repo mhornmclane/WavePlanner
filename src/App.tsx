@@ -34,6 +34,7 @@ export default function App() {
     setScenario(next);
   }
   const [overlay, setOverlay] = useState(false);
+  const [replayOverlay, setReplayOverlay] = useState(true);
   const [visualizer, setVisualizer] = useState<"chart" | "replay">("chart");
   const [saves, setSaves] = useState<SavedScenario[]>([]);
   const [loadedId, setLoadedId] = useState("");
@@ -265,7 +266,7 @@ export default function App() {
               <Summary result={result} scenario={scenario}/>
               <TimingRuleSummary scenario={scenario} result={result}/>
               <div className="viewer-controls"><div className="visualizer-switch" role="group" aria-label="Visualizer view"><button aria-pressed={visualizer==="chart"} onClick={()=>setVisualizer("chart")}>Time / course chart</button><button aria-pressed={visualizer==="replay"} onClick={()=>setVisualizer("replay")}>Spread replay</button></div></div>
-              {visualizer==="chart" ? <Chart result={result} comparison={comparison} scenario={scenario} overlay={overlay} setOverlay={setOverlay} active={section==="simulation"}/> : <SpreadReplay result={result} scenario={scenario} active={section==="simulation"}/>}
+              {visualizer==="chart" ? <Chart result={result} comparison={comparison} scenario={scenario} overlay={overlay} setOverlay={setOverlay} active={section==="simulation"}/> : <SpreadReplay result={result} comparison={comparison} overlay={replayOverlay} setOverlay={setReplayOverlay} scenario={scenario} active={section==="simulation"}/>}
             </> : <div className="panel empty-state">Correct the configuration to resume the live simulation.</div>}
           </section>
         </div>

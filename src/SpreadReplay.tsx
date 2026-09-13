@@ -12,16 +12,22 @@ export function SpreadReplay({
   scenario,
   active = true,
   historical = false,
+  comparison,
+  overlay = true,
+  setOverlay,
 }: {
   result: Simulation;
   scenario: Scenario;
   active?: boolean;
   historical?: boolean;
+  comparison?: Simulation;
+  overlay?: boolean;
+  setOverlay?: (visible: boolean) => void;
 }) {
   const id = useId();
   const titleId = `${id}-title`;
   const detailId = `${id}-detail`;
-  const data = useMemo(() => historical ? buildHistoricalReplay(result) : buildReplay(result), [result, historical]);
+  const data = useMemo(() => historical ? buildHistoricalReplay(result) : buildReplay(result, comparison), [result, historical, comparison]);
   const [source, setSource] = useState(result);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -43,6 +49,9 @@ export function SpreadReplay({
   const lastIndex = data.frames.length - 1;
   const frame = data.frames[index];
   const empty = !result.teams.length;
+  const baselineFrame = data.baselineFrames?.[index];
+  const showBaseline = !historical && overlay && !empty && !!baselineFrame?.markers.length;
+  const baselinePercent = baselineFrame ? baselineFrame.spread / data.axisSeconds * 100 : 0;
   useEffect(() => { if (!active) setPlaying(false); }, [active]);
   useEffect(() => {
     if (!active || !playing || empty) return;
@@ -131,8 +140,20 @@ export function SpreadReplay({
             </dd>
           </div>
         </dl>}
+        {showBaseline && baselineFrame && <div className="replay-comparison-metrics" aria-label="2026 baseline metrics">
+          <strong>2026 baseline</strong>
+          <dl className="replay-metrics">
+            <div><dt>{index === 0 ? "First start" : "First arrival"}</dt><dd>{clock(baselineFrame.first)}</dd></div>
+            <div><dt>{index === 0 ? "Last start" : "Last arrival"}</dt><dd>{clock(baselineFrame.last)}</dd></div>
+            <div><dt>Spread</dt><dd>{duration(baselineFrame.spread)}</dd></div>
+          </dl>
+        </div>}
       </div>
       <div className="replay-controls">
+        {!historical && comparison && <label className="check">
+          <input type="checkbox" checked={overlay} onChange={e => setOverlay?.(e.target.checked)} />
+          2026 baseline
+        </label>}
         <div className="replay-buttons">
           <button
             disabled={empty || index === 0}
@@ -243,6 +264,7 @@ export function SpreadReplay({
         ))}
       </div>
       <p className="replay-shape-legend">● Circle: no overlapping runners · ◆ Diamond: another runner departed before arrival. Start and Finish use circles.</p>
+      {showBaseline && <p className="replay-comparison-legend"><i aria-hidden="true" />2026 baseline spread. Each field’s last team is anchored at zero; this compares spread, not earlier or later clock times.</p>}
       <div
         className="replay-detail"
         id={detailId}
@@ -289,7 +311,16 @@ export function SpreadReplay({
       )}
       <div className="replay-scroll" tabIndex={0} aria-label="Team spread plot">
         <div className="replay-canvas">
-          <div className="replay-track">
+          <div className={`replay-track${showBaseline ? " has-comparison" : ""}`}>
+            {showBaseline && baselineFrame && <div className="replay-comparison" aria-label="2026 baseline spread" data-spread={baselineFrame.spread}>
+              <div className="replay-comparison-band" style={{ width: `${baselinePercent}%` }} />
+              <div className="replay-comparison-cap last" style={{ left: 0 }}>
+                <span>{baselineFrame.spread === 0 ? "Baseline first / last" : "Baseline last"}</span>
+              </div>
+              {baselineFrame.spread > 0 && <div className={`replay-comparison-cap first${baselinePercent < 50 ? " near-start" : ""}`} style={{ left: `${baselinePercent}%` }}>
+                <span>Baseline first</span>
+              </div>}
+            </div>}
             <div className="replay-baseline" aria-hidden="true" />
             {Array.from({ length: 6 }, (_, n) => (
               <div
