@@ -6,7 +6,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { bins, course, ORIGIN, resolveProfile } from "./data";
 import { clock, pace } from "./format";
 import { ExchangePopup, type PopupTarget } from "./ExchangePopup";
-import { releasePace } from "./engine";
+import { releaseGroups, targetGroups } from "./releases";
 import type { LegTiming, Scenario, Simulation } from "./model";
 
 interface Props {
@@ -97,6 +97,11 @@ export function Chart({
     ? selectedId
     : "";
   const selectedWave = scenario.waves.find(w => 'wave:' + w.id === selectedId)?.id ?? '';
+  const guides = releaseGroups(scenario, result);
+  const targets = targetGroups(scenario);
+  const guideWave = selectedWave || result.teams.find(t => t.teamId === selected)?.waveId;
+  const guideOpacity = (waves: Scenario["waves"]) => !guideWave || waves.some(w => w.id === guideWave) ? 1 : 0.15;
+  const guideColor = (waves: Scenario["waves"]) => (waves.find(w => w.id === guideWave) ?? waves[0]).color;
   const highlight = selectedWave ? 'wave:' + selectedWave : selected;
   const emphasized = (t: { teamId: string; waveId: string }) => selectedWave ? t.waveId === selectedWave : t.teamId === selected;
   useEffect(() => {
@@ -117,15 +122,15 @@ export function Chart({
       t.legs.flatMap((l) => [l.departure, l.arrival]),
     );
     if (showRelease)
-      times.push(...result.releases, ...(overlay ? comparison.releases : []));
+      times.push(...Object.values(result.releasesByWave).flat(), ...(overlay ? Object.values(comparison.releasesByWave).flat() : []));
     const ruleTimes = scenario.timingRules.filter(r => r.enabled).map(r => r.time);
-    times.push(...ruleTimes, scenario.release.targetFinish);
+    times.push(...ruleTimes, ...scenario.waves.map(w => w.release.targetFinish));
     const earliest = Math.min(ORIGIN, ...scenario.waves.map((w) => w.start), ...times);
     return {
       min: Math.floor((earliest - ORIGIN) / 3600),
       max: Math.max(4, Math.ceil((Math.max(ORIGIN, ...times) - ORIGIN) / 3600)),
     };
-  }, [result, comparison, scenario.waves, scenario.timingRules, scenario.release.targetFinish, overlay, showRelease]);
+  }, [result, comparison, scenario.waves, scenario.timingRules, overlay, showRelease]);
   const visibleMin = extent.min + viewport.x0 * (extent.max - extent.min);
   const visibleMax = extent.min + viewport.x1 * (extent.max - extent.min);
   const courseMax = axis === "miles" ? 205.72 : 71;
@@ -478,7 +483,7 @@ export function Chart({
               ))}
             {showRelease && overlay && (
               <path
-                d={comparison.releases
+                d={Object.values(comparison.releasesByWave)[0]
                   .map((r, i) => `${i ? "L" : "M"}${x(r)},${y(i)}`)
                   .join(" ")}
                 fill="none"
@@ -487,17 +492,13 @@ export function Chart({
                 strokeWidth="2"
               />
             )}
-            {showRelease && (
-              <path
-                d={result.releases
-                  .map((r, i) => `${i ? "L" : "M"}${x(r)},${y(i)}`)
-                  .join(" ")}
-                fill="none"
-                stroke="#102e45"
-                strokeDasharray="8 3"
-                strokeWidth="3"
-              />
-            )}
+            {showRelease && guides.map(({waves, releases}) => (
+              <path key={waves[0].id} className="wave-release-guide" data-wave-ids={waves.map(w=>w.id).join(" ")}
+                d={releases.map((r,i)=>`${i ? "L" : "M"}${x(r)},${y(i)}`).join(" ")}
+                fill="none" stroke={guideColor(waves)} strokeDasharray="8 3" strokeWidth="3" opacity={guideOpacity(waves)}>
+                <title>{waves.map(w=>w.name).join(", ")} release schedule</title>
+              </path>
+            ))}
             {[...result.teams]
               .sort(
                 (a, b) =>
@@ -561,64 +562,24 @@ export function Chart({
                   ))}
                 </g>
               ))}
-            {showRelease &&
-              result.releases.map((r, i) => (
-                <circle
-                  key={`release-${i}`}
-                  cx={x(r)}
-                  cy={y(i)}
-                  r={3}
-                  fill="#102e45"
-                  stroke="white"
-                  strokeWidth="1"
-                  className="release-point"
-                  data-release-leg={i + 1}
-                  onPointerMove={(e) => {
-                    if (tool !== "inspect" || popup?.pinned) return;
-                    cancelClose();
-                    setPopup({
-                      index: i,
-                      leg: i + 1,
-                      x: e.clientX,
-                      y: e.clientY,
-                      pinned: false,
-                      release: true,
-                    });
-                  }}
-                  onPointerLeave={leavePopup}
-                  onPointerDown={(e) => {
-                    if (tool !== "inspect") return;
-                    cancelClose();
-                    setPopup({
-                      index: i,
-                      leg: i + 1,
-                      x: e.clientX,
-                      y: e.clientY,
-                      pinned: true,
-                      release: true,
-                    });
-                  }}
-                />
-              ))}
-            {showRelease &&
-              bins.map((b) => (
-                <text
-                  key={`pace-${b.bin_id}`}
-                  x={Math.min(
-                    right - 55,
-                    x(result.releases[b.first_leg - 1]) + 8,
-                  )}
-                  y={y(b.first_leg - 1) - 8}
-                  className="release-pace-label"
-                  pointerEvents="none"
-                >
-                  {pace(releasePace(scenario, b.first_leg))}/mi
-                </text>
-              ))}
-            <g className="finish-target-marker">
-              <line x1={x(scenario.release.targetFinish)} x2={x(scenario.release.targetFinish)} y1={top} y2={bottom} stroke="#aa6230" strokeDasharray="5 5" />
-              <circle cx={x(scenario.release.targetFinish)} cy={y(71)} r="6" fill="#aa6230" stroke="white" tabIndex={0} aria-label={`Target finish ${clock(scenario.release.targetFinish)}`}><title>Target finish {clock(scenario.release.targetFinish)}</title></circle>
-            </g>
+            {showRelease && guides.map(({waves, releases}) => <g key={waves[0].id} opacity={guideOpacity(waves)}>
+              {releases.map((r,i) => <circle key={i} cx={x(r)} cy={y(i)} r={3} fill={guideColor(waves)} stroke="white"
+                className="release-point" data-release-leg={i+1} data-wave-ids={waves.map(w=>w.id).join(" ")}
+                tabIndex={0} aria-label={`${waves.map(w=>w.name).join(", ")} release leg ${i+1}: ${clock(r)}`}
+                onFocus={e=>{const rect=e.currentTarget.getBoundingClientRect();setPopup(current=>current?.pinned ? current : {index:i,leg:i+1,x:rect.x,y:rect.y,pinned:false,release:true,waveIds:waves.map(w=>w.id)});}}
+                onBlur={leavePopup}
+                onKeyDown={e=>{if(e.key==="Enter")setPopup(p=>p?{...p,pinned:true}:p);}}
+                onPointerMove={e=>{if(tool!=="inspect" || popup?.pinned)return;cancelClose();setPopup({index:i,leg:i+1,x:e.clientX,y:e.clientY,pinned:false,release:true,waveIds:waves.map(w=>w.id)});}}
+                onPointerLeave={leavePopup}
+                onPointerDown={e=>{if(tool!=="inspect")return;cancelClose();setPopup({index:i,leg:i+1,x:e.clientX,y:e.clientY,pinned:true,release:true,waveIds:waves.map(w=>w.id)});}} />)}
+              {bins.map(b=><text key={b.bin_id} x={Math.min(right-55,x(releases[b.first_leg-1])+8)} y={y(b.first_leg-1)-8}
+                className="release-pace-label" fill={guideColor(waves)} pointerEvents="none">{pace(waves[0].release.pace)}/mi</text>)}
+            </g>)}
+            {targets.map(({time,waves})=><g key={time} className="finish-target-marker" opacity={guideOpacity(waves)}>
+              <line x1={x(time)} x2={x(time)} y1={top} y2={bottom} stroke={guideColor(waves)} strokeDasharray="5 5" />
+              <circle cx={x(time)} cy={y(71)} r="6" fill={guideColor(waves)} stroke="white" tabIndex={0}
+                aria-label={`Target finish ${clock(time)} · ${waves.map(w=>w.name).join(", ")}`}><title>Target finish {clock(time)} · {waves.map(w=>w.name).join(", ")}</title></circle>
+            </g>)}
             {activeRules.map((rule, index) => {
               const evaluation = result.timingRules.find(r => r.ruleId === rule.id);
               const color = evaluation?.status === "failed" ? "#b42318" : rule.type === "depart-after" ? "#285d98" : "#a66b16";
@@ -652,7 +613,7 @@ export function Chart({
         {i + 1}. EX {r.exchange} · {exchangeName(r.exchange)} — {ruleTypes[r.type]} {clock(r.time)}
       </li>)}</ul>}
       <div className="legend">
-        <span><i style={{background:"#aa6230"}}/>Target finish · {clock(scenario.release.targetFinish)}</span>
+        {targets.map(({time,waves})=><span key={time}><i style={{background:guideColor(waves)}}/>{waves.map(w=>w.name).join(", ")} target · {clock(time)}</span>)}
         {orderedWaveEntries(scenario).map(({ w }) => (
           <span key={w.id}>
             <i style={{ background: w.color }} />

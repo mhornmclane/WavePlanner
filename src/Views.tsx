@@ -1,3 +1,5 @@
+import { orderedWaveEntries } from "./waves";
+import { finishTargetLabel } from "./releases";
 import { useState } from "react";
 import { bins, course, profiles, teamId, fieldYears, resolveProfile } from "./data";
 import { clock, duration, pace } from "./format";
@@ -23,10 +25,10 @@ export function HistoricalData() {
 
 export function Summary({result,scenario}:{result:Simulation;scenario:Scenario}) {
   const lastFinish=result.teams.length ? Math.max(...result.teams.map(t=>t.finish)) : null;
-  const gates=scenario.timingRules.filter(r=>r.enabled && r.type==="depart-after" && r.time>result.releases[r.exchange]);
+  const gates=scenario.timingRules.filter(r=>r.enabled && r.type==="depart-after" && result.teams.some(t=>!t.legs[r.exchange]?.releaseSuppressed && r.time>t.legs[r.exchange]?.releaseTime));
   return <div className="live-summary">
     <div className="metrics">
-      <article><span>Last final-leg finish</span><strong>{clock(lastFinish)}</strong><small>Target: {clock(scenario.release.targetFinish)}</small></article>
+      <article><span>Last final-leg finish</span><strong>{clock(lastFinish)}</strong><small>{finishTargetLabel(scenario)}</small></article>
       <article><span>Finish spread</span><strong>{result.teams.length ? duration(result.finishSpread):"—"}</strong><small>{result.teams.length} profiles · {scenario.waves.length} waves</small></article>
       <article><span>Last runner off course</span><strong>{clock(result.lastOffCourse)}</strong><small>All outstanding legs complete</small></article>
       <article><span>Exchange coverage</span><strong>{result.exchangeHours.toFixed(1)} hrs</strong><small>{result.releaseCount} releases · peak {result.peakActive} active/team</small></article>
@@ -39,9 +41,10 @@ export function ResultsView({scenario,result,comparison,overlay}:{scenario:Scena
   return <>
     <Summary scenario={scenario} result={result}/><TimingRuleSummary scenario={scenario} result={result}/>
     <section className="panel"><div className="section-head"><h2>Team finishes</h2><button onClick={()=>download("team-results.csv",teamResultsCsv(scenario,result),"text/csv;charset=utf-8")}>Export team results CSV</button></div>
-      <div className="table-scroll" tabIndex={0} role="region" aria-label="Team finishes"><table><thead><tr><th>Team</th><th>Year</th><th>Wave</th><th>Start</th><th>Final-leg finish</th><th>All legs complete</th><th>Target overrun</th></tr></thead><tbody>{result.teams.map(t=>{const p=resolveProfile(scenario,t.teamId);return <tr key={t.teamId}><th scope="row">{p.team}</th><td>{p.year}</td><td>{scenario.waves.find(w=>w.id===t.waveId)?.name}</td><td>{clock(t.legs[0].departure)}</td><td>{clock(t.finish)}</td><td>{clock(t.allComplete)}</td><td>{t.finish>scenario.release.targetFinish ? duration(t.finish-scenario.release.targetFinish):"—"}</td></tr>;})}</tbody></table></div>
+      <div className="table-scroll" tabIndex={0} role="region" aria-label="Team finishes"><table><thead><tr><th>Team</th><th>Year</th><th>Wave</th><th>Start</th><th>Final-leg finish</th><th>All legs complete</th><th>Target overrun</th></tr></thead><tbody>{result.teams.map(t=>{const p=resolveProfile(scenario,t.teamId);return <tr key={t.teamId}><th scope="row">{p.team}</th><td>{p.year}</td><td>{scenario.waves.find(w=>w.id===t.waveId)?.name}</td><td>{clock(t.legs[0].departure)}</td><td>{clock(t.finish)}</td><td>{clock(t.allComplete)}</td><td>{t.finish>scenario.waves.find(w=>w.id===t.waveId)!.release.targetFinish ? duration(t.finish-scenario.waves.find(w=>w.id===t.waveId)!.release.targetFinish):"—"}</td></tr>;})}</tbody></table></div>
     </section>
     <Staffing result={result} comparison={comparison} overlay={overlay}/>
-    <section className="panel"><div className="section-head"><div><h2>Release timetable</h2><p className="muted">{pace(scenario.release.pace)}/mile · Target final-leg finish {clock(scenario.release.targetFinish)}</p></div></div><div className="table-scroll" tabIndex={0} role="region" aria-label="Release timetable"><table><thead><tr><th>Outbound leg</th><th>Start location</th><th>Release time</th></tr></thead><tbody>{course.legs.map((l,i)=><tr key={l.leg_number}><td>{l.leg_number}</td><th scope="row">{l.start_location}</th><td>{clock(result.releases[i])}</td></tr>)}</tbody></table></div></section>
+    <section className="panel"><div className="section-head"><div><h2>Release timetable</h2><p className="muted">Planned releases by wave; fast-wave activation and gate openings still apply.</p></div></div>
+      <div className="table-scroll" tabIndex={0} role="region" aria-label="Release timetable"><table><thead><tr><th>Outbound leg</th><th>Start location</th>{orderedWaveEntries(scenario).map(({w})=><th key={w.id} scope="col">{w.name}<br/><small>{pace(w.release.pace)}/mile · Target {clock(w.release.targetFinish)}</small></th>)}</tr></thead><tbody>{course.legs.map((l,i)=><tr key={l.leg_number}><td>{l.leg_number}</td><th scope="row">{l.start_location}</th>{orderedWaveEntries(scenario).map(({w})=><td key={w.id}>{clock(result.releasesByWave[w.id][i])}</td>)}</tr>)}</tbody></table></div></section>
   </>;
 }

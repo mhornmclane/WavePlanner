@@ -35,9 +35,9 @@ export function buildReplay(result: Simulation, comparison?: Simulation): Spread
         exchange.index === 0
           ? team.legs[0].departure
           : team.legs[exchange.index - 1].arrival,
-      ...(exchange.index > 0 && exchange.index < result.releases.length ? {
-        release: result.releases[exchange.index],
-        late: Math.max(0, team.legs[exchange.index - 1].arrival - result.releases[exchange.index]),
+      ...(exchange.index > 0 && exchange.index < team.legs.length ? {
+        release: team.legs[exchange.index].releaseTime,
+        late: Math.max(0, team.legs[exchange.index - 1].arrival - team.legs[exchange.index].releaseTime),
         overlaps: team.legs[exchange.index].departure < team.legs[exchange.index - 1].arrival,
       } : {}),
     }));

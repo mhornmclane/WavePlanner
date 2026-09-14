@@ -21,7 +21,7 @@ test("compares years, preserves exchange and stays independent of invalid simula
   await replay.getByLabel("Loop", { exact: true }).check();
   await replay.getByRole("button", { name: "Play", exact: true }).click();
   await section(page, "Simulation");
-  await page.getByLabel("Release pace", { exact: true }).fill("bad");
+  await page.getByLabel("Wave 1 release pace", { exact: true }).fill("bad");
   await section(page, "Historical replay");
   await expect(replay.getByRole("button", { name: "Play", exact: true })).toBeVisible();
   await expect(replay.getByLabel("Replay exchange", { exact: true })).toHaveValue("35");

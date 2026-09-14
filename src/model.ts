@@ -31,14 +31,20 @@ export interface PaceBin {
   first_leg: number;
   last_leg: number;
 }
+export interface ReleaseSettings {
+  targetFinish: number;
+  pace: number;
+}
 export interface Wave {
   id: string;
   name: string;
   color: string;
   start: number;
+  solver: "none" | "start" | "finish" | "pace";
+  release: ReleaseSettings;
 }
 export interface Scenario {
-  schemaVersion: 6;
+  schemaVersion: 8;
   fieldYear: "all" | number;
   fastWaveReleases: { enabled: boolean; fromExchange: number };
   timingRules: TimingRule[];
@@ -49,7 +55,6 @@ export interface Scenario {
   waves: Wave[];
   assignments: Record<string, string>;
   waveRules: { mode: "pace"; boundaries: number[] };
-  release: { targetFinish: number; pace: number };
   challenges: { monument: number; lighthouse: number };
   buffers: { before: number; after: number };
 }
@@ -117,7 +122,7 @@ export interface Simulation {
   timingRules: TimingRuleResult[];
   teams: TeamResult[];
   exchanges: ExchangeSummary[];
-  releases: number[];
+  releasesByWave: Record<string, number[]>;
   finishSpread: number;
   lastOffCourse: number | null;
   exchangeHours: number;

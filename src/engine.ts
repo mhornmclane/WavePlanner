@@ -9,6 +9,7 @@ import type {
   Scenario,
   Simulation,
   TeamResult,
+  Wave,
 } from "./model";
 
 export function clockSeconds(t: ClockTime): number {
@@ -32,15 +33,15 @@ export function challengeBefore(leg: number, s: Scenario): number {
       ? s.challenges.lighthouse
       : 0;
 }
-export function latestStart(s: Scenario): number {
-  return s.release.targetFinish - course.event.total_distance_miles * s.release.pace
+export function latestStart(s: Scenario, wave: Wave): number {
+  return wave.release.targetFinish - course.event.total_distance_miles * wave.release.pace
     - s.challenges.monument - s.challenges.lighthouse;
 }
-export function releasePace(s: Scenario, _leg?: number): number { return s.release.pace; }
-export function releaseSchedule(s: Scenario): number[] {
-  const result = [latestStart(s)];
+export function releasePace(wave: Wave): number { return wave.release.pace; }
+export function releaseSchedule(s: Scenario, wave: Wave): number[] {
+  const result = [latestStart(s, wave)];
   for (let i = 1; i < course.legs.length; i++) {
-    result.push(result[i - 1] + course.legs[i - 1].distance_miles * s.release.pace + challengeBefore(i + 1, s));
+    result.push(result[i - 1] + course.legs[i - 1].distance_miles * wave.release.pace + challengeBefore(i + 1, s));
   }
   return result;
 }
@@ -101,11 +102,13 @@ export function exchangeSummaries(
 export type LegPaceSource = (teamId: string, leg: number) => number;
 
 export function simulate(s: Scenario, publishedBaseline = false, legPace?: LegPaceSource): Simulation {
-  const releases = publishedBaseline ? course.legs.map(l => clockSeconds(l.release_time)) : releaseSchedule(s);
+  const releasesByWave = Object.fromEntries(s.waves.map(wave => [wave.id,
+    publishedBaseline ? course.legs.map(l => clockSeconds(l.release_time)) : releaseSchedule(s, wave)]));
   const assignments = resolveAssignments(s);
   const teams: TeamResult[] = s.selectedTeamIds.map((id) => {
     const profile = resolveProfile(s, id);
     const wave = s.waves.find((w) => w.id === assignments[id])!;
+    const releases = releasesByWave[wave.id];
     const fastWave = wave.id !== orderedWaveEntries(s)[0].w.id;
     const legs: LegTiming[] = [];
     for (const [index, courseLeg] of course.legs.entries()) {
@@ -162,7 +165,7 @@ export function simulate(s: Scenario, publishedBaseline = false, legPace?: LegPa
     teams,
     timingRules: evaluateTimingRules(s.timingRules, teams),
     exchanges,
-    releases,
+    releasesByWave,
     finishSpread: teams.length
       ? Math.max(...teams.map((t) => t.finish)) -
         Math.min(...teams.map((t) => t.finish))

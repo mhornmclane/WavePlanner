@@ -46,7 +46,7 @@ test("baseline overlay defaults on, keeps a fixed scale and survives view switch
   }
   await page.screenshot({ path: "test-results/replay-baseline-mobile.png", fullPage: true });
   const baselineBefore = await replay.locator(".replay-comparison").getAttribute("data-spread");
-  await page.getByLabel("Target finish time", { exact: true }).fill("06:00");
+  await page.getByLabel("Wave 1 target finish time", { exact: true }).fill("06:00");
   await expect(replay.getByLabel("Replay exchange", { exact: true })).toHaveValue("0");
   await expect(toggle).toBeChecked();
   await replay.getByLabel("Replay exchange", { exact: true }).fill("71");
@@ -59,7 +59,7 @@ test("baseline overlay defaults on, keeps a fixed scale and survives view switch
 test("simulation retains every team and uses historical release marker shapes", async ({ page }) => {
   await page.goto("./");
   await page.getByRole("navigation", { name: "Planner sections" }).getByRole("button", { name: "Simulation", exact: true }).click();
-  await page.getByLabel("Target finish time", { exact: true }).fill("06:00");
+  await page.getByLabel("Wave 1 target finish time", { exact: true }).fill("06:00");
   await page.getByRole("button", { name: "Spread replay", exact: true }).click();
   const replay = page.getByRole("region", { name: "Spread replay", exact: true });
   const count = await replay.locator(".replay-marker").count();

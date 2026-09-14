@@ -118,7 +118,7 @@ describe("exchange spread replay", () => {
       (m) => m.teamId === late.l.teamId,
     )!;
     expect(marker.time).toBe(late.incoming.arrival);
-    expect(marker.release).toBe(result.releases[late.l.leg - 1]);
+    expect(marker.release).toBe(result.releasesByWave["wave-1"][late.l.leg - 1]);
     expect(marker.late).toBeGreaterThan(0);
     expect(marker.overlaps).toBe(true);
     s.buffers = { before: 7200, after: 3600 };
@@ -126,9 +126,10 @@ describe("exchange spread replay", () => {
   });
   it("uses scenario releases and keeps start and finish free of release indicators", () => {
     const result = simulate(baseline(profiles.slice(0, 3).map(teamId)));
-    const release = result.releases[1] + 600;
-    result.releases[1] = release;
+    const release = result.releasesByWave["wave-1"][1] + 600;
+    result.releasesByWave["wave-1"][1] = release;
     [-60, 0, 60].forEach((offset, i) => {
+      result.teams[i].legs[1].releaseTime = release;
       result.teams[i].legs[0].arrival = release + offset;
       result.teams[i].legs[1].departure = release;
     });

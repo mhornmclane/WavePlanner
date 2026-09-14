@@ -71,7 +71,7 @@ describe("source integrity and pace calculation", () => {
 describe("race simulation", () => {
   it("matches hand-calculated early releases and overlapping legs", () =>
     synthetic(900, (s) => {
-      s.release = { pace: 600, targetFinish: 3600 + 205.72 * 600 + s.challenges.monument + s.challenges.lighthouse };
+      s.waves[0].release = { pace: 600, targetFinish: 3600 + 205.72 * 600 + s.challenges.monument + s.challenges.lighthouse };
       const t = simulate(s).teams[0];
       expect(t.legs[0].departure).toBe(3600);
       expect(t.legs[0].arrival).toBe(6048);
@@ -82,7 +82,7 @@ describe("race simulation", () => {
     }));
   it("allows a challenge release before incoming arrival and adds no fictitious wait", () =>
     synthetic(900, (s) => {
-      s.release = { pace: 600, targetFinish: 3600 + 205.72 * 600 + s.challenges.monument + s.challenges.lighthouse };
+      s.waves[0].release = { pace: 600, targetFinish: 3600 + 205.72 * 600 + s.challenges.monument + s.challenges.lighthouse };
       const { legs } = simulate(s).teams[0];
       // Prior runner: 2.7 * 900 = 2430 sec. Release gap: 2.7 * 600 + 960 = 2580 sec.
       expect(legs[35].departure - legs[34].departure).toBeCloseTo(2580, 8);
@@ -121,7 +121,7 @@ describe("race simulation", () => {
     }));
   it("distinguishes final-leg arrival from outstanding runner completion", () =>
     synthetic(2400, (s) => {
-      s.release = { pace: 60, targetFinish: 3600 + 205.72 * 60 + s.challenges.monument + s.challenges.lighthouse };
+      s.waves[0].release = { pace: 60, targetFinish: 3600 + 205.72 * 60 + s.challenges.monument + s.challenges.lighthouse };
       const r = simulate(s),
         t = r.teams[0];
       expect(t.allComplete).toBeGreaterThan(t.finish);
@@ -133,7 +133,7 @@ describe("race simulation", () => {
       original = simulate(s);
     s.waves[0].start += 7200;
     s.challenges.monument = 5400;
-    s.release = { pace: 450, targetFinish: 3600 + 205.72 * 450 + s.challenges.monument + s.challenges.lighthouse };
+    s.waves[0].release = { pace: 450, targetFinish: 3600 + 205.72 * 450 + s.challenges.monument + s.challenges.lighthouse };
     const changed = simulate(s);
     expect(changed.teams.map((t) => t.movingTime)).toEqual(
       original.teams.map((t) => t.movingTime),

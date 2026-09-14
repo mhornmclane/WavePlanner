@@ -42,12 +42,14 @@ describe("configuration serialization and browser storage", () => {
     s.waves.push({
       id: "second",
       name: "Later",
+      solver: "none",
+      release: { ...s.waves[0].release },
       color: "#445566",
       start: 7200,
     });
     s.waveRules.boundaries = [600];
     s.assignments = resolveAssignments(s);
-    s.release.pace = 710;
+    s.waves[0].release.pace = 710;
     s.buffers.before = 600;
     s.waves[0].name = "Wave 2";
     const parsed = parseScenario(serializeScenario(s));
@@ -98,8 +100,8 @@ describe("configuration serialization and browser storage", () => {
     ["empty waves", (s: any) => (s.waves = [])],
     ["invalid color", (s: any) => (s.waves[0].color = "url(bad)")],
     ["start too early", (s: any) => (s.waves[0].start = -30 * 86400 - 1)],
-    ["nonfinite number", (s: any) => (s.release.targetFinish = Infinity)],
-    ["zero pace", (s: any) => (s.release.pace = 0)],
+    ["nonfinite number", (s: any) => (s.waves[0].release.targetFinish = Infinity)],
+    ["zero pace", (s: any) => (s.waves[0].release.pace = 0)],
     ["negative buffer", (s: any) => (s.buffers.after = -1)],
     ["oversized challenge", (s: any) => (s.challenges.monument = 86401)],
   ])("rejects %s", (_, change) => {

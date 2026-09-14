@@ -32,3 +32,19 @@ export function weekday(day: number): string {
   const week = Math.floor((day + 1) / 7);
   return names[((day % 7) + 7) % 7] + (week ? ` (week ${week > 0 ? "+" : ""}${week})` : "");
 }
+
+/** Calculated fields show hundredths of a second; stored values remain unrounded. */
+export function precisePace(seconds: number): string {
+  if (!Number.isFinite(seconds)) return "—";
+  const cents = Math.round(seconds * 100);
+  return Math.floor(cents / 6000) + ":" + ((cents % 6000) / 100).toFixed(2).padStart(5, "0").replace(/\.00$/, "");
+}
+export function preciseClock(seconds: number): string {
+  if (!Number.isFinite(seconds)) return "—";
+  const cents = Math.round(seconds * 100);
+  const day = Math.floor(cents / 8640000);
+  const within = ((cents % 8640000) + 8640000) % 8640000;
+  const hour = Math.floor(within / 360000);
+  return weekday(day) + " " + (hour % 12 || 12) + ":" + String(Math.floor(within / 6000) % 60).padStart(2, "0")
+    + ":" + ((within % 6000) / 100).toFixed(2).padStart(5, "0").replace(/\.00$/, "") + (hour < 12 ? " AM" : " PM");
+}

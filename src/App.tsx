@@ -1,3 +1,4 @@
+import { resolveSolvers } from "./solver";
 import { HistoricalReplay } from "./HistoricalReplay";
 import { syncAssignments } from "./waves";
 import { TimingRuleSummary } from "./TimingRuleControls";
@@ -28,7 +29,7 @@ export default function App() {
   const [configRevision, setConfigRevision] = useState(0);
   const activePreset = presets.find((p) => p.id === presetId);
   function editScenario(updater: (s: Scenario) => Scenario) {
-    const next = updater(scenario);
+    const next = resolveSolvers(updater(scenario));
     if (JSON.stringify(next) === JSON.stringify(scenario)) return;
     setPresetId("custom");
     setScenario(next);

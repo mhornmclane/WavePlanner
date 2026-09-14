@@ -1,3 +1,4 @@
+import { resolveSolvers, solverError, solverModes } from "./solver";
 import { profileById, sources, bins, worstCaseIds, course, fieldYears, fieldIds, teamId, resolveProfile } from "./data";
 import type { Profile, Scenario, Simulation } from "./model";
 import { clock } from "./format";
@@ -8,9 +9,27 @@ const finite = (v: unknown, min = 0, max = 30 * 86400 - 1): v is number =>
   typeof v === "number" && Number.isFinite(v) && v >= min && v <= max;
 const label = (v: unknown): v is string =>
   typeof v === "string" && !!v.trim() && v.length <= 120;
+const validRelease = (r: unknown) => object(r) && finite(r.targetFinish, -30 * 86400) && finite(r.pace, 1, 5999)
+  && Object.keys(r).every(k => ["targetFinish", "pace"].includes(k));
 export function validateScenario(value: unknown): Scenario {
-  if (!object(value) || value.schemaVersion !== 6)
-    throw new Error("Unsupported configuration version. Expected version 6; older configurations are not supported.");
+  if (object(value) && value.schemaVersion === 6) {
+    const legacy = structuredClone(value);
+    const release = legacy.release;
+    if (!validRelease(release)) throw new Error("Enter a valid target finish weekday/time and release pace between 0:01 and 99:59.");
+    if (Array.isArray(legacy.waves)) legacy.waves = legacy.waves.map(w => object(w) ? { ...w, release: structuredClone(release) } : w);
+    delete legacy.release;
+    legacy.schemaVersion = 7;
+    return validateScenario(legacy);
+  }
+  if (object(value) && value.schemaVersion === 7) {
+    const legacy = structuredClone(value);
+    if (Array.isArray(legacy.waves)) legacy.waves = legacy.waves.map(w => object(w) ? { ...w, solver: "none" } : w);
+    legacy.schemaVersion = 8;
+    return validateScenario(legacy);
+  }
+  if (!object(value) || value.schemaVersion !== 8)
+    throw new Error("Unsupported configuration version. Expected version 8, or version 6/7 for migration.");
+  if (Object.hasOwn(value, "release")) throw new Error("Release settings must belong to each wave.");
   if (value.fieldYear !== "all" && !fieldYears.includes(value.fieldYear as number))
     throw new Error("Choose all years or an available historical year.");
   const fastReleases = value.fastWaveReleases;
@@ -67,7 +86,8 @@ export function validateScenario(value: unknown): Scenario {
         !object(w) ||
         !label(w.id) ||
         !label(w.name) ||
-        !finite(w.start, -30 * 86400) ||
+        (w.solver !== "start" && !finite(w.start, -30 * 86400)) ||
+        !solverModes.includes(w.solver as typeof solverModes[number]) ||
         typeof w.color !== "string" ||
         !/^#[0-9a-f]{6}$/i.test(w.color),
     ) ||
@@ -101,10 +121,12 @@ export function validateScenario(value: unknown): Scenario {
     Object.keys(assignments).some((id) => !ids.includes(id))
   )
     throw new Error("Assign every selected team to exactly one existing wave.");
-  const r = value.release;
-  if (!object(r) || !finite(r.targetFinish, -30 * 86400) || !finite(r.pace, 1, 5999)
-      || Object.keys(r).some(k => !["targetFinish", "pace"].includes(k)))
-    throw new Error("Enter a valid target finish weekday/time and release pace between 0:01 and 99:59.");
+  for (const wave of waves) {
+    if (!object(wave.release) || !validRelease({ ...wave.release,
+      ...(wave.solver === "finish" ? { targetFinish: 0 } : {}),
+      ...(wave.solver === "pace" ? { pace: 1 } : {}) })) throw new Error(
+      wave.name + ": enter a valid target finish weekday/time and release pace between 0:01 and 99:59.");
+  }
   if (
     !object(value.challenges) ||
     !finite(value.challenges.monument, 0, 86400) ||
@@ -118,7 +140,11 @@ export function validateScenario(value: unknown): Scenario {
   )
     throw new Error("Staffing buffers must be between 0 and 1,440 minutes.");
   const result = structuredClone(value) as unknown as Scenario;
-  return syncAssignments(result);
+  for (const wave of result.waves) {
+    const error = solverError(result, wave);
+    if (error) throw new Error(error);
+  }
+  return syncAssignments(resolveSolvers(result));
 }
 export function serializeScenario(s: Scenario): string {
   return JSON.stringify(validateScenario(s), null, 2);
@@ -139,9 +165,9 @@ export interface SavedScenario {
   updatedAt: string;
   scenario: Scenario;
 }
-export const STORAGE_KEY = "ruck4hit-scenarios-v6";
+export const STORAGE_KEY = "ruck4hit-scenarios-v8";
 export function readSaves(storage: Pick<Storage, "getItem">): SavedScenario[] {
-  const raw = storage.getItem(STORAGE_KEY);
+  const raw = storage.getItem(STORAGE_KEY) ?? storage.getItem("ruck4hit-scenarios-v7") ?? storage.getItem("ruck4hit-scenarios-v6");
   if (!raw) return [];
   const values: unknown = JSON.parse(raw);
   if (!Array.isArray(values))
@@ -162,8 +188,8 @@ export function writeSaves(
   storage: Pick<Storage, "setItem">,
   saves: SavedScenario[],
 ): void {
-  for (const save of saves) validateScenario(save.scenario);
-  storage.setItem(STORAGE_KEY, JSON.stringify(saves));
+  const validated = saves.map(save => ({ ...save, scenario: validateScenario(save.scenario) }));
+  storage.setItem(STORAGE_KEY, JSON.stringify(validated));
 }
 export function download(name: string, body: string, type: string): void {
   const url = URL.createObjectURL(new Blob([body], { type }));
@@ -230,5 +256,5 @@ export function historicalCsv(records: Profile[]): string {
 }
 export function teamResultsCsv(s:Scenario,result:Simulation): string {
   return csv([["Profile ID","Team","Year","Wave","Start","Final-leg finish","All legs complete","Target finish","Overrun seconds","Moving seconds"],
-    ...result.teams.map(t=>{const p=resolveProfile(s,t.teamId);return [t.teamId,p.team,p.year,s.waves.find(w=>w.id===t.waveId)!.name,clock(t.legs[0].departure),clock(t.finish),clock(t.allComplete),clock(s.release.targetFinish),Math.max(0,t.finish-s.release.targetFinish),t.movingTime];})]);
+    ...result.teams.map(t=>{const p=resolveProfile(s,t.teamId);return [t.teamId,p.team,p.year,s.waves.find(w=>w.id===t.waveId)!.name,clock(t.legs[0].departure),clock(t.finish),clock(t.allComplete),clock(s.waves.find(w=>w.id===t.waveId)!.release.targetFinish),Math.max(0,t.finish-s.waves.find(w=>w.id===t.waveId)!.release.targetFinish),t.movingTime];})]);
 }

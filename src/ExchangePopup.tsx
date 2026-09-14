@@ -12,6 +12,7 @@ export interface PopupTarget {
   y: number;
   pinned: boolean;
   release?: boolean;
+  waveIds?: string[];
 }
 const spread = (first: number | null, last: number | null) =>
   first === null || last === null ? "—" : duration(last - first);
@@ -84,6 +85,12 @@ export function ExchangePopup({
     ["Last activity", clock(field.latestActivity)],
     ["Coverage spread", spread(first, field.latestActivity)],
   ];
+  const team = result.teams.find(t => t.teamId === target.teamId);
+  const waveIds = target.waveIds ?? (team ? [team.waveId] : []);
+  if (target.index < 71) for (const id of waveIds) {
+    const wave = scenario.waves.find(w => w.id === id);
+    if (wave) rows.push([wave.name + " release", clock(result.releasesByWave[id][target.index])]);
+  }
   return createPortal(
     <div
       ref={element}

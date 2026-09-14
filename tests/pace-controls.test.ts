@@ -26,7 +26,7 @@ import {
 
 function twoWaves() {
   const s = baseline();
-  s.waves.push({ id: "slower", name: "Slower", color: "#123456", start: 7200 });
+  s.waves.push({ id: "slower", name: "Slower", color: "#123456", start: 7200 , solver: "none", release: { ...baseline().waves[0].release }});
   s.waveRules.boundaries = [profiles[0].overall_mean_pace_seconds_per_mile];
   return syncAssignments(s);
 }
@@ -51,8 +51,8 @@ describe("linked pace ranges", () => {
   });
   it("numbers and displays default waves slowest first after splits and removals", () => {
     const s = baseline();
-    s.waves.push({ id: "middle", name: "Wave 2", color: "#123456", start: 7200 });
-    s.waves.push({ id: "slow", name: "Wave 3", color: "#234567", start: 0 });
+    s.waves.push({ id: "middle", name: "Wave 2", color: "#123456", start: 7200 , solver: "none", release: { ...baseline().waves[0].release }});
+    s.waves.push({ id: "slow", name: "Wave 3", color: "#234567", start: 0 , solver: "none", release: { ...baseline().waves[0].release }});
     s.waveRules.boundaries = [600, 800];
     const next = syncAssignments(s);
     expect(orderedWaveEntries(next).map(({ w }) => [w.id, w.name])).toEqual([

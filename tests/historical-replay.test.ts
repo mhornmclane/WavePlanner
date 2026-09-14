@@ -17,18 +17,18 @@ describe("historical replay", () => {
     ]) { const d = structuredClone(raw); mutate(d); expect(() => validateReplayRecords(d)).toThrow(); }
   });
   it("uses every supplied leg pace with the fixed baseline mechanics", () => {
-    expect(historicalResult.releases).toEqual(course.legs.map(l => clockSeconds(l.release_time)));
+    expect(historicalResult.releasesByWave["wave-1"]).toEqual(course.legs.map(l => clockSeconds(l.release_time)));
     for (const [i, team] of historicalResult.teams.entries()) {
       expect(team.legs[0].departure).toBe(3600);
       for (const leg of team.legs) {
         expect(leg.duration).toBe(replayRecords[i].legs[leg.leg] * course.legs[leg.leg - 1].distance_miles);
         const prev = team.legs[leg.leg - 2];
         const challenge = leg.leg === 36 ? 960 : leg.leg === 54 ? 1260 : 0;
-        const eligible = prev ? Math.max(prev.departure, 3600, Math.min(prev.arrival + challenge, historicalResult.releases[leg.leg - 1])) : 3600;
+        const eligible = prev ? Math.max(prev.departure, 3600, Math.min(prev.arrival + challenge, historicalResult.releasesByWave["wave-1"][leg.leg - 1])) : 3600;
         expect(leg.departure).toBe(Math.max(eligible, leg.leg === 70 ? 108000 : -Infinity));
       }
     }
-    const s = baseline(); s.release.pace = NaN;
+    const s = baseline(); s.waves[0].release.pace = NaN;
     expect(() => simulate(s, true, () => NaN)).toThrow("Invalid replay pace");
   });
   it("normalizes each year independently and shares one fixed scale", () => {
@@ -53,7 +53,7 @@ describe("historical replay", () => {
     result.teams = result.teams.slice(0, 1);
     const leg = result.teams[0].legs[0];
     const outgoing = result.teams[0].legs[1];
-    const release = result.releases[1];
+    const release = result.releasesByWave["wave-1"][1];
     for (const offset of [-0.1, 0, 0.1]) {
       leg.arrival = release + offset;
       outgoing.departure = release + 100;

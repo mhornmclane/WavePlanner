@@ -1,0 +1,3880 @@
+[
+  {
+    "id": "status-quo",
+    "year": "all",
+    "exchangeHours": 275.6884666666668,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 1005,
+    "peakActive": 2,
+    "finishSpread": 22904.01000000001,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 117598.61000000002,
+        "allComplete": 117598.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 122280.18,
+        "allComplete": 122280.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 120652.74000000002,
+        "allComplete": 120652.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 114830.46000000002,
+        "allComplete": 114830.46000000002
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 122826.98999999996,
+        "allComplete": 122826.98999999996
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 111987.85999999999,
+        "allComplete": 111987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 117749.79999999999,
+        "allComplete": 117749.79999999999
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 122927.54999999996,
+        "allComplete": 122927.54999999996
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 127452.84000000001,
+        "allComplete": 127452.84000000001
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 113944.93999999999,
+        "allComplete": 113944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 115989.26999999996,
+        "allComplete": 115989.26999999996
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 128881.05000000002,
+        "allComplete": 128881.05000000002
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 121553.24999999996,
+        "allComplete": 121553.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 123312.08000000002,
+        "allComplete": 123312.08000000002
+      }
+    ]
+  },
+  {
+    "id": "status-quo",
+    "year": 2024,
+    "exchangeHours": 212.20609999999985,
+    "lastOffCourse": 134452.08,
+    "releaseCount": 247,
+    "peakActive": 2,
+    "finishSpread": 19621.619999999966,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 117598.61000000002,
+        "allComplete": 117598.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 122280.18,
+        "allComplete": 122280.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 120652.74000000002,
+        "allComplete": 120652.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 114830.46000000002,
+        "allComplete": 114830.46000000002
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 122826.98999999996,
+        "allComplete": 122826.98999999996
+      }
+    ]
+  },
+  {
+    "id": "status-quo",
+    "year": 2025,
+    "exchangeHours": 275.6884666666668,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 592,
+    "peakActive": 2,
+    "finishSpread": 22904.01000000001,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 111987.85999999999,
+        "allComplete": 111987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 117749.79999999999,
+        "allComplete": 117749.79999999999
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 122927.54999999996,
+        "allComplete": 122927.54999999996
+      }
+    ]
+  },
+  {
+    "id": "status-quo",
+    "year": 2026,
+    "exchangeHours": 255.01688055555564,
+    "lastOffCourse": 134555.95,
+    "releaseCount": 166,
+    "peakActive": 2,
+    "finishSpread": 20611.010000000024,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 127452.84000000001,
+        "allComplete": 127452.84000000001
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 113944.93999999999,
+        "allComplete": 113944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 115989.26999999996,
+        "allComplete": 115989.26999999996
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 128881.05000000002,
+        "allComplete": 128881.05000000002
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 121553.24999999996,
+        "allComplete": 121553.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 123312.08000000002,
+        "allComplete": 123312.08000000002
+      }
+    ]
+  },
+  {
+    "id": "two-waves",
+    "year": "all",
+    "exchangeHours": 198.4742555555556,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 1006,
+    "peakActive": 2,
+    "finishSpread": 15704.01000000001,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 124798.61000000002,
+        "allComplete": 124798.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 129480.18,
+        "allComplete": 129480.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 127852.74,
+        "allComplete": 127852.74
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 122030.46000000004,
+        "allComplete": 122030.46000000004
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 129818.06999999998,
+        "allComplete": 129818.06999999998
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 119187.85999999999,
+        "allComplete": 119187.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 124949.79999999997,
+        "allComplete": 124949.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 130127.54999999996,
+        "allComplete": 130127.54999999996
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 127452.84000000001,
+        "allComplete": 127452.84000000001
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 121144.93999999999,
+        "allComplete": 121144.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 123189.26999999995,
+        "allComplete": 123189.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 128881.05000000002,
+        "allComplete": 128881.05000000002
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 128753.24999999996,
+        "allComplete": 128753.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 130512.08,
+        "allComplete": 130512.08
+      }
+    ]
+  },
+  {
+    "id": "two-waves",
+    "year": 2024,
+    "exchangeHours": 151.92353333333307,
+    "lastOffCourse": 134452.08,
+    "releaseCount": 248,
+    "peakActive": 2,
+    "finishSpread": 12421.619999999952,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 124798.61000000002,
+        "allComplete": 124798.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 129480.18,
+        "allComplete": 129480.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 127852.74,
+        "allComplete": 127852.74
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 122030.46000000004,
+        "allComplete": 122030.46000000004
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 129818.06999999998,
+        "allComplete": 129818.06999999998
+      }
+    ]
+  },
+  {
+    "id": "two-waves",
+    "year": 2025,
+    "exchangeHours": 192.054363888889,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 592,
+    "peakActive": 2,
+    "finishSpread": 15704.01000000001,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 119187.85999999999,
+        "allComplete": 119187.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 124949.79999999997,
+        "allComplete": 124949.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 130127.54999999996,
+        "allComplete": 130127.54999999996
+      }
+    ]
+  },
+  {
+    "id": "two-waves",
+    "year": 2026,
+    "exchangeHours": 179.17598888888895,
+    "lastOffCourse": 134555.95,
+    "releaseCount": 166,
+    "peakActive": 2,
+    "finishSpread": 13411.010000000024,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 127452.84000000001,
+        "allComplete": 127452.84000000001
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 121144.93999999999,
+        "allComplete": 121144.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 123189.26999999995,
+        "allComplete": 123189.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 128881.05000000002,
+        "allComplete": 128881.05000000002
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 128753.24999999996,
+        "allComplete": 128753.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 130512.08,
+        "allComplete": 130512.08
+      }
+    ]
+  },
+  {
+    "id": "three-waves",
+    "year": "all",
+    "exchangeHours": 185.78713333333357,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 1005,
+    "peakActive": 2,
+    "finishSpread": 13904.01000000001,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 126598.61000000002,
+        "allComplete": 126598.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 127680.18,
+        "allComplete": 127680.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 126052.74,
+        "allComplete": 126052.74
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 123830.46000000004,
+        "allComplete": 123830.46000000004
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 128226.98999999996,
+        "allComplete": 128226.98999999996
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 120987.85999999999,
+        "allComplete": 120987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 126749.79999999997,
+        "allComplete": 126749.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 128327.54999999996,
+        "allComplete": 128327.54999999996
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 132852.83999999997,
+        "allComplete": 132852.83999999997
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 122944.93999999999,
+        "allComplete": 122944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 124989.26999999995,
+        "allComplete": 124989.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 134281.05000000005,
+        "allComplete": 134281.05000000005
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 126953.24999999996,
+        "allComplete": 126953.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 128712.08,
+        "allComplete": 128712.08
+      }
+    ]
+  },
+  {
+    "id": "three-waves",
+    "year": 2024,
+    "exchangeHours": 144.63637222222215,
+    "lastOffCourse": 134452.08,
+    "releaseCount": 247,
+    "peakActive": 2,
+    "finishSpread": 10621.619999999952,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 126598.61000000002,
+        "allComplete": 126598.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 127680.18,
+        "allComplete": 127680.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 126052.74,
+        "allComplete": 126052.74
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 123830.46000000004,
+        "allComplete": 123830.46000000004
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 128226.98999999996,
+        "allComplete": 128226.98999999996
+      }
+    ]
+  },
+  {
+    "id": "three-waves",
+    "year": 2025,
+    "exchangeHours": 181.616027777778,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 592,
+    "peakActive": 2,
+    "finishSpread": 13904.01000000001,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 120987.85999999999,
+        "allComplete": 120987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 126749.79999999997,
+        "allComplete": 126749.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 128327.54999999996,
+        "allComplete": 128327.54999999996
+      }
+    ]
+  },
+  {
+    "id": "three-waves",
+    "year": 2026,
+    "exchangeHours": 149.4354027777779,
+    "lastOffCourse": 134555.95,
+    "releaseCount": 166,
+    "peakActive": 2,
+    "finishSpread": 11611.010000000024,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 132852.83999999997,
+        "allComplete": 132852.83999999997
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 122944.93999999999,
+        "allComplete": 122944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 124989.26999999995,
+        "allComplete": 124989.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 134281.05000000005,
+        "allComplete": 134281.05000000005
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 126953.24999999996,
+        "allComplete": 126953.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 128712.08,
+        "allComplete": 128712.08
+      }
+    ]
+  },
+  {
+    "id": "tight-finish",
+    "year": "all",
+    "exchangeHours": 187.16170000000037,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 1007,
+    "peakActive": 2,
+    "finishSpread": 12104.010000000038,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 128066.26000000001,
+        "allComplete": 128066.26000000001
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 127680.18,
+        "allComplete": 127680.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 126052.74,
+        "allComplete": 126052.74
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 125563.39000000001,
+        "allComplete": 125563.39000000001
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 128226.98999999996,
+        "allComplete": 128226.98999999996
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 122787.85999999996,
+        "allComplete": 122787.85999999996
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 128549.79999999997,
+        "allComplete": 128549.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 128327.54999999996,
+        "allComplete": 128327.54999999996
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 132852.83999999997,
+        "allComplete": 132852.83999999997
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 124744.93999999999,
+        "allComplete": 124744.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 126789.26999999995,
+        "allComplete": 126789.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 134281.05000000005,
+        "allComplete": 134281.05000000005
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 126953.24999999996,
+        "allComplete": 126953.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 128712.08,
+        "allComplete": 128712.08
+      }
+    ]
+  },
+  {
+    "id": "tight-finish",
+    "year": 2024,
+    "exchangeHours": 152.77676944444454,
+    "lastOffCourse": 134452.08,
+    "releaseCount": 249,
+    "peakActive": 2,
+    "finishSpread": 8888.689999999973,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 134045.88999999998,
+        "allComplete": 134045.88999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 134445.45,
+        "allComplete": 134445.45
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 134356.83000000005,
+        "allComplete": 134356.83000000005
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 128066.26000000001,
+        "allComplete": 128066.26000000001
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 132414.41000000003,
+        "allComplete": 132414.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 134223.57,
+        "allComplete": 134223.57
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 134452.08,
+        "allComplete": 134452.08
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 127680.18,
+        "allComplete": 127680.18
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 134179.15000000002,
+        "allComplete": 134179.15000000002
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 134425.56,
+        "allComplete": 134425.56
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 133912.63,
+        "allComplete": 133912.63
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 134090.31000000003,
+        "allComplete": 134090.31000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 133024.22999999998,
+        "allComplete": 133024.22999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 132960.76999999993,
+        "allComplete": 132960.76999999993
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 134407.88,
+        "allComplete": 134407.88
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 126052.74,
+        "allComplete": 126052.74
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 125563.39000000001,
+        "allComplete": 125563.39000000001
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 128226.98999999996,
+        "allComplete": 128226.98999999996
+      }
+    ]
+  },
+  {
+    "id": "tight-finish",
+    "year": 2025,
+    "exchangeHours": 181.7078750000004,
+    "lastOffCourse": 134891.87,
+    "releaseCount": 592,
+    "peakActive": 2,
+    "finishSpread": 12104.010000000038,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134564.79,
+        "allComplete": 134564.79
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134796.84,
+        "allComplete": 134796.84
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134891.87,
+        "allComplete": 134891.87
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 122787.85999999996,
+        "allComplete": 122787.85999999996
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 134511.75,
+        "allComplete": 134511.75
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 133502.64,
+        "allComplete": 133502.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134677.5,
+        "allComplete": 134677.5
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134852.09,
+        "allComplete": 134852.09
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 134741.59,
+        "allComplete": 134741.59
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134708.44,
+        "allComplete": 134708.44
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 134105.28999999998,
+        "allComplete": 134105.28999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 134670.87,
+        "allComplete": 134670.87
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 134516.17,
+        "allComplete": 134516.17
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 134536.06,
+        "allComplete": 134536.06
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134580.26,
+        "allComplete": 134580.26
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134597.94,
+        "allComplete": 134597.94
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 128549.79999999997,
+        "allComplete": 128549.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 128327.54999999996,
+        "allComplete": 128327.54999999996
+      }
+    ]
+  },
+  {
+    "id": "tight-finish",
+    "year": 2026,
+    "exchangeHours": 145.91268888888908,
+    "lastOffCourse": 134555.95,
+    "releaseCount": 166,
+    "peakActive": 2,
+    "finishSpread": 9811.010000000024,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134555.95,
+        "allComplete": 134555.95
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 132852.83999999997,
+        "allComplete": 132852.83999999997
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 134480.81,
+        "allComplete": 134480.81
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 124744.93999999999,
+        "allComplete": 124744.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 126789.26999999995,
+        "allComplete": 126789.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 134281.05000000005,
+        "allComplete": 134281.05000000005
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134549.32,
+        "allComplete": 134549.32
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 134432.19,
+        "allComplete": 134432.19
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 133735.72,
+        "allComplete": 133735.72
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 126953.24999999996,
+        "allComplete": 126953.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 128712.08,
+        "allComplete": 128712.08
+      }
+    ]
+  },
+  {
+    "id": "earlier-finish",
+    "year": "all",
+    "exchangeHours": 162.51364444444465,
+    "lastOffCourse": 131347.12,
+    "releaseCount": 1333,
+    "peakActive": 2,
+    "finishSpread": 10359.26000000001,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 130838.82,
+        "allComplete": 130838.82
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 130900.7,
+        "allComplete": 130900.7
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 130907.33,
+        "allComplete": 130907.33
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 130854.29,
+        "allComplete": 130854.29
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 126598.61000000002,
+        "allComplete": 126598.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 130845.45,
+        "allComplete": 130845.45
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 130847.66,
+        "allComplete": 130847.66
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 130907.33,
+        "allComplete": 130907.33
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 125880.18000000001,
+        "allComplete": 125880.18000000001
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 130845.45,
+        "allComplete": 130845.45
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 130880.81,
+        "allComplete": 130880.81
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 130832.19,
+        "allComplete": 130832.19
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 130841.03,
+        "allComplete": 130841.03
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 130534.73,
+        "allComplete": 130534.73
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 130852.08,
+        "allComplete": 130852.08
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 130863.13,
+        "allComplete": 130863.13
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 124252.74000000002,
+        "allComplete": 124252.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 123830.46000000004,
+        "allComplete": 123830.46000000004
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 126426.98999999996,
+        "allComplete": 126426.98999999996
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 131020.04,
+        "allComplete": 131020.04
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 131252.09,
+        "allComplete": 131252.09
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 131347.12,
+        "allComplete": 131347.12
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 120987.85999999999,
+        "allComplete": 120987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 130967,
+        "allComplete": 130967
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 130860.92,
+        "allComplete": 130860.92
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 131132.75,
+        "allComplete": 131132.75
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 131307.34,
+        "allComplete": 131307.34
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 131196.84,
+        "allComplete": 131196.84
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 131163.69,
+        "allComplete": 131163.69
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 130858.71,
+        "allComplete": 130858.71
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 131126.12,
+        "allComplete": 131126.12
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 130971.42,
+        "allComplete": 130971.42
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 130991.31,
+        "allComplete": 130991.31
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 131035.51,
+        "allComplete": 131035.51
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 131053.19,
+        "allComplete": 131053.19
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 126749.79999999997,
+        "allComplete": 126749.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 126527.54999999996,
+        "allComplete": 126527.54999999996
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 131011.2,
+        "allComplete": 131011.2
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 130827.77,
+        "allComplete": 130827.77
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 130936.06,
+        "allComplete": 130936.06
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 122944.93999999999,
+        "allComplete": 122944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 124989.26999999995,
+        "allComplete": 124989.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 130869.76,
+        "allComplete": 130869.76
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 131004.57,
+        "allComplete": 131004.57
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 130887.44,
+        "allComplete": 130887.44
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 130849.87,
+        "allComplete": 130849.87
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 125153.24999999996,
+        "allComplete": 125153.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 126912.08,
+        "allComplete": 126912.08
+      }
+    ]
+  },
+  {
+    "id": "earlier-finish",
+    "year": 2024,
+    "exchangeHours": 131.71247500000007,
+    "lastOffCourse": 130907.33,
+    "releaseCount": 465,
+    "peakActive": 2,
+    "finishSpread": 7076.869999999966,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 130838.82,
+        "allComplete": 130838.82
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 129187.42999999996,
+        "allComplete": 129187.42999999996
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 130900.7,
+        "allComplete": 130900.7
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 130907.33,
+        "allComplete": 130907.33
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 130854.29,
+        "allComplete": 130854.29
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 126598.61000000002,
+        "allComplete": 126598.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 130845.45,
+        "allComplete": 130845.45
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 130847.66,
+        "allComplete": 130847.66
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 130907.33,
+        "allComplete": 130907.33
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 125880.18000000001,
+        "allComplete": 125880.18000000001
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 130845.45,
+        "allComplete": 130845.45
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 130880.81,
+        "allComplete": 130880.81
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 130832.19,
+        "allComplete": 130832.19
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 130841.03,
+        "allComplete": 130841.03
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 130534.73,
+        "allComplete": 130534.73
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 130852.08,
+        "allComplete": 130852.08
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 130863.13,
+        "allComplete": 130863.13
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 124252.74000000002,
+        "allComplete": 124252.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 123830.46000000004,
+        "allComplete": 123830.46000000004
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 126426.98999999996,
+        "allComplete": 126426.98999999996
+      }
+    ]
+  },
+  {
+    "id": "earlier-finish",
+    "year": 2025,
+    "exchangeHours": 157.56470833333344,
+    "lastOffCourse": 131347.12,
+    "releaseCount": 647,
+    "peakActive": 2,
+    "finishSpread": 10359.26000000001,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 131020.04,
+        "allComplete": 131020.04
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 129517.08999999998,
+        "allComplete": 129517.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 131252.09,
+        "allComplete": 131252.09
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 131347.12,
+        "allComplete": 131347.12
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 120987.85999999999,
+        "allComplete": 120987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 130967,
+        "allComplete": 130967
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 130860.92,
+        "allComplete": 130860.92
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 131132.75,
+        "allComplete": 131132.75
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 131307.34,
+        "allComplete": 131307.34
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 131196.84,
+        "allComplete": 131196.84
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 131163.69,
+        "allComplete": 131163.69
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 130858.71,
+        "allComplete": 130858.71
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 131126.12,
+        "allComplete": 131126.12
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 130971.42,
+        "allComplete": 130971.42
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 130991.31,
+        "allComplete": 130991.31
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 131035.51,
+        "allComplete": 131035.51
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 131053.19,
+        "allComplete": 131053.19
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 126749.79999999997,
+        "allComplete": 126749.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 129867.58999999994,
+        "allComplete": 129867.58999999994
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 126527.54999999996,
+        "allComplete": 126527.54999999996
+      }
+    ]
+  },
+  {
+    "id": "earlier-finish",
+    "year": 2026,
+    "exchangeHours": 132.09958611111128,
+    "lastOffCourse": 131011.2,
+    "releaseCount": 221,
+    "peakActive": 2,
+    "finishSpread": 8066.260000000009,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 131011.2,
+        "allComplete": 131011.2
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 130827.77,
+        "allComplete": 130827.77
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 130936.06,
+        "allComplete": 130936.06
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 122944.93999999999,
+        "allComplete": 122944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 124989.26999999995,
+        "allComplete": 124989.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 130869.76,
+        "allComplete": 130869.76
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 131004.57,
+        "allComplete": 131004.57
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 130887.44,
+        "allComplete": 130887.44
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 130849.87,
+        "allComplete": 130849.87
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 125153.24999999996,
+        "allComplete": 125153.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 126912.08,
+        "allComplete": 126912.08
+      }
+    ]
+  },
+  {
+    "id": "eleven-am",
+    "year": "all",
+    "exchangeHours": 124.02437222222257,
+    "lastOffCourse": 126590.07,
+    "releaseCount": 2013,
+    "peakActive": 2,
+    "finishSpread": 5602.210000000021,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 126081.77000000002,
+        "allComplete": 126081.77000000002
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 126106.08000000002,
+        "allComplete": 126106.08000000002
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 126143.65000000001,
+        "allComplete": 126143.65000000001
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 126150.28000000001,
+        "allComplete": 126150.28000000001
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 126097.24,
+        "allComplete": 126097.24
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 124484.56000000003,
+        "allComplete": 124484.56000000003
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 126088.40000000001,
+        "allComplete": 126088.40000000001
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 126090.61000000002,
+        "allComplete": 126090.61000000002
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 126150.28000000001,
+        "allComplete": 126150.28000000001
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 125733.48000000004,
+        "allComplete": 125733.48000000004
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 126088.40000000001,
+        "allComplete": 126088.40000000001
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 126123.76000000001,
+        "allComplete": 126123.76000000001
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 126075.14000000001,
+        "allComplete": 126075.14000000001
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 126083.98000000001,
+        "allComplete": 126083.98000000001
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 126030.94000000002,
+        "allComplete": 126030.94000000002
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 126095.03000000001,
+        "allComplete": 126095.03000000001
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 126106.08000000002,
+        "allComplete": 126106.08000000002
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 124252.74000000002,
+        "allComplete": 124252.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 122023.77000000002,
+        "allComplete": 122023.77000000002
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 125849.48999999999,
+        "allComplete": 125849.48999999999
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 126262.99,
+        "allComplete": 126262.99
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 126092.82,
+        "allComplete": 126092.82
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 126495.04000000001,
+        "allComplete": 126495.04000000001
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 126590.07,
+        "allComplete": 126590.07
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 120987.85999999999,
+        "allComplete": 120987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 126209.95000000001,
+        "allComplete": 126209.95000000001
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 126103.87000000001,
+        "allComplete": 126103.87000000001
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 126375.70000000001,
+        "allComplete": 126375.70000000001
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 126550.29000000001,
+        "allComplete": 126550.29000000001
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 126439.79000000001,
+        "allComplete": 126439.79000000001
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 126406.64000000001,
+        "allComplete": 126406.64000000001
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 126101.66000000002,
+        "allComplete": 126101.66000000002
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 126369.07,
+        "allComplete": 126369.07
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 126214.37000000001,
+        "allComplete": 126214.37000000001
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 126234.26000000001,
+        "allComplete": 126234.26000000001
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 126278.46,
+        "allComplete": 126278.46
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 126296.14000000001,
+        "allComplete": 126296.14000000001
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 125522.93,
+        "allComplete": 125522.93
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 126183.43000000001,
+        "allComplete": 126183.43000000001
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 126081.77000000002,
+        "allComplete": 126081.77000000002
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 126254.15000000001,
+        "allComplete": 126254.15000000001
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 126070.72000000002,
+        "allComplete": 126070.72000000002
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 126179.01000000001,
+        "allComplete": 126179.01000000001
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 122944.93999999999,
+        "allComplete": 122944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 124792.17999999996,
+        "allComplete": 124792.17999999996
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 126112.71,
+        "allComplete": 126112.71
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 126247.52000000002,
+        "allComplete": 126247.52000000002
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 126130.39000000001,
+        "allComplete": 126130.39000000001
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 126092.82,
+        "allComplete": 126092.82
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 125153.24999999996,
+        "allComplete": 125153.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 126086.19000000002,
+        "allComplete": 126086.19000000002
+      }
+    ]
+  },
+  {
+    "id": "eleven-am",
+    "year": 2024,
+    "exchangeHours": 102.26499722222248,
+    "lastOffCourse": 126150.28000000001,
+    "releaseCount": 780,
+    "peakActive": 2,
+    "finishSpread": 4126.509999999995,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 126081.77000000002,
+        "allComplete": 126081.77000000002
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 126106.08000000002,
+        "allComplete": 126106.08000000002
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 126143.65000000001,
+        "allComplete": 126143.65000000001
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 126150.28000000001,
+        "allComplete": 126150.28000000001
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 126097.24,
+        "allComplete": 126097.24
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 124484.56000000003,
+        "allComplete": 124484.56000000003
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 126088.40000000001,
+        "allComplete": 126088.40000000001
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 126090.61000000002,
+        "allComplete": 126090.61000000002
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 126150.28000000001,
+        "allComplete": 126150.28000000001
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 125733.48000000004,
+        "allComplete": 125733.48000000004
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 126088.40000000001,
+        "allComplete": 126088.40000000001
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 126123.76000000001,
+        "allComplete": 126123.76000000001
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 126075.14000000001,
+        "allComplete": 126075.14000000001
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 126083.98000000001,
+        "allComplete": 126083.98000000001
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 126030.94000000002,
+        "allComplete": 126030.94000000002
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 126095.03000000001,
+        "allComplete": 126095.03000000001
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 126106.08000000002,
+        "allComplete": 126106.08000000002
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 124252.74000000002,
+        "allComplete": 124252.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 122023.77000000002,
+        "allComplete": 122023.77000000002
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 125849.48999999999,
+        "allComplete": 125849.48999999999
+      }
+    ]
+  },
+  {
+    "id": "eleven-am",
+    "year": 2025,
+    "exchangeHours": 116.8451583333336,
+    "lastOffCourse": 126590.07,
+    "releaseCount": 879,
+    "peakActive": 2,
+    "finishSpread": 5602.210000000021,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 126262.99,
+        "allComplete": 126262.99
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 126092.82,
+        "allComplete": 126092.82
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 126495.04000000001,
+        "allComplete": 126495.04000000001
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 126590.07,
+        "allComplete": 126590.07
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 120987.85999999999,
+        "allComplete": 120987.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 126209.95000000001,
+        "allComplete": 126209.95000000001
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 126103.87000000001,
+        "allComplete": 126103.87000000001
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 126375.70000000001,
+        "allComplete": 126375.70000000001
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 126550.29000000001,
+        "allComplete": 126550.29000000001
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 126439.79000000001,
+        "allComplete": 126439.79000000001
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 126406.64000000001,
+        "allComplete": 126406.64000000001
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 126101.66000000002,
+        "allComplete": 126101.66000000002
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 126369.07,
+        "allComplete": 126369.07
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 126214.37000000001,
+        "allComplete": 126214.37000000001
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 126234.26000000001,
+        "allComplete": 126234.26000000001
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 126278.46,
+        "allComplete": 126278.46
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 126296.14000000001,
+        "allComplete": 126296.14000000001
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 125522.93,
+        "allComplete": 125522.93
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 126183.43000000001,
+        "allComplete": 126183.43000000001
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 126081.77000000002,
+        "allComplete": 126081.77000000002
+      }
+    ]
+  },
+  {
+    "id": "eleven-am",
+    "year": 2026,
+    "exchangeHours": 91.77280555555593,
+    "lastOffCourse": 126254.15000000001,
+    "releaseCount": 354,
+    "peakActive": 2,
+    "finishSpread": 3309.210000000021,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 126254.15000000001,
+        "allComplete": 126254.15000000001
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 126070.72000000002,
+        "allComplete": 126070.72000000002
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 126179.01000000001,
+        "allComplete": 126179.01000000001
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 122944.93999999999,
+        "allComplete": 122944.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 124792.17999999996,
+        "allComplete": 124792.17999999996
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 126112.71,
+        "allComplete": 126112.71
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 126247.52000000002,
+        "allComplete": 126247.52000000002
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 126130.39000000001,
+        "allComplete": 126130.39000000001
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 126092.82,
+        "allComplete": 126092.82
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 125153.24999999996,
+        "allComplete": 125153.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 126086.19000000002,
+        "allComplete": 126086.19000000002
+      }
+    ]
+  },
+  {
+    "id": "earlier-launch",
+    "year": "all",
+    "exchangeHours": 235.98236388888893,
+    "lastOffCourse": 134814.52,
+    "releaseCount": 323,
+    "peakActive": 2,
+    "finishSpread": 19226.660000000003,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 128965.91999999998,
+        "allComplete": 128965.91999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 125587.42999999998,
+        "allComplete": 125587.42999999998
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 128196.29000000002,
+        "allComplete": 128196.29000000002
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 129254.37000000001,
+        "allComplete": 129254.37000000001
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 128750.20000000001,
+        "allComplete": 128750.20000000001
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 121198.61000000002,
+        "allComplete": 121198.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 128814.41000000003,
+        "allComplete": 128814.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 129562.13000000002,
+        "allComplete": 129562.13000000002
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 128615.81999999999,
+        "allComplete": 128615.81999999999
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 125880.18000000001,
+        "allComplete": 125880.18000000001
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 129523.60999999999,
+        "allComplete": 129523.60999999999
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 131425.09000000003,
+        "allComplete": 131425.09000000003
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 128239.63999999998,
+        "allComplete": 128239.63999999998
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 129712.11000000003,
+        "allComplete": 129712.11000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 128683.70999999998,
+        "allComplete": 128683.70999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 129360.76999999997,
+        "allComplete": 129360.76999999997
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 131472.80000000002,
+        "allComplete": 131472.80000000002
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 124252.74000000002,
+        "allComplete": 124252.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 118430.46000000002,
+        "allComplete": 118430.46000000002
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 126120.66999999997,
+        "allComplete": 126120.66999999997
+      },
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134487.44,
+        "allComplete": 134487.44
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 125917.08999999998,
+        "allComplete": 125917.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134719.49,
+        "allComplete": 134719.49
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134814.52,
+        "allComplete": 134814.52
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 115587.85999999999,
+        "allComplete": 115587.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 131041.71,
+        "allComplete": 131041.71
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 129902.64,
+        "allComplete": 129902.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134600.15,
+        "allComplete": 134600.15
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134774.74,
+        "allComplete": 134774.74
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 133416.82,
+        "allComplete": 133416.82
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134631.09,
+        "allComplete": 134631.09
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 130578.25999999998,
+        "allComplete": 130578.25999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 131701.41,
+        "allComplete": 131701.41
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 131693.83,
+        "allComplete": 131693.83
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 131816.03,
+        "allComplete": 131816.03
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134502.91,
+        "allComplete": 134502.91
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134520.59,
+        "allComplete": 134520.59
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 121349.79999999997,
+        "allComplete": 121349.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 126267.58999999995,
+        "allComplete": 126267.58999999995
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 126527.54999999996,
+        "allComplete": 126527.54999999996
+      },
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134478.6,
+        "allComplete": 134478.6
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 123852.83999999998,
+        "allComplete": 123852.83999999998
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 131417.59000000003,
+        "allComplete": 131417.59000000003
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 117544.93999999999,
+        "allComplete": 117544.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 119589.26999999995,
+        "allComplete": 119589.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 125281.05000000003,
+        "allComplete": 125281.05000000003
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134471.97,
+        "allComplete": 134471.97
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 130516.84,
+        "allComplete": 130516.84
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 130135.72000000002,
+        "allComplete": 130135.72000000002
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 125153.24999999996,
+        "allComplete": 125153.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 126912.08,
+        "allComplete": 126912.08
+      }
+    ]
+  },
+  {
+    "id": "earlier-launch",
+    "year": 2024,
+    "exchangeHours": 173.82206388888875,
+    "lastOffCourse": 131472.80000000002,
+    "releaseCount": 1,
+    "peakActive": 1,
+    "finishSpread": 13042.339999999997,
+    "teams": [
+      {
+        "teamId": "2024::BCSO",
+        "finish": 128965.91999999998,
+        "allComplete": 128965.91999999998
+      },
+      {
+        "teamId": "2024::Chatham First Responders",
+        "finish": 125587.42999999998,
+        "allComplete": 125587.42999999998
+      },
+      {
+        "teamId": "2024::ER RuckERs",
+        "finish": 128196.29000000002,
+        "allComplete": 128196.29000000002
+      },
+      {
+        "teamId": "2024::Front Toward Victory",
+        "finish": 129254.37000000001,
+        "allComplete": 129254.37000000001
+      },
+      {
+        "teamId": "2024::Hazard",
+        "finish": 128750.20000000001,
+        "allComplete": 128750.20000000001
+      },
+      {
+        "teamId": "2024::I thought this was a 5K",
+        "finish": 121198.61000000002,
+        "allComplete": 121198.61000000002
+      },
+      {
+        "teamId": "2024::Oh Dee Why Are We Here",
+        "finish": 128814.41000000003,
+        "allComplete": 128814.41000000003
+      },
+      {
+        "teamId": "2024::One More Rep",
+        "finish": 129562.13000000002,
+        "allComplete": 129562.13000000002
+      },
+      {
+        "teamId": "2024::RG Ruckers",
+        "finish": 128615.81999999999,
+        "allComplete": 128615.81999999999
+      },
+      {
+        "teamId": "2024::RideAway Ruck Squad",
+        "finish": 125880.18000000001,
+        "allComplete": 125880.18000000001
+      },
+      {
+        "teamId": "2024::Ruck It Up",
+        "finish": 129523.60999999999,
+        "allComplete": 129523.60999999999
+      },
+      {
+        "teamId": "2024::RuckHabilitation",
+        "finish": 131425.09000000003,
+        "allComplete": 131425.09000000003
+      },
+      {
+        "teamId": "2024::Ruckin' Seagulls",
+        "finish": 128239.63999999998,
+        "allComplete": 128239.63999999998
+      },
+      {
+        "teamId": "2024::ShipRUCKed Crew",
+        "finish": 129712.11000000003,
+        "allComplete": 129712.11000000003
+      },
+      {
+        "teamId": "2024::Team Alpha Fox Trot",
+        "finish": 128683.70999999998,
+        "allComplete": 128683.70999999998
+      },
+      {
+        "teamId": "2024::Team Otis- Send a RUCKer!",
+        "finish": 129360.76999999997,
+        "allComplete": 129360.76999999997
+      },
+      {
+        "teamId": "2024::Team ShamRuck",
+        "finish": 131472.80000000002,
+        "allComplete": 131472.80000000002
+      },
+      {
+        "teamId": "2024::The Milk Men",
+        "finish": 124252.74000000002,
+        "allComplete": 124252.74000000002
+      },
+      {
+        "teamId": "2024::United in Service",
+        "finish": 118430.46000000002,
+        "allComplete": 118430.46000000002
+      },
+      {
+        "teamId": "2024::Worst Pace Scenario",
+        "finish": 126120.66999999997,
+        "allComplete": 126120.66999999997
+      }
+    ]
+  },
+  {
+    "id": "earlier-launch",
+    "year": 2025,
+    "exchangeHours": 230.5317055555556,
+    "lastOffCourse": 134814.52,
+    "releaseCount": 262,
+    "peakActive": 2,
+    "finishSpread": 19226.660000000003,
+    "teams": [
+      {
+        "teamId": "2025::1620Ruckers",
+        "finish": 134487.44,
+        "allComplete": 134487.44
+      },
+      {
+        "teamId": "2025::Chatham First Responders",
+        "finish": 125917.08999999998,
+        "allComplete": 125917.08999999998
+      },
+      {
+        "teamId": "2025::Falmouth PD",
+        "finish": 134719.49,
+        "allComplete": 134719.49
+      },
+      {
+        "teamId": "2025::Hazard",
+        "finish": 134814.52,
+        "allComplete": 134814.52
+      },
+      {
+        "teamId": "2025::I Thought This Was a 5K",
+        "finish": 115587.85999999999,
+        "allComplete": 115587.85999999999
+      },
+      {
+        "teamId": "2025::Long Islanders",
+        "finish": 131041.71,
+        "allComplete": 131041.71
+      },
+      {
+        "teamId": "2025::Oh Deer Why are we Here?",
+        "finish": 129902.64,
+        "allComplete": 129902.64
+      },
+      {
+        "teamId": "2025::One More Rep",
+        "finish": 134600.15,
+        "allComplete": 134600.15
+      },
+      {
+        "teamId": "2025::Quench Queens",
+        "finish": 134774.74,
+        "allComplete": 134774.74
+      },
+      {
+        "teamId": "2025::RG Ruckers",
+        "finish": 133416.82,
+        "allComplete": 133416.82
+      },
+      {
+        "teamId": "2025::Rideaway Ruck Squad",
+        "finish": 134631.09,
+        "allComplete": 134631.09
+      },
+      {
+        "teamId": "2025::Ruck It Up",
+        "finish": 130578.25999999998,
+        "allComplete": 130578.25999999998
+      },
+      {
+        "teamId": "2025::Ruckhabilitation",
+        "finish": 131701.41,
+        "allComplete": 131701.41
+      },
+      {
+        "teamId": "2025::Ruckin' Seagulls",
+        "finish": 131693.83,
+        "allComplete": 131693.83
+      },
+      {
+        "teamId": "2025::ShipRUCKed",
+        "finish": 131816.03,
+        "allComplete": 131816.03
+      },
+      {
+        "teamId": "2025::Team BCSO",
+        "finish": 134502.91,
+        "allComplete": 134502.91
+      },
+      {
+        "teamId": "2025::Team ShamRuck",
+        "finish": 134520.59,
+        "allComplete": 134520.59
+      },
+      {
+        "teamId": "2025::The Juice is Loose",
+        "finish": 121349.79999999997,
+        "allComplete": 121349.79999999997
+      },
+      {
+        "teamId": "2025::United in Service",
+        "finish": 126267.58999999995,
+        "allComplete": 126267.58999999995
+      },
+      {
+        "teamId": "2025::Worst Pace Scenario",
+        "finish": 126527.54999999996,
+        "allComplete": 126527.54999999996
+      }
+    ]
+  },
+  {
+    "id": "earlier-launch",
+    "year": 2026,
+    "exchangeHours": 207.1745472222223,
+    "lastOffCourse": 134478.6,
+    "releaseCount": 60,
+    "peakActive": 2,
+    "finishSpread": 16933.660000000018,
+    "teams": [
+      {
+        "teamId": "2026::Alpha Foxtrot (JONES)",
+        "finish": 134478.6,
+        "allComplete": 134478.6
+      },
+      {
+        "teamId": "2026::Chatham First Responders (JONES)",
+        "finish": 123852.83999999998,
+        "allComplete": 123852.83999999998
+      },
+      {
+        "teamId": "2026::Hazard (JONES)",
+        "finish": 131417.59000000003,
+        "allComplete": 131417.59000000003
+      },
+      {
+        "teamId": "2026::I Thought This Was A 5K (JETHRO)",
+        "finish": 117544.93999999999,
+        "allComplete": 117544.93999999999
+      },
+      {
+        "teamId": "2026::Meal Team 6 (JETHRO)",
+        "finish": 119589.26999999995,
+        "allComplete": 119589.26999999995
+      },
+      {
+        "teamId": "2026::Oh Deer, Why Are We Here? (JETHRO)",
+        "finish": 125281.05000000003,
+        "allComplete": 125281.05000000003
+      },
+      {
+        "teamId": "2026::Relentless Ruckers (JONES)",
+        "finish": 134471.97,
+        "allComplete": 134471.97
+      },
+      {
+        "teamId": "2026::Ruckin' Seagulls (JONES)",
+        "finish": 130516.84,
+        "allComplete": 130516.84
+      },
+      {
+        "teamId": "2026::TBG Ruckers (Formerly RG Ruckers) (JETHRO)",
+        "finish": 130135.72000000002,
+        "allComplete": 130135.72000000002
+      },
+      {
+        "teamId": "2026::United In Service (JETHRO)",
+        "finish": 125153.24999999996,
+        "allComplete": 125153.24999999996
+      },
+      {
+        "teamId": "2026::Worst Pace Scenario (JETHRO)",
+        "finish": 126912.08,
+        "allComplete": 126912.08
+      }
+    ]
+  }
+]

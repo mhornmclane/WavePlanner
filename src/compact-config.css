@@ -96,3 +96,22 @@
   .configuration-panel button, .compact-settings .secondary-control > summary { min-height:44px; }
   .configuration-panel .wave-row > input[type=color] { min-height:44px; }
 }
+
+.wave-solver { display:flex; flex-wrap:wrap; align-items:center; gap:6px 16px; border:0; margin:0; padding:2px 0 10px; min-width:0; }
+.wave-solver legend { float:left; margin-right:12px; color:var(--muted); font-size:12px; }
+.wave-solver label { display:inline-flex; align-items:center; gap:5px; font-size:12px; cursor:pointer; }
+.configuration-panel .wave-solver input { min-height:0; width:15px; height:15px; margin:0; }
+.calculated-value { display:flex; align-items:center; flex-wrap:wrap; gap:4px 8px; min-width:0; }
+.calculated-value input { min-width:0; background:#edf3e9; color:var(--ink); }
+.calculated-value small { color:var(--muted); font-size:10px; }
+.configuration-panel .calculated-value input:not(.pace-input) { width:100%; flex:1 1 180px; }
+.configuration-panel .finish-target .calculated-value .pace-input { width:92px; }
+@media (max-width:450px) { .wave-solver { gap:10px; } .wave-solver label { min-height:32px; } }
+
+.pace-stepper { display:flex; align-items:stretch; gap:4px; max-width:100%; }
+.pace-stepper > input { min-width:0; }
+.pace-step-buttons { display:flex; flex-direction:column; gap:2px; flex:0 0 28px; }
+.configuration-panel .pace-step-buttons button { padding:0 2px; min-height:18px; height:18px; font-size:10px; line-height:1; border-radius:3px; }
+.configuration-panel .wave-range .field { flex-basis:90px; }
+.configuration-panel .wave-range .pace-input { flex:0 0 58px; }
+@media (pointer:coarse) { .configuration-panel .pace-step-buttons button { min-height:32px; height:32px; } }

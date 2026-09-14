@@ -1,5 +1,6 @@
+import { solverError, solverModes, SOLVER_TOLERANCE } from "./solver";
 import { latestStart } from "./engine";
-import { TimeInput, PaceInput } from "./Inputs";
+import { TimeInput, PaceInput, PaceStepper } from "./Inputs";
 import { useState } from "react";
 import { colors, resolveProfile } from "./data";
 import { clock, pace, parsePace } from "./format";
@@ -43,6 +44,7 @@ function Boundary({
   return (
     <label className="field">
       <span>{label}</span>
+      <PaceStepper label={label} value={parsePace(text)} valid={valid} onChange={n=>{setText(pace(n));setError(false);commit(n);}}>
       <input
         className="pace-input"
         aria-label={label}
@@ -61,6 +63,7 @@ function Boundary({
           }
         }}
       />
+      </PaceStepper>
       {error && (
         <small role="alert">Use m:ss between the neighboring boundaries.</small>
       )}
@@ -178,6 +181,7 @@ export function Waves({
               </div>
               <TimeInput
                 label={`Wave ${displayIndex + 1} start`}
+                calculated={w.solver === "start"} invalid={!!solverError(s, w)}
                 value={w.start}
                 onChange={(start) =>
                   update((c) => ({
@@ -202,6 +206,20 @@ export function Waves({
               </button>
             </div>
 
+            <fieldset className="wave-solver" aria-label={`Wave ${displayIndex + 1} solver`}>
+              <legend>Solve for</legend>
+              {solverModes.map(mode => <label key={mode}><input type="radio" name={`solver-${w.id}`} value={mode} checked={w.solver === mode}
+                onChange={() => update(c=>({...c,waves:c.waves.map(v=>v.id===w.id ? {...v,solver:mode} : v)}))}/>{mode[0].toUpperCase() + mode.slice(1)}</label>)}
+            </fieldset>
+      <div className="finish-target">
+              <div className="field"><span>Target finish</span><TimeInput label={`Wave ${displayIndex + 1} target finish`} calculated={w.solver === "finish"} invalid={!!solverError(s, w)} value={w.release.targetFinish} onChange={targetFinish=>update(c=>({...c,waves:c.waves.map(v=>v.id===w.id ? {...v,release:{...v.release,targetFinish}} : v)}))}/></div>
+              <label className="field"><span>Release pace · min:sec/mile</span><PaceInput label={`Wave ${displayIndex + 1} release pace`} calculated={w.solver === "pace"} invalid={!!solverError(s, w)} value={w.release.pace} onChange={pace=>update(c=>({...c,waves:c.waves.map(v=>v.id===w.id ? {...v,release:{...v.release,pace}} : v)}))}/></label>
+              <div className="finish-guidance"><span className="field-label">Latest {w.name} start</span><p className="start-guidance" role="status">{Number.isFinite(latestStart(s, w)) ? clock(latestStart(s, w) + SOLVER_TOLERANCE, "down") : "Enter a valid finish target, pace, and challenge allowances."}</p><span className="muted">Includes challenge allowances</span></div>
+              {w.start > latestStart(s, w) + SOLVER_TOLERANCE && <p className="rule-failed">{w.name} starts after the calculated latest start.</p>}
+              {solverError(s, w) && <p className="rule-failed solver-error" role="alert">{solverError(s, w)}</p>}
+              <small>{w.solver === "none" ? "Planning estimate only. Your chosen start stays unchanged." : `${w.solver[0].toUpperCase() + w.solver.slice(1)} is calculated from the other two values and challenge allowances.`} Gate openings and historical paces may produce later finishes.</small>
+      </div>
+
             <div className="wave-members" id={`roster-${w.id}`} hidden={openRoster !== w.id}>
               <button className="small quiet" disabled={s.waves.length >= 51} onClick={() => beginSplit(i)}>Split this range</button>
               <ul className="wave-roster">
@@ -222,13 +240,6 @@ export function Waves({
         ))}
       </div>
       <p className="table-note">Waves run slowest to fastest. Exact-boundary teams join the slower wave. Select a team count for its roster and range actions.</p>
-      <div className="finish-target">
-              <div className="field"><span>Target finish</span><TimeInput label="Target finish" value={s.release.targetFinish} onChange={targetFinish=>update(c=>({...c,release:{...c.release,targetFinish}}))}/></div>
-              <label className="field"><span>Release pace · min:sec/mile</span><PaceInput label="Release pace" value={s.release.pace} onChange={pace=>update(c=>({...c,release:{...c.release,pace}}))}/></label>
-              <div className="finish-guidance"><span className="field-label">Latest Wave 1 start</span><p className="start-guidance" role="status">{Number.isFinite(latestStart(s)) ? clock(latestStart(s), "down") : "Enter a valid finish target, pace, and challenge allowances."}</p><span className="muted">Includes challenge allowances</span></div>
-              {orderedWaveEntries(s)[0].w.start > latestStart(s) && <p className="rule-failed">Wave 1 starts after the calculated latest start.</p>}
-              <small>Planning estimate only. Gate openings and historical paces may produce later finishes. Your chosen start stays unchanged.</small>
-      </div>
       {split && (
         <div
           className="range-preview"
@@ -266,6 +277,8 @@ export function Waves({
                   name: `Wave ${c.waves.length + 1}`,
                   color: colors[c.waves.length % colors.length],
                   start: c.waves[split.index].start + 1800,
+                  release: { ...c.waves[split.index].release },
+                  solver: c.waves[split.index].solver,
                 });
                 const boundaries = [...c.waveRules.boundaries];
                 boundaries.splice(split.index, 0, splitValue);

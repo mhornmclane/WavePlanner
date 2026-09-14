@@ -1,0 +1,715 @@
+[
+  {
+    "id": "two-waves",
+    "objective": "exchangeHours",
+    "accepted": false,
+    "waves": [
+      {
+        "id": "wave-2",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      },
+      {
+        "id": "wave-1",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      }
+    ],
+    "original": [
+      {
+        "year": "all",
+        "exchangeHours": 198.4742555555556,
+        "finishSpread": 15704.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 1006,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 151.92353333333307,
+        "finishSpread": 12421.619999999952,
+        "lastFinish": 134452.08,
+        "lastOffCourse": 134452.08,
+        "releaseCount": 248,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 192.054363888889,
+        "finishSpread": 15704.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 592,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 179.17598888888895,
+        "finishSpread": 13411.010000000024,
+        "lastFinish": 134555.95,
+        "lastOffCourse": 134555.95,
+        "releaseCount": 166,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ],
+    "tuned": [
+      {
+        "year": "all",
+        "exchangeHours": 198.4742555555556,
+        "finishSpread": 15704.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 1006,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 151.92353333333307,
+        "finishSpread": 12421.619999999952,
+        "lastFinish": 134452.08,
+        "lastOffCourse": 134452.08,
+        "releaseCount": 248,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 192.054363888889,
+        "finishSpread": 15704.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 592,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 179.17598888888895,
+        "finishSpread": 13411.010000000024,
+        "lastFinish": 134555.95,
+        "lastOffCourse": 134555.95,
+        "releaseCount": 166,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ]
+  },
+  {
+    "id": "three-waves",
+    "objective": "exchangeHours",
+    "accepted": false,
+    "waves": [
+      {
+        "id": "wave-3",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      },
+      {
+        "id": "wave-2",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      },
+      {
+        "id": "wave-1",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      }
+    ],
+    "original": [
+      {
+        "year": "all",
+        "exchangeHours": 185.78713333333357,
+        "finishSpread": 13904.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 1005,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 144.63637222222215,
+        "finishSpread": 10621.619999999952,
+        "lastFinish": 134452.08,
+        "lastOffCourse": 134452.08,
+        "releaseCount": 247,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 181.616027777778,
+        "finishSpread": 13904.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 592,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 149.4354027777779,
+        "finishSpread": 11611.010000000024,
+        "lastFinish": 134555.95,
+        "lastOffCourse": 134555.95,
+        "releaseCount": 166,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ],
+    "tuned": [
+      {
+        "year": "all",
+        "exchangeHours": 185.78713333333357,
+        "finishSpread": 13904.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 1005,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 144.63637222222215,
+        "finishSpread": 10621.619999999952,
+        "lastFinish": 134452.08,
+        "lastOffCourse": 134452.08,
+        "releaseCount": 247,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 181.616027777778,
+        "finishSpread": 13904.01000000001,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 592,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 149.4354027777779,
+        "finishSpread": 11611.010000000024,
+        "lastFinish": 134555.95,
+        "lastOffCourse": 134555.95,
+        "releaseCount": 166,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ]
+  },
+  {
+    "id": "tight-finish",
+    "objective": "finishSpread",
+    "accepted": false,
+    "waves": [
+      {
+        "id": "wave-3",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      },
+      {
+        "id": "wave-2",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      },
+      {
+        "id": "wave-1",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 625
+        }
+      }
+    ],
+    "original": [
+      {
+        "year": "all",
+        "exchangeHours": 187.16170000000037,
+        "finishSpread": 12104.010000000038,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 1007,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 152.77676944444454,
+        "finishSpread": 8888.689999999973,
+        "lastFinish": 134452.08,
+        "lastOffCourse": 134452.08,
+        "releaseCount": 249,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 181.7078750000004,
+        "finishSpread": 12104.010000000038,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 592,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 145.91268888888908,
+        "finishSpread": 9811.010000000024,
+        "lastFinish": 134555.95,
+        "lastOffCourse": 134555.95,
+        "releaseCount": 166,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ],
+    "tuned": [
+      {
+        "year": "all",
+        "exchangeHours": 187.16170000000037,
+        "finishSpread": 12104.010000000038,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 1007,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 152.77676944444454,
+        "finishSpread": 8888.689999999973,
+        "lastFinish": 134452.08,
+        "lastOffCourse": 134452.08,
+        "releaseCount": 249,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 181.7078750000004,
+        "finishSpread": 12104.010000000038,
+        "lastFinish": 134891.87,
+        "lastOffCourse": 134891.87,
+        "releaseCount": 592,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 145.91268888888908,
+        "finishSpread": 9811.010000000024,
+        "lastFinish": 134555.95,
+        "lastOffCourse": 134555.95,
+        "releaseCount": 166,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ]
+  },
+  {
+    "id": "earlier-finish",
+    "objective": "lastFinish",
+    "accepted": true,
+    "waves": [
+      {
+        "id": "wave-3",
+        "release": {
+          "targetFinish": 130801.25,
+          "pace": 600
+        }
+      },
+      {
+        "id": "wave-2",
+        "release": {
+          "targetFinish": 127201.25,
+          "pace": 520
+        }
+      },
+      {
+        "id": "wave-1",
+        "release": {
+          "targetFinish": 128101.25,
+          "pace": 570
+        }
+      }
+    ],
+    "original": [
+      {
+        "year": "all",
+        "exchangeHours": 162.51364444444465,
+        "finishSpread": 10359.26000000001,
+        "lastFinish": 131347.12,
+        "lastOffCourse": 131347.12,
+        "releaseCount": 1333,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 131.71247500000007,
+        "finishSpread": 7076.869999999966,
+        "lastFinish": 130907.33,
+        "lastOffCourse": 130907.33,
+        "releaseCount": 465,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 157.56470833333344,
+        "finishSpread": 10359.26000000001,
+        "lastFinish": 131347.12,
+        "lastOffCourse": 131347.12,
+        "releaseCount": 647,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 132.09958611111128,
+        "finishSpread": 8066.260000000009,
+        "lastFinish": 131011.2,
+        "lastOffCourse": 131011.2,
+        "releaseCount": 221,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ],
+    "tuned": [
+      {
+        "year": "all",
+        "exchangeHours": 155.43698055555558,
+        "finishSpread": 7725.559999999998,
+        "lastFinish": 128713.41999999998,
+        "lastOffCourse": 128713.41999999998,
+        "releaseCount": 1267,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 122.34563055555539,
+        "finishSpread": 4443.169999999955,
+        "lastFinish": 128273.62999999999,
+        "lastOffCourse": 128273.62999999999,
+        "releaseCount": 460,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 151.14693611111105,
+        "finishSpread": 7725.559999999998,
+        "lastFinish": 128713.41999999998,
+        "lastOffCourse": 128713.41999999998,
+        "releaseCount": 596,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 127.47395555555563,
+        "finishSpread": 5432.559999999998,
+        "lastFinish": 128377.49999999999,
+        "lastOffCourse": 128377.49999999999,
+        "releaseCount": 211,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ]
+  },
+  {
+    "id": "eleven-am",
+    "objective": "lastFinish",
+    "accepted": true,
+    "waves": [
+      {
+        "id": "wave-3",
+        "release": {
+          "targetFinish": 126000,
+          "pace": 580
+        }
+      },
+      {
+        "id": "wave-2",
+        "release": {
+          "targetFinish": 122400,
+          "pace": 530
+        }
+      },
+      {
+        "id": "wave-1",
+        "release": {
+          "targetFinish": 125100,
+          "pace": 570
+        }
+      }
+    ],
+    "original": [
+      {
+        "year": "all",
+        "exchangeHours": 124.02437222222257,
+        "finishSpread": 5602.210000000021,
+        "lastFinish": 126590.07,
+        "lastOffCourse": 126590.07,
+        "releaseCount": 2013,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 102.26499722222248,
+        "finishSpread": 4126.509999999995,
+        "lastFinish": 126150.28000000001,
+        "lastOffCourse": 126150.28000000001,
+        "releaseCount": 780,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 116.8451583333336,
+        "finishSpread": 5602.210000000021,
+        "lastFinish": 126590.07,
+        "lastOffCourse": 126590.07,
+        "releaseCount": 879,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 91.77280555555593,
+        "finishSpread": 3309.210000000021,
+        "lastFinish": 126254.15000000001,
+        "lastOffCourse": 126254.15000000001,
+        "releaseCount": 354,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ],
+    "tuned": [
+      {
+        "year": "all",
+        "exchangeHours": 121.68319722222225,
+        "finishSpread": 4724.309999999998,
+        "lastFinish": 125712.16999999998,
+        "lastOffCourse": 125712.16999999998,
+        "releaseCount": 1932,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 99.10716666666656,
+        "finishSpread": 3248.6099999999715,
+        "lastFinish": 125272.37999999999,
+        "lastOffCourse": 125272.37999999999,
+        "releaseCount": 757,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 113.30754722222213,
+        "finishSpread": 4724.309999999998,
+        "lastFinish": 125712.16999999998,
+        "lastOffCourse": 125712.16999999998,
+        "releaseCount": 826,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 90.44913888888892,
+        "finishSpread": 2808.289999999979,
+        "lastFinish": 125376.24999999999,
+        "lastOffCourse": 125376.24999999999,
+        "releaseCount": 349,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ]
+  },
+  {
+    "id": "earlier-launch",
+    "objective": "releaseCount",
+    "accepted": false,
+    "waves": [
+      {
+        "id": "wave-3",
+        "release": {
+          "targetFinish": 134401.25,
+          "pace": 660
+        }
+      },
+      {
+        "id": "wave-2",
+        "release": {
+          "targetFinish": 131701.25,
+          "pace": 580
+        }
+      },
+      {
+        "id": "wave-1",
+        "release": {
+          "targetFinish": 131701.25,
+          "pace": 620
+        }
+      }
+    ],
+    "original": [
+      {
+        "year": "all",
+        "exchangeHours": 235.98236388888893,
+        "finishSpread": 19226.660000000003,
+        "lastFinish": 134814.52,
+        "lastOffCourse": 134814.52,
+        "releaseCount": 323,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 173.82206388888875,
+        "finishSpread": 13042.339999999997,
+        "lastFinish": 131472.80000000002,
+        "lastOffCourse": 131472.80000000002,
+        "releaseCount": 1,
+        "peakActive": 1,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 230.5317055555556,
+        "finishSpread": 19226.660000000003,
+        "lastFinish": 134814.52,
+        "lastOffCourse": 134814.52,
+        "releaseCount": 262,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 207.1745472222223,
+        "finishSpread": 16933.660000000018,
+        "lastFinish": 134478.6,
+        "lastOffCourse": 134478.6,
+        "releaseCount": 60,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ],
+    "tuned": [
+      {
+        "year": "all",
+        "exchangeHours": 234.20479722222203,
+        "finishSpread": 16615.059999999998,
+        "lastFinish": 132202.91999999998,
+        "lastOffCourse": 132202.91999999998,
+        "releaseCount": 284,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2024,
+        "exchangeHours": 173.82206388888875,
+        "finishSpread": 13042.339999999997,
+        "lastFinish": 131472.80000000002,
+        "lastOffCourse": 131472.80000000002,
+        "releaseCount": 1,
+        "peakActive": 1,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2025,
+        "exchangeHours": 230.20701666666648,
+        "finishSpread": 16615.059999999998,
+        "lastFinish": 132202.91999999998,
+        "lastOffCourse": 132202.91999999998,
+        "releaseCount": 233,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      },
+      {
+        "year": 2026,
+        "exchangeHours": 201.95981944444435,
+        "finishSpread": 14322.060000000012,
+        "lastFinish": 131867,
+        "lastOffCourse": 131867,
+        "releaseCount": 50,
+        "peakActive": 2,
+        "deadlineViolations": 0,
+        "maxLateness": 0
+      }
+    ]
+  }
+]

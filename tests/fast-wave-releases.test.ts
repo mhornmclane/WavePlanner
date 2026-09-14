@@ -8,7 +8,7 @@ function fastWave() {
   const s = baseline([worstCaseIds.fastest]);
   s.worstCaseTeams.fastest.mode="flat";
   s.worstCaseTeams.fastest.flatPace=900;
-  s.waves=[{id:"fast",name:"Fast",color:"#123456",start:-3600}, {id:"slow",name:"Slow",color:"#654321",start:7200}];
+  s.waves=[{id:"fast",name:"Fast",color:"#123456",start:-3600, solver: "none", release: { ...baseline().waves[0].release }}, {id:"slow",name:"Slow",color:"#654321",start:7200, solver: "none", release: { ...baseline().waves[0].release }}];
   s.waveRules.boundaries=[1000];
   return syncAssignments(s);
 }
@@ -43,7 +43,7 @@ describe("fast-wave release identity",()=>{
     const s=fastWave();
     const merged=removeWave(s,1);
     expect(simulate(merged).teams[0].legs.every(l=>!l.releaseSuppressed)).toBe(true);
-    merged.waves.push({id:"new-slow",name:"New slow",color:"#123456",start:0});
+    merged.waves.push({id:"new-slow",name:"New slow",color:"#123456",start:0, solver: "none", release: { ...baseline().waves[0].release }});
     merged.waveRules.boundaries=[1000];
     const split=syncAssignments(merged);
     expect(orderedWaveEntries(split)[0].w.id).toBe("new-slow");
@@ -51,6 +51,6 @@ describe("fast-wave release identity",()=>{
   });
   it("activation policy leaves moving time and release schedule unchanged",()=>{
     const s=fastWave(),before=simulate(s);s.fastWaveReleases.enabled=false;
-    const after=simulate(s);expect(after.teams[0].movingTime).toBe(before.teams[0].movingTime);expect(after.releases).toEqual(before.releases);
+    const after=simulate(s);expect(after.teams[0].movingTime).toBe(before.teams[0].movingTime);expect(after.releasesByWave).toEqual(before.releasesByWave);
   });
 });

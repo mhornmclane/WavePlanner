@@ -42,7 +42,7 @@ Focus the graph for keyboard controls: +/− zoom, arrow keys pan, 0/Home fits t
 
 ## Finish target and release schedule
 
-Wave 1 is always the slowest pace range, independently of its start time. The shared finish strip contains the target final-leg finish weekday/time, a single release pace in min:sec/mile, and the latest-start estimate for Wave 1.
+Wave 1 is always the slowest pace range, independently of its start time. Each wave has its own target final-leg finish weekday/time, release pace in min:sec/mile, and latest-start estimate beneath its start controls. Changing one wave’s release settings does not change another wave’s settings or start.
 
 ```text
 latest start = target finish
@@ -51,17 +51,27 @@ latest start = target finish
              − lighthouse challenge allowance
 ```
 
-This is guidance only: it never changes any wave start and has no Apply action. The guidance rounds down to a minute so it does not suggest starting later than the exact calculation. A later selected Wave 1 start produces a warning.
+This is guidance only: it never changes any wave start and has no Apply action. The guidance rounds down to a minute so it does not suggest starting later than the exact calculation. A selected start later than that wave’s estimate produces a warning for that wave.
 
-Release times are generated forward from that calculated start, using constant pace and allowances before legs 36 and 54. The calculation includes travel along the final leg: its release plus its duration at the release pace equals the target finish. Adjusting challenges changes the latest start while preserving the target.
+Each wave’s release times are generated forward from its calculated start, using its constant pace and allowances before legs 36 and 54. The calculation includes travel along the final leg: its release plus its duration at the release pace equals the target finish. Adjusting challenges changes the latest start while preserving the target.
 
-The target is a planning reference, not a guarantee for historical profiles: their final-leg paces can differ from the release pace, and gate openings can delay departures. The chart marks the target, the summaries report final-leg overruns, and gate openings later than planned releases are flagged separately. Final-leg arrival and all outstanding runners off course remain distinct metrics because released legs can overlap.
+The target is a planning reference, not a guarantee for historical profiles: their final-leg paces can differ from the release pace, and gate openings can delay departures. The chart marks every wave target and release timetable in the wave color; identical guides are grouped and labeled with all matching wave names. Highlighting a wave or team emphasizes its guides. The release timetable has a column per wave. Results and CSV exports compare each team with its own wave target; the summary shows a target range when targets differ. Replay uses each team’s own outbound release. Gate openings later than applicable planned releases are flagged separately. Final-leg arrival and all outstanding runners off course remain distinct metrics because released legs can overlap.
 
 Default release pace is 10:25/mile. The initial target is the published final-leg release plus that leg's duration at 10:25/mile. The published timetable is retained solely for the 2026 comparison; there are no alternate release editor modes.
 
+## Live wave solver
+
+Each wave has a **Solve for: None · Start · Finish · Pace** radio group. Selecting a variable calculates it immediately and makes its field read-only. Editing either remaining input updates the calculated value and simulation together. Challenge allowance changes update every active solver. The equation is:
+
+`finish = start + course distance × release pace + monument allowance + lighthouse allowance`
+
+This links the release timetable’s planning values, not modeled historical team finishes. Timestamp fields display the nearest minute, including calculated timestamps. Rounding across midnight updates the displayed weekday. Calculated paces can show fractional seconds; underlying solver values retain full precision. Editable paces have +5/−5 second-per-mile buttons, including wave boundaries and hypothetical team paces. Steps respect valid ranges and adjacent boundaries; calculated paces remain read-only. None restores manual editing and keeps the calculated values. Invalid or out-of-range solutions display a wave-specific explanation and block simulation and exports until corrected; solutions are never clamped.
+
+Solver selections persist in saves and JSON. Loading recalculates the selected variable from its other inputs. A split copies the source solver mode and resolves the new wave using its resulting start and settings. Removing a wave preserves the receiving wave’s mode. All seven presets default to solving for Finish, calculated immediately from each wave’s start, release pace, and challenge allowances. Migrated configurations default to None.
+
 ## Wave and timing rules
 
-Waves are stored in ascending pace order and displayed slowest first. Shared boundaries leave no gaps; an exact-boundary profile belongs to the slower wave. The first split moves teams strictly faster than the entered pace into a new wave, retaining teams at or slower than the pace in the original Wave 1 with its existing start. Later splits add a slower pace range; removing a wave merges its interval into its adjacent faster range, or the slower neighbor when removing the fastest. Invalid boundary edits retain the last applied assignment until corrected or canceled with Escape.
+Waves are stored in ascending pace order and displayed slowest first. Shared boundaries leave no gaps; an exact-boundary profile belongs to the slower wave. The first split moves teams strictly faster than the entered pace into a new wave, retaining teams at or slower than the pace in the original Wave 1 with its existing start. Later splits add a slower pace range; removing a wave merges its interval into its adjacent faster range, or the slower neighbor when removing the fastest. A split copies the source wave’s release settings into an independent new wave; removing a wave retains the receiving wave’s release settings. Invalid boundary edits retain the last applied assignment until corrected or canceled with Escape.
 
 Wave 1 uses release times throughout the course. Every other wave uses the fast-wave activation policy, regardless of weekday or time:
 
@@ -87,9 +97,9 @@ The model assumes outgoing runners are available. It excludes individual runner 
 
 ## Configuration contract
 
-Version 6 JSON stores `fieldYear` (`"all"` or a bundled historical year), `release: { targetFinish, pace }`, selected profile IDs, automatic wave boundaries/assignments, hypothetical profiles, timing rules, challenges, and buffers. Paces are seconds/mile; times and durations are seconds. Source identifiers must match bundled data. Historical selected IDs must match the chosen field year; hypothetical inclusion is independent.
+Version 8 JSON stores `fieldYear` (`"all"` or a bundled historical year), `waves[].release: { targetFinish, pace }`, `waves[].solver` (`none`, `start`, `finish`, or `pace`), selected profile IDs, automatic wave boundaries/assignments, hypothetical profiles, timing rules, challenges, and buffers. Paces are seconds/mile; times and durations are seconds. Source identifiers must match bundled data. Historical selected IDs must match the chosen field year; hypothetical inclusion is independent.
 
-Browser storage uses `ruck4hit-scenarios-v6`. Earlier schemas and alternate release structures are rejected without migration, and old browser saves are not loaded. No backend or external account is required.
+Browser storage uses `ruck4hit-scenarios-v8`. Version 7 configurations migrate with every solver set to None. Version 6 configurations first copy shared release settings into every wave, then receive the same solver default. Browser reads fall back to version 7 and then version 6 only when no newer collection exists. Saving writes the new key and retains older data, including after a failed write. Versions earlier than 6 and malformed settings are rejected. No backend or external account is required.
 
 ## Deployment
 
@@ -100,18 +110,20 @@ The existing GitHub Pages workflow runs checks and publishes when changes are pu
 
 ### Strategy presets
 
-| Preset | Splits (min/mi) | Starts, slowest to fastest | Saturday target | Release pace |
-|---|---|---|---|---|
-| Editable baseline | None | Friday 1 AM | 1:20 PM | 10:25 |
-| Simple two waves | 9:45 | Friday 1 / 3 AM | 1:20 PM | 10:25 |
-| Efficient three waves | 9:15, 10:00 | Friday 1 / 2:30 / 3:30 AM | 1:20 PM | 10:25 |
-| Tighter group finish | 9:15, 10:00 | Friday 1 / 2:30 / 4 AM | 1:20 PM | 10:25 |
-| Earlier group finish | 9:15, 10:00 | Friday 1 / 2 / 3:30 AM | 12:20 PM | 10:00 |
-| 11 AM finish target | 9:15, 10:00 | Friday 1 / 2 / 3:30 AM | 11 AM | 9:40 |
-| Earlier launch, fewer releases | 9:45, 10:30 | Thursday 11 PM / Friday midnight / 2 AM | 1:20 PM | 11:00 |
+The menu contains the original seven strategies. Each preserves its launch times and uses its reference finish target to select release paces. Finish is then calculated from the start, pace, and challenge allowances, and stays linked as inputs change. Where necessary, a wave’s release pace is reduced so its calculated latest start is at or after its scheduled launch. The adjusted pace is rounded down to a whole second per mile; already-feasible settings are retained. Preset application restores standard challenge allowances before calculating these settings.
 
-Exact split paces belong to the slower wave. Presets restore Friday 7 PM monument clearance, Saturday 6 AM JBCC opening, 16/21-minute challenges, and faster-wave releases after arrival at exchange 35, replacing customized race rules. The 1:20 PM reference retains its exact analyzed value of 1:20:01.25 PM; the 12:20 PM option is exactly one hour earlier.
+| Preset | Starts, slowest to fastest | Reference finish | Release paces, slowest to fastest |
+|---|---|---|---|
+| Editable baseline | Friday 1:00 AM | Saturday 1:20 PM | 10:25 |
+| Simple two waves | Friday 1:00 AM / Friday 3:00 AM | Saturday 1:20 PM | 10:25 / 9:50 |
+| Efficient three waves | Friday 1:00 AM / Friday 2:30 AM / Friday 3:30 AM | Saturday 1:20 PM | 10:25 / 9:58 / 9:41 |
+| Tighter group finish | Friday 1:00 AM / Friday 2:30 AM / Friday 4:00 AM | Saturday 1:20 PM | 10:25 / 9:58 / 9:32 |
+| Earlier group finish | Friday 1:00 AM / Friday 2:00 AM / Friday 3:30 AM | Saturday 12:20 PM | 10:00 / 9:50 / 9:23 |
+| 11 AM finish target | Friday 1:00 AM / Friday 2:00 AM / Friday 3:30 AM | Saturday 11:00 AM | 9:40 / 9:26 / 9:00 |
+| Earlier launch, fewer releases | Thursday 11:00 PM / Friday 12:00 AM / Friday 2:00 AM | Saturday 1:20 PM | 11:00 / 10:42 / 10:07 |
 
-Targets guide the release schedule, rather than guaranteeing every team finishes by that time. Under the pooled historical five-section model, the 11 AM preset produces about 124.02 exchange-hours and an 11:10 AM last finish, using 2,013 release-assisted departures. Results depend on the selected field and settings; runner and vehicle availability are not modeled. Smaller individual-year fields may have very small later waves.
+Exact split paces belong to the slower wave. Presets restore Friday 7 PM monument clearance, Saturday 6 AM JBCC opening, 16/21-minute challenges, and faster-wave releases after arrival at exchange 35.
 
-The editable baseline uses generated releases. The existing baseline comparison retains the exact published timetable. Selecting a preset does not save it or overwrite a saved configuration; edit and save or export it as usual. Existing saved configurations retain their stored settings.
+Release settings remain independently editable after applying a preset; custom edits can produce a latest-start warning. Loading a saved configuration preserves its stored values. These corrections change modeled results for affected presets. The exact published baseline comparison remains unchanged.
+
+The two experimental wave-tuned variants have been removed from the menu. The earlier [tuning analysis](analysis/wave-presets/README.md) is retained as historical research, not as current preset performance.

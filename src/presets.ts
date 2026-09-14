@@ -1,4 +1,5 @@
-import { baseline, colors } from "./data";
+import { resolveSolvers } from "./solver";
+import { baseline, colors, course } from "./data";
 import { syncAssignments } from "./waves";
 import type { Scenario } from "./model";
 
@@ -22,7 +23,7 @@ export const presets = [
     summary: "Target 12:20 PM with less exchange coverage and more release-assisted departures." },
   { id: "eleven-am", name: "11 AM finish target", boundaries: [555, 600], starts: [12600, 7200, 3600],
     targetFinish: 35 * 3600, releasePace: 580,
-    summary: "Target 11 AM with greater release dependence. The last historical modeled finish is approximately 11:10 AM." },
+    summary: "Target 11 AM with greater release dependence. Each wave’s release pace is adjusted to accommodate its launch time." },
   { id: "earlier-launch", name: "Earlier launch, fewer releases", boundaries: [585, 630], starts: [7200, 0, -3600],
     targetFinish: referenceFinish, releasePace: 660,
     summary: "Start the slowest wave Thursday at 11 PM to use fewer releases, with a wider finish window." },
@@ -32,20 +33,22 @@ export type PresetId = (typeof presets)[number]["id"];
 export function applyPreset(id: PresetId, currentScenario: Scenario): Scenario {
   const preset = presets.find(p => p.id === id)!;
   const defaults = baseline(currentScenario.selectedTeamIds);
-  return syncAssignments({
+  return syncAssignments(resolveSolvers({
     ...structuredClone(currentScenario),
     name: preset.name,
-    release: { targetFinish: preset.targetFinish, pace: preset.releasePace },
     timingRules: defaults.timingRules,
     challenges: defaults.challenges,
     fastWaveReleases: defaults.fastWaveReleases,
     // Pace ranges are stored fastest first, displayed slowest first.
     waves: preset.starts.map((start, index) => {
       const number = preset.starts.length - index;
-      return { id: `wave-${number}`, name: `Wave ${number}`, color: colors[number - 1], start };
+      // Round down to a whole second/mile so the latest-start estimate never precedes launch.
+      const available = preset.targetFinish - start - defaults.challenges.monument - defaults.challenges.lighthouse;
+      const pace = Math.min(preset.releasePace, Math.floor(available / course.event.total_distance_miles));
+      return { id: `wave-${number}`, name: `Wave ${number}`, color: colors[number - 1], start, solver: "finish", release: { targetFinish: preset.targetFinish, pace } };
     }),
     waveRules: { mode: "pace", boundaries: [...preset.boundaries] },
-  });
+  }));
 }
 export function createPreset(id: PresetId, selectedTeamIds: string[], worstCaseTeams?: Scenario["worstCaseTeams"]): Scenario {
   return applyPreset(id, { ...baseline(selectedTeamIds), ...(worstCaseTeams ? { worstCaseTeams } : {}) });
