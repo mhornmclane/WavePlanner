@@ -127,3 +127,9 @@ Exact split paces belong to the slower wave. Presets restore Friday 7 PM monumen
 Release settings remain independently editable after applying a preset; custom edits can produce a latest-start warning. Loading a saved configuration preserves its stored values. These corrections change modeled results for affected presets. The exact published baseline comparison remains unchanged.
 
 The two experimental wave-tuned variants have been removed from the menu. The earlier [tuning analysis](analysis/wave-presets/README.md) is retained as historical research, not as current preset performance.
+
+## Release timetable warnings
+
+The simulation and results show a separate warning for every enabled timing rule that conflicts with a wave’s nominal release timetable, independently of simulated team performance. Arrival deadlines use the previous departure plus that leg’s distance at release pace; clearance deadlines use the later of arrival and outbound release, including challenge allowances. Opening rules flag releases before opening. The start uses the configured wave launch, and the finish uses final-leg arrival.
+
+Warnings identify wave, exchange, planned time, rule time and difference. All waves are checked, even empty waves or fast waves whose releases are disabled. These are timetable advisories: fast-wave activation and enforced gate openings can change actual team departures. The separate simulated-team summary remains authoritative for modeled team violations. Warnings do not change settings or block simulation, saving or export. Disabled rules are ignored.

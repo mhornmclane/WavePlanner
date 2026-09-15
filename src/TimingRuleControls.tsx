@@ -3,6 +3,20 @@ import { course, resolveProfile } from "./data";
 import { clock, duration } from "./format";
 import { exchangeName, ruleStatus, ruleTypes, supportsRule } from "./timingRules";
 import type { Scenario, Simulation, TimingRule, TimingRuleType } from "./model";
+import { releaseRuleWarnings } from "./releaseRules";
+
+export function ReleaseRuleWarnings({ scenario, result }: { scenario: Scenario; result: Simulation }) {
+  const warnings = releaseRuleWarnings(scenario, result);
+  if (!warnings.length) return null;
+  return <section className="release-rule-warnings" aria-label="Release timetable warnings" aria-live="polite">
+    <strong>Release timetable: {warnings.length} rule {warnings.length === 1 ? "conflict" : "conflicts"}</strong>
+    <ul>{warnings.map(({wave,rule,planned,difference,activity})=><li key={wave.id + ":" + rule.id}>
+      <strong>{wave.name} · EX {rule.exchange} · {exchangeName(rule.exchange)}</strong>: planned {activity} {clock(planned)};
+      {" "}{ruleTypes[rule.type]} {clock(rule.time)} — {difference < 60 ? "less than 1 minute" : duration(difference)} {rule.type === "depart-after" ? "before opening" : "late"}.
+    </li>)}</ul>
+    <p>These warnings check each wave’s planned timetable, even if no teams are assigned. Gates and fast-wave activation can change actual departures. Simulated team checks are shown separately below.</p>
+  </section>;
+}
 
 export function TimingRulesEditor({ scenario, result, update }: {
   scenario: Scenario; result: Simulation | null; update: (fn: (s: Scenario) => Scenario) => void;
@@ -63,10 +77,10 @@ export function TimingRuleSummary({ scenario, result }: { scenario: Scenario; re
   const failed = result.timingRules.filter(r => r.status === "failed");
   const lateTeams = new Set(failed.flatMap(r => r.teams.filter(t => t.lateness > 0).map(t => t.teamId))).size;
   const heldTeams = new Set(result.timingRules.flatMap(r => r.teams.filter(t => t.wait > 0).map(t => t.teamId))).size;
-  const headline = !result.timingRules.length ? "No active timing rules" : !result.teams.length ? "Timing rules: Not evaluated"
-    : failed.length ? `Timing rules: ${failed.length} violated · ${lateTeams} late ${lateTeams === 1 ? "team" : "teams"}`
-    : `Timing rules: All deadlines met · ${heldTeams} ${heldTeams === 1 ? "team" : "teams"} held at openings`;
-  return <details className={`timing-rule-summary ${failed.length ? "has-violations" : ""}`}>
+  const headline = !result.timingRules.length ? "No active timing rules" : !result.teams.length ? "Simulated teams: Not evaluated"
+    : failed.length ? `Simulated teams: ${failed.length} violated · ${lateTeams} late ${lateTeams === 1 ? "team" : "teams"}`
+    : `Simulated teams: All deadlines met · ${heldTeams} ${heldTeams === 1 ? "team" : "teams"} held at openings`;
+  return <><ReleaseRuleWarnings scenario={scenario} result={result}/><details className={`timing-rule-summary ${failed.length ? "has-violations" : ""}`}>
     <summary>{headline}</summary>
     {result.timingRules.map(evaluation => {
       const rule = scenario.timingRules.find(r => r.id === evaluation.ruleId)!;
@@ -84,5 +98,5 @@ export function TimingRuleSummary({ scenario, result }: { scenario: Scenario; re
         </tr>)}</tbody></table></div>}
       </section>;
     })}
-  </details>;
+  </details></>;
 }
