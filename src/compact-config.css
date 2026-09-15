@@ -110,8 +110,9 @@
 
 .pace-stepper { display:flex; align-items:stretch; gap:4px; max-width:100%; }
 .pace-stepper > input { min-width:0; }
-.pace-step-buttons { display:flex; flex-direction:column; gap:2px; flex:0 0 28px; }
-.configuration-panel .pace-step-buttons button { padding:0 2px; min-height:18px; height:18px; font-size:10px; line-height:1; border-radius:3px; }
+.pace-step-buttons, .time-step-buttons { display:flex; flex-direction:column; gap:2px; flex:0 0 28px; }
+.time-step-buttons { flex-basis:32px; }
+.configuration-panel .pace-step-buttons button, .configuration-panel .time-step-buttons button { padding:0 2px; min-height:18px; height:18px; font-size:10px; line-height:1; border-radius:3px; }
 .configuration-panel .wave-range .field { flex-basis:90px; }
 .configuration-panel .wave-range .pace-input { flex:0 0 58px; }
-@media (pointer:coarse) { .configuration-panel .pace-step-buttons button { min-height:32px; height:32px; } }
+@media (pointer:coarse) { .configuration-panel .pace-step-buttons button, .configuration-panel .time-step-buttons button { min-height:32px; height:32px; } }

@@ -18,6 +18,10 @@ export function TimeInput({label, value, onChange, calculated = false, invalid =
       const [h,m]=e.target.value.split(":").map(Number);
       onChange(e.target.value ? day*86400+h*3600+m*60 : NaN);
     }}/>
+    <div className="time-step-buttons">
+      <button type="button" aria-label={`Increase ${label} by 30 minutes`} title="Increase time by 30 minutes" disabled={!Number.isFinite(value)} onClick={()=>onChange(value + 30*60)}>+30</button>
+      <button type="button" aria-label={`Decrease ${label} by 30 minutes`} title="Decrease time by 30 minutes" disabled={!Number.isFinite(value)} onClick={()=>onChange(value - 30*60)}>−30</button>
+    </div>
   </div>;
 }
 export function PaceInput({
